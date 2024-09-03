@@ -1,0 +1,140 @@
+11. Investigue su funcionamiento y parámetros más importantes:
+Comandos:
+(a) shutdown:
+El comando shutdown se usa para apagar o reiniciar el sistema.
+Parámetros importantes:
+    -h: Apaga el sistema (también se puede usar --halt).
+    -r: Reinicia el sistema.
+    -P: Apaga el sistema y corta la alimentación (dependiendo del hardware).
+    now: Ejecuta el comando inmediatamente. Ejemplo: shutdown -h now.
+    +m: Programa el apagado en m minutos. Ejemplo: shutdown -r +10 reinicia en 10 minutos.
+    -c: Cancela un apagado programado.
+
+(b) reboot:
+Reinicia el sistema de manera inmediata.
+
+(c) halt:
+Detiene el sistema, apagando el hardware sin realizar un apagado limpio.
+Parámetros importantes:
+    -p: Apaga el sistema después de detenerlo.
+
+(d) locate:
+Encuentra archivos en el sistema usando una base de datos indexada.
+Parámetros importantes:
+    -i: Ignora el caso al buscar. Ejemplo: locate -i archivo.
+    -r: Usa una expresión regular para buscar. Ejemplo: locate -r 'patrón'.
+
+(e) uname:
+Muestra información sobre el sistema operativo y el kernel.
+Parámetros importantes:
+    -a: Muestra toda la información disponible (nombre del kernel, versión, hostname, etc.).
+    -r: Muestra la versión del kernel.
+    -s: Muestra el nombre del sistema operativo.
+    -m: Muestra la arquitectura del hardware (por ejemplo, x86_64).
+
+(f) dmesg:
+Muestra los mensajes del buffer del kernel, incluyendo mensajes del sistema y de hardware.
+Parámetros importantes:
+    -T: Convierte las marcas de tiempo en un formato legible.
+    -H: Formatea la salida para mejorar la legibilidad.
+
+(g) lspci:
+Muestra información sobre todos los dispositivos PCI en el sistema.
+Parámetros importantes:
+    -v: Muestra información detallada sobre cada dispositivo.
+    -nn: Muestra identificadores de dispositivo y proveedor en formato numérico.
+    -k: Muestra los módulos del kernel asociados a cada dispositivo.
+
+(h) at:
+Programa la ejecución de comandos en una hora específica.
+Parámetros importantes:
+    -l: Lista los trabajos programados. 
+    -d: Elimina un trabajo programado.
+    -f archivo: Lee los comandos desde un archivo.
+
+(i) netstat:
+Muestra información sobre conexiones de red, tablas de enrutamiento y estadísticas de interfaz.
+Parámetros importantes:
+    -t: Muestra conexiones TCP.
+    -u: Muestra conexiones UDP.
+    -a: Muestra todas las conexiones y puertos en escucha.
+    -r: Muestra la tabla de enrutamiento.
+
+(j) mount:
+Se utiliza para montar sistemas de archivos.
+Parámetros importantes:
+    -t tipo: Especifica el tipo de sistema de archivos (por ejemplo, ext4, ntfs).
+    -o opciones: Especifica opciones adicionales (por ejemplo, ro para solo lectura).
+
+(k) umount:
+Desmonta sistemas de archivos.
+
+(l) head:
+Muestra las primeras líneas de un archivo.
+Parámetros importantes:
+    -n número: Especifica el número de líneas a mostrar. Ejemplo: head -n 20 archivo muestra las primeras 20 líneas.
+    -c número: Especifica el número de bytes a mostrar.
+
+(m) losetup:
+Configura y gestiona dispositivos de loopback.
+Parámetros importantes:
+    -f: Encuentra el primer dispositivo loopback libre.
+    -d: Desmonta un dispositivo loopback.
+    -P: Actualiza la información de particiones.
+
+(n) write:
+Envía mensajes a otros usuarios en el sistema.
+Parámetros importantes:
+    usuario: Nombre del usuario al que enviar el mensaje.
+    tty: Terminal donde el usuario está conectado (opcional).
+
+(ñ) mkfs:
+Crea un sistema de archivos en un dispositivo de almacenamiento.
+Parámetros importantes:
+    -t tipo: Especifica el tipo de sistema de archivos (por ejemplo, ext4, xfs).
+    -n: Realiza una prueba, no formatea realmente.
+
+(o) fdisk (con cuidado):
+Manipula las tablas de particiones de discos duros.
+Parámetros importantes:
+    -l: Lista las particiones de todos los discos.
+    -u: Muestra tamaños de partición en sectores.
+    -x: Muestra detalles adicionales (modo experto).
+
+12. Directorios Comunes para Comandos:
+/bin:
+Contiene binarios esenciales necesarios para arrancar el sistema y para funcionar en modo monousuario (modo de recuperación). 
+Comandos comunes:
+    uname
+    shutdown
+    reboot
+    halt
+    ls
+
+/sbin:
+Contiene binarios de administración de sistema, generalmente usados por el superusuario (root). 
+Incluye comandos para la gestión del sistema y hardware:
+    fdisk
+    mkfs
+    shutdown
+    reboot
+    halt
+
+/usr/bin:
+Almacena comandos no esenciales para el arranque, pero de uso común por los usuarios. 
+Comandos comunes:
+    locate
+    find
+    write
+    df
+    tail
+    head
+    lspci
+    netstat
+    
+/usr/sbin:
+Contiene comandos de administración de sistema adicionales que no son críticos para el arranque. 
+Herramientas comunes para administradores:
+    losetup
+    mount
+    umount
