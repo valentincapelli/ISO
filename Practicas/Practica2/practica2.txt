@@ -1,0 +1,439 @@
+Resolucion de la Practica 2
+
+1) a_ Editores de texto que puede utilizar desde la línea de comandos:
+    . vim
+    . emacs
+    . joe
+
+b_ Los editores de texto (e.g., vi, nano, vim) son programas interactivos que permiten
+crear, modificar y guardar archivos de texto. Ofrecen una interfaz más completa para
+la edición de texto.
+Comandos como cat, more, y less se utilizan para visualizar o manipular archivos de
+texto desde la línea de comandos, pero no están diseñados para editar.
+
+Modos de vi:
+
+Modo normal (comandos): Es el modo por defecto al abrir vi. Aquí puedes navegar y 
+ejecutar comandos.
+Modo de inserción (edición): Presiona i para entrar en este modo y comenzar a editar
+el texto.
+Modo de comandos (guardar/salir): Presiona : (dos puntos) para entrar en este modo y 
+escribir comandos como guardar y salir.
+
+c_ Comandos básicos en vi:
+    . Para entrar en modo de inserción, presiona i.
+    . Para guardar y salir, primero presiona Esc para asegurarte de estar en el modo 
+    normal, luego escribe :wq y presiona Enter.
+    . Para salir sin guardar, presiona Esc, luego escribe :q! y presiona Enter.
+
+Con estos pasos, podrás abrir y usar el editor vi en Linux. Si deseas un editor más 
+amigable, puedes usar vim, que es una versión mejorada de vi con más características.
+
+2) a_ 1. Se empieza a ejecutar el codigo del BIOS
+    2. El BIOS ejecuta el POST
+    3. El BIOS lee el sector de arranque (MBR)
+    4. Se carga el gestor de arranque (MBC)
+    5. El bootloader carga el kernel y el initrd
+    6. Se monta el initrd como sistema de archivos ra ́ız y se
+    inicializan componentes esenciales (ej.: scheduler)
+    7. El Kernel ejecuta el proceso init y se desmonta el initrd
+    8. Se lee el /etc/inittab
+    9. Se ejecutan los scripts apuntados por el runlevel 1
+    10. El final del runlevel 1 le indica que vaya al runlevel por defecto
+    11. Se ejecutan los scripts apuntados por el runlevel por defecto
+    12. El sistema est ́a listo para usarse
+
+b_ init: el Kernel ejecuta el proceso init.
+Su funcion es cargar todos los subprocesos necesarios para el
+correcto funcionamiento del SO.
+No tiene padre y es el padre de todos los procesos (pstree)
+Es el encargado de montar los filesystems y de hacer disponible los demas dispositivos.
+El proceso init posee el PID 1 y se encuentra en /sbin/ini
+
+c_ Runlevels
+• Es el modo en que arranca Linux (3 en Redhat, 2 en Debian)
+• El proceso de arranque lo dividimos en niveles
+
+d_ • Cada uno de los niveles es responsable de levantar (iniciar) o bajar (parar)
+una serie de servicios.
+• Se encuentran definidos en /etc/inittab
+• Existen 7, y permiten iniciar un conjunto de procesos al
+arranque o apagado del sistema
+• Segun el estandar:
+    • 0: halt (parada)
+    • 1: single user mode (monousuario)
+    • 2: multiuser, without NFS (modo multiusuario sin soperte de
+    red)
+    • 3: full multiuser mode console (modo multiusuario completo
+    por consola)
+    • 4: no se utiliza
+    • 5: X11 (modo multiusuario completo con login gr ́afico basado
+    en X)
+    • 6: reboot
+
+No todas las distribuciones Linux respetan estrictamente estos estándares:
+
+Distribuciones más antiguas: Distribuciones como Red Hat Enterprise Linux (RHEL), 
+CentOS, Debian y sus derivados más antiguos solían seguir el esquema SysV para la 
+gestión de servicios y runlevels.
+
+Distribuciones más modernas: La mayoría de las distribuciones modernas de Linux han 
+cambiado a sistemas de inicio más avanzados como systemd, que no utilizan el concepto 
+tradicional de runlevels. En systemd, los runlevels se reemplazan por targets, que son 
+más flexibles y ofrecen más opciones de administración de servicios y dependencias.
+
+e_ El archivo /etc/inittab es un archivo de configuración utilizado en sistemas basados
+en System V (SysV) para definir la configuración de inicialización del sistema, 
+incluyendo los niveles de ejecución (runlevels). Este archivo es leído por el proceso 
+init durante el arranque del sistema, que es el primer proceso en ejecutarse después
+del kernel.
+
+Finalidad del Archivo /etc/inittab
+La finalidad principal del archivo /etc/inittab es:
+    Definir el nivel de ejecución predeterminado del sistema al arrancar.
+    Especificar los scripts y procesos que deben iniciarse o detenerse en cada nivel 
+    de ejecución.
+    Configurar el comportamiento del sistema para tareas específicas, como gestionar 
+    la consola, las líneas de terminal virtual, y la respuesta a eventos como el 
+    reinicio o apagado del sistema.
+    
+Información Almacenada en /etc/inittab
+El archivo /etc/inittab contiene varias configuraciones críticas para la inicialización 
+del sistema:
+    Nivel de ejecución predeterminado (runlevel default): Especifica el runlevel que 
+    el sistema debe usar por defecto al iniciar.
+    Entradas de runlevel: Define los procesos que deben iniciarse, reiniciarse, o 
+    detenerse cuando el sistema entra en un runlevel específico.
+    Control de terminales virtuales (getty): Configura las terminales virtuales (tty) 
+    en el sistema, especificando cómo y cuándo deben ser activadas.
+    Eventos de control del sistema: Configura acciones para eventos especiales como 
+    ctrl-alt-delete, la carga de la consola, etc.
+
+Estructura de la Información en /etc/inittab
+    El archivo /etc/inittab tiene una estructura basada en líneas de texto, donde cada
+    línea sigue un formato específico con cuatro campos separados por dos puntos (:):
+
+    id:runlevels:action:process
+    id: Identificador único para la entrada (generalmente, 1-4 caracteres).
+    runlevels: Especifica a qué runlevels se aplica esta entrada (uno o más runlevels, 
+    por ejemplo, 2345).
+    action: Acción que debe realizarse, como iniciar, esperar, reiniciar, etc.
+    process: Comando o script que debe ejecutarse para esta entrada.
+
+f_  Para cambiar de runlevel, use sudo init <Y> o sudo telinit <Y>.
+    Este cambio es temporal y solo dura hasta que el sistema se reinicie.
+    Para un cambio permanente, debe modificar el archivo /etc/inittab y establecer el 
+    runlevel deseado como predeterminado.
+
+g_ Los scripts RC (Run Commands) son scripts de shell que se utilizan en sistemas 
+GNU/Linux basados en System V (SysV) para gestionar los procesos y servicios que se 
+inician o detienen en cada nivel de ejecución (runlevel) del sistema. Estos scripts 
+permiten un control detallado de qué servicios deben estar activos o inactivos 
+dependiendo del estado del sistema.
+
+La finalidad de los scripts RC es:
+    Iniciar, detener, o reiniciar servicios al cambiar el nivel de ejecución (runlevel)
+    del sistema.
+    Gestionar el entorno del sistema al arrancar, cambiar de runlevel, o detenerse.
+    Definir el comportamiento de servicios críticos del sistema (como la red, demonios
+    de sistema, servicios de base de datos, etc.) en diferentes estados.
+
+Ubicación de los Scripts RC
+Los scripts RC se almacenan en directorios específicos bajo /etc:
+    Directorio principal de scripts RC: /etc/init.d/ o /etc/rc.d/init.d/
+    Aquí se encuentran los scripts maestros que controlan la ejecución de servicios. 
+    Cada script en este directorio generalmente acepta argumentos como start, stop, 
+    restart, status, etc., que se usan para gestionar el servicio correspondiente.
+
+    Directorios de runlevels específicos: /etc/rcX.d/ (donde X es el número del runlevel,
+    como 0, 1, 2, etc.)
+    Estos directorios contienen enlaces simbólicos (symlinks) a los scripts maestros de
+    /etc/init.d/ y determinan el orden en que los servicios deben ser iniciados o 
+    detenidos para cada runlevel.
+
+Determinación de Qué Script Ejecutar
+    Cuando un sistema GNU/Linux arranca o cambia de runlevel, el proceso init lee el 
+    archivo /etc/inittab para determinar el runlevel predeterminado o el runlevel al 
+    que debe cambiarse. Basándose en este runlevel, el sistema:
+
+    _ Accede al directorio correspondiente: El sistema accede al directorio /etc/rcX.d/,
+    donde X es el número del runlevel.
+    _ Ejecuta los scripts en ese directorio: En el directorio de runlevel específico, los 
+    archivos son enlaces simbólicos a los scripts en /etc/init.d/. Los nombres de estos 
+    archivos determinan si un servicio debe iniciarse o detenerse:
+        . Los nombres de los enlaces simbólicos comienzan con una S (de "Start") o una 
+        K (de "Kill"), seguidos de un número de dos dígitos que define el orden de 
+        ejecución.
+        . Por ejemplo, S01apache2 indicaría que el servicio apache2 debe iniciarse, y 
+        K01apache2 indicaría que debe detenerse.
+
+Orden de Ejecución de los Scripts
+    Sí, existe un orden para llamar a los scripts RC. Este orden se determina por el 
+    prefijo numérico en los enlaces simbólicos de los directorios /etc/rcX.d/:
+
+    Los scripts que comienzan con K (Kill) se ejecutan primero cuando se cambia de 
+    runlevel. Esto se hace para detener los servicios que no deben estar activos en el 
+    nuevo runlevel.
+    Luego, los scripts que comienzan con S (Start) se ejecutan para iniciar los servicios 
+    que deben estar activos en el nuevo runlevel.
+    El número que sigue a la letra K o S determina el orden de ejecución: los números 
+    más bajos se ejecutan primero. Por ejemplo, S01service se ejecutará antes que 
+    S02service.
+
+Ejemplo de Estructura de Scripts RC
+Supongamos que estamos en el directorio /etc/rc3.d/ (para runlevel 3):
+
+    K01network -> ../init.d/network
+    K02firewall -> ../init.d/firewall
+    S01syslog -> ../init.d/syslog
+    S02httpd -> ../init.d/httpd
+    S03mysql -> ../init.d/mysql
+
+Al cambiar al runlevel 3:
+Primero, se ejecutan K01network y K02firewall para detener los servicios de red y 
+firewall.
+Luego, se ejecutan S01syslog, S02httpd, y S03mysql para iniciar el servicio de registro 
+de sistema, servidor web Apache (httpd), y servidor de base de datos MySQL, respectivamente.
+
+Conclusión
+Los scripts RC son fundamentales para la gestión de servicios en sistemas basados en 
+SysV, y su organización en los directorios de runlevels junto con el uso de enlaces 
+simbólicos con nombres específicos permite un control preciso y ordenado del 
+comportamiento del sistema en diferentes estados.
+
+3) a_ Systemd
+• Es un sistema que centraliza la administracion de demonios y
+librerias del sistema
+• Mejora el paralelismo de booteo
+• Puede ser controlado por systemctl
+• Compatible con SysV → si es llamado como init
+• El demonio systemd reemplaza al proceso init → este pasa a terner PID 1
+• Los runlevels son reemplazados por targets
+• Al igual que con Upstart el archivo /etc/inittab no existe mas
+
+b_ Las unidades de trabajo son denominadas Units de tipo:
+• Service: controla un servicio particular (.service)
+• Socket: encapsula IPC, un socket del sistema o file system
+FIFO (.socket) → sockect-based activation
+• Target: agrupa units o establece puntos de sincronizaci ́on
+durante el booteo (.target) → dependencia de unidades
+• Snapshot: almacena el estado de un conjunto de unidades que
+puede ser restablecido m ́as tarde (.snapshot)
+• etc.
+• Las units pueden tener dos estados → active o inactive
+
+c_ El comando systemctl es una herramienta de línea de comandos utilizada en sistemas 
+Linux que utilizan systemd como su sistema de inicialización (init system). systemctl 
+es el comando principal para gestionar y controlar los servicios y unidades del sistema 
+que están bajo el control de systemd. Este comando permite administrar los servicios, 
+configurar el comportamiento de arranque, consultar el estado del sistema, reiniciar 
+el sistema, entre muchas otras tareas relacionadas con la administración del sistema.
+
+d_ Target: agrupa units o establece puntos de sincronizacion
+durante el booteo (.target) → dependencia de unidades
+
+El concepto de target se refiere a una unidad especial que agrupa y organiza otros 
+servicios y unidades para lograr un estado específico del sistema. Un target es una 
+forma de definir y agrupar un conjunto de servicios y otros targets que deben estar 
+activos al mismo tiempo.
+Los targets en systemd son similares a los runlevels del sistema de inicialización 
+System V (SysV), pero son más flexibles y potentes porque pueden definir estados más 
+específicos y no están limitados a un número fijo de niveles de ejecución. Además, un 
+target puede ser utilizado como un punto de sincronización en el proceso de arranque o 
+apagado del sistema, agrupando unidades relacionadas.
+
+e_ El comando pstree en Linux se utiliza para mostrar los procesos en ejecución en forma 
+de un árbol jerárquico. Al ejecutar pstree, se puede observar la estructura de los 
+procesos del sistema, mostrando la relación de padre-hijo entre los procesos.
+Árbol de Procesos: pstree muestra todos los procesos en el sistema de manera jerárquica, 
+comenzando desde el proceso raíz (init o systemd), que es el primer proceso que se 
+ejecuta al arrancar el sistema. Todos los demás procesos son descendientes de este 
+proceso.
+
+4) a_ La información de los usuarios estan en la ruta /etc/passwd.
+
+b_ Las siglas UID y GID en un sistema GNU/Linux hacen referencia a identificadores que 
+se utilizan para gestionar y asignar permisos a los usuarios y grupos en el sistema.
+
+UID (User Identifier) es un número único asignado a cada usuario en el sistema. Este 
+identificador se utiliza para representar al usuario dentro del sistema operativo y para 
+gestionar los permisos y la propiedad de los archivos y procesos.
+Detalles Importantes sobre UID:
+
+    Cada usuario tiene un UID único. Por ejemplo, el usuario root tiene un UID de 0.
+    Los UIDs típicos de los usuarios normales comienzan desde 1000 en la mayoría de las 
+    distribuciones de Linux, mientras que los UIDs por debajo de 1000 suelen estar 
+    reservados para cuentas del sistema (como nobody, daemon, etc.).
+    Los UIDs están definidos en el archivo /etc/passwd.
+
+GID (Group Identifier) es un número único asignado a cada grupo en el sistema. Los 
+grupos se utilizan para definir conjuntos de usuarios que comparten permisos comunes 
+para acceder a archivos, directorios, o ejecutar comandos.
+Detalles Importantes sobre GID:
+    Similar al UID, cada grupo tiene un GID único.
+    Los GIDs para grupos de usuarios suelen comenzar también desde 1000, mientras que 
+    los GIDs por debajo de 1000 están reservados para grupos del sistema.
+    Los GIDs están definidos en el archivo /etc/group.
+
+¿Pueden coexistir UIDs iguales en un sistema GNU/Linux?
+    En un sistema GNU/Linux estándar:
+    No es posible que dos usuarios diferentes tengan el mismo UID de manera funcional, 
+    ya que el UID debe ser único para cada usuario para evitar conflictos de permisos 
+    y propiedad.
+
+c_ • root: es el administrador del sistema (superusuario).
+El usuario root en GNU/Linux es el superusuario del sistema, con privilegios completos 
+y sin restricciones. Es el usuario más poderoso en el sistema operativo, capaz de 
+realizar cualquier operación, como gestionar archivos del sistema, instalar o desinstalar 
+software, cambiar configuraciones del sistema, y administrar otros usuarios.
+UID de root: El usuario root siempre tiene el UID 0 en sistemas GNU/Linux. Este UID está 
+reservado exclusivamente para el superusuario.
+No puede existir otro usuario llamado root, pero sí pueden existir múltiples usuarios 
+con el UID 0, aunque esta no es una práctica segura ni recomendable. Para una 
+administración más segura y controlada, se recomienda utilizar sudo para tareas que 
+requieran permisos elevados.
+
+d_ Paso 1: Crear el usuario iso2017 con un directorio home personalizado
+    Abre una terminal.
+    Para agregar un nuevo usuario llamado iso2017 con el directorio home especificado en
+    /home/iso_2017, usa el siguiente comando:
+    
+    sudo useradd -m -d /home/iso_2017 iso2017
+
+Paso 2: Crear el grupo catedra (si no existe)
+    Para verificar si el grupo catedra ya existe, puedes usar:
+
+    getent group catedra
+
+    Si el grupo no existe, créalo con:
+
+    sudo groupadd catedra
+
+Paso 3: Agregar el usuario iso2017 al grupo catedra
+
+    sudo usermod -aG catedra iso2017
+
+Paso 4: Crear un archivo en el directorio personal del usuario iso2017 sin iniciar 
+sesión como ese usuario
+Crea un archivo en el directorio home del usuario iso2017 que le pertenezca. 
+Puedes hacerlo con el siguiente comando:
+
+    sudo touch /home/iso_2017/archivo.txt
+    sudo chown iso2017:iso2017 /home/iso_2017/archivo.txt
+
+Paso 5: Borrar el usuario iso2017 y verificar que no queden registros
+Para eliminar el usuario iso2017 y su directorio home, utiliza:
+
+    sudo userdel -r iso2017
+
+Para asegurarte de que no queden registros del usuario en los archivos de información 
+de usuarios y grupos, puedes usar los siguientes comandos:
+    
+    Verifica que no exista en /etc/passwd:
+    getent passwd iso2017
+
+    Verifica que no exista en /etc/group:
+    getent group catedra | grep iso2017
+
+Si ninguno de estos comandos devuelve información relacionada con iso2017, habrás 
+verificado que no quedan registros del usuario ni en los archivos de información de 
+usuarios ni en los grupos.
+
+e_ 
+1. useradd o adduser
+   Funcionalidad:
+   - useradd: Es un comando de bajo nivel para agregar usuarios. Se utiliza para crear una nueva cuenta de usuario en el sistema.
+   - adduser: Es un script de Perl que utiliza useradd en el fondo, pero proporciona una interfaz más amigable para la creación de usuarios, solicitando información de manera interactiva.
+
+   Principales Parámetros de useradd:
+   - -m: Crea un directorio de inicio (home) para el usuario.
+   - -d /ruta/del/home: Especifica el directorio home del usuario.
+   - -s /bin/bash: Establece el shell de inicio de sesión del usuario.
+   - -g grupo: Asigna un grupo principal al usuario.
+   - -G grupos: Asigna uno o más grupos secundarios al usuario.
+   - -u UID: Especifica un UID (User ID) para el usuario.
+   - -c "comentario": Agrega un comentario (normalmente el nombre completo del usuario).
+
+   Ejemplo:
+   sudo useradd -m -d /home/usuario -s /bin/bash -g grupo_principal -G grupo_secundario usuario
+
+2. usermod
+   Funcionalidad:
+   - Modifica los atributos de una cuenta de usuario existente.
+
+   Principales Parámetros:
+   - -l nuevo_nombre: Cambia el nombre del usuario.
+   - -d /nueva/ruta/home -m: Cambia el directorio de inicio del usuario y mueve el contenido.
+   - -s /bin/nuevo_shell: Cambia el shell de inicio de sesión del usuario.
+   - -g nuevo_grupo: Cambia el grupo principal del usuario.
+   - -G nuevos_grupos: Cambia los grupos secundarios del usuario.
+   - -aG grupo: Agrega el usuario a un grupo secundario (sin eliminar otros grupos secundarios existentes).
+
+   Ejemplo:
+   sudo usermod -aG grupo_adicional usuario
+
+3. userdel
+   Funcionalidad:
+   - Elimina una cuenta de usuario del sistema.
+
+   Principales Parámetros:
+   - -r: Elimina el directorio de inicio del usuario y su correo.
+
+   Ejemplo:
+   sudo userdel -r usuario
+
+4. su
+   Funcionalidad:
+   - Cambia el usuario de sesión actual a otro usuario. Por defecto, cambia a root si no se especifica ningún usuario.
+
+   Principales Parámetros:
+   - -: Inicia un nuevo shell de inicio de sesión.
+   - -c 'comando': Ejecuta un comando con privilegios del usuario especificado y luego vuelve al usuario original.
+
+   Ejemplo:
+   su - usuario
+
+5. groupadd
+   Funcionalidad:
+   - Crea un nuevo grupo en el sistema.
+
+   Principales Parámetros:
+   - -g GID: Especifica un GID (Group ID) para el grupo.
+   - -r: Crea un grupo del sistema.
+
+   Ejemplo:
+   sudo groupadd nombre_grupo
+
+6. who
+   Funcionalidad:
+   - Muestra información sobre los usuarios que están actualmente conectados al sistema.
+
+   Principales Parámetros:
+   - -a: Muestra toda la información disponible.
+   - -q: Muestra un resumen de los usuarios conectados.
+   - -u: Muestra información sobre el tiempo de inactividad del usuario.
+
+   Ejemplo:
+   who -a
+
+7. groupdel
+   Funcionalidad:
+   - Elimina un grupo del sistema.
+
+   Ejemplo:
+   sudo groupdel nombre_grupo
+
+8. passwd
+   Funcionalidad:
+   - Cambia la contraseña de un usuario o actualiza la información de autenticación.
+
+   Principales Parámetros:
+   - -l: Bloquea la cuenta del usuario.
+   - -u: Desbloquea la cuenta del usuario.
+   - -d: Elimina la contraseña del usuario, permitiendo el acceso sin contraseña.
+   - --stdin: Permite pasar la nueva contraseña desde la entrada estándar.
+
+   Ejemplo:
+   sudo passwd usuario
+
+
