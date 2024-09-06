@@ -437,3 +437,189 @@ e_
    sudo passwd usuario
 
 
+5) a_ Permisos
+• Se aplican a directorios y archivos
+• Existen 3 tipos de permisos y se basan en una notacion octal:
+    Permiso     Valor   Octal
+    Lectura     R       4
+    Escritura   W       2
+    Ejecucion   X       1
+
+• Se aplican sobre los usuarios:
+• Usuario: permisos del due ̃no → U
+• Usuario: permisos del grupo → G
+• Usuario: permisos de otros usuario → O
+
+b_ En GNU/Linux, los comandos chmod, chown y chgrp se utilizan para gestionar los 
+permisos y la propiedad de archivos y directorios. A continuación, se describe la 
+funcionalidad y los parámetros de cada comando:
+
+1. chmod (Change Mode)
+El comando chmod se utiliza para cambiar los permisos de un archivo o directorio. 
+Los permisos se pueden configurar utilizando el sistema simbólico o el numérico (octal).
+
+    Sintaxis básica: chmod [opciones] modo archivo
+
+    Modos de permisos:
+        Simbólico: u (usuario), g (grupo), o (otros), a (todos), con +, -, = para 
+        añadir, quitar o establecer permisos.
+        Numérico: Cada permiso se representa como un número: r (4), w (2), x (1).
+        Ejemplo: chmod 755 archivo.txt asigna permisos de lectura, escritura y 
+        ejecución para el usuario, y permisos de lectura y ejecución para el grupo y 
+        otros.
+
+2. chown (Change Owner)
+El comando chown cambia el propietario de un archivo o directorio.
+
+    Sintaxis básica: chown [opciones] usuario[:grupo] archivo
+
+    Parámetros:
+    usuario: El nuevo propietario del archivo.
+    grupo: El nuevo grupo propietario (opcional).
+    Ejemplo: chown usuario archivo.txt cambia el propietario de archivo.txt a usuario.
+
+    Ejemplo con grupo: chown usuario:grupo archivo.txt cambia el propietario a usuario 
+    y el grupo a grupo.
+
+3. chgrp (Change Group)
+El comando chgrp cambia el grupo propietario de un archivo o directorio.
+
+    Sintaxis básica: chgrp [opciones] grupo archivo
+    Parámetros:
+    grupo: El nuevo grupo propietario del archivo.
+    Ejemplo: chgrp grupo archivo.txt cambia el grupo propietario de archivo.txt a grupo.
+
+Resumen
+Estos comandos son fundamentales para la gestión de permisos y propiedad en sistemas 
+Linux. chmod modifica los permisos de acceso, chown cambia el propietario de archivos 
+y directorios, y chgrp cambia el grupo propietario.
+
+c_  chmod (Change Mode)
+    Modos de permisos:
+        Simbólico: u (usuario), g (grupo), o (otros), a (todos), con +, -, = para 
+        añadir, quitar o establecer permisos.
+        Numérico: Cada permiso se representa como un número: r (4), w (2), x (1).
+        Ejemplo: chmod 755 archivo.txt asigna permisos de lectura, escritura y 
+        ejecución para el usuario, y permisos de lectura y ejecución para el grupo y 
+        otros.
+
+d_ En sistemas GNU/Linux, los permisos de archivos y directorios son administrados 
+estrictamente por el sistema operativo, lo que generalmente impide que un usuario 
+acceda a un archivo para el cual no tiene permisos. Sin embargo, existen ciertas 
+situaciones y métodos especiales que podrían permitir a un usuario sin permisos 
+explícitos acceder a un archivo. Algunos de estos casos incluyen:
+
+    Usuario Root (superusuario): El superusuario o root en Linux tiene todos los 
+privilegios del sistema, lo que le permite acceder a cualquier archivo, 
+independientemente de los permisos establecidos.
+
+    Permisos SUID, SGID y Sticky Bit:
+    SUID (Set User ID): Permite que un archivo sea ejecutado con los privilegios del 
+propietario del archivo, no del usuario que lo ejecuta. Esto puede permitir que un 
+usuario ejecute un archivo con permisos adicionales.
+    SGID (Set Group ID): Similar a SUID, pero otorga permisos del grupo propietario del 
+    archivo.
+    Sticky Bit: Generalmente usado en directorios para permitir que solo los 
+    propietarios de archivos específicos puedan borrarlos o renombrarlos, incluso si 
+    otros tienen permisos de escritura en el directorio.
+
+    Acceso mediante programas con privilegios elevados: Algunos programas o servicios 
+    ejecutados con permisos elevados (como sudo o doas) pueden otorgar acceso temporal 
+    a archivos.
+
+    Errores de configuración de permisos: A veces, errores de configuración de permisos 
+    en archivos o directorios pueden permitir el acceso no intencionado.
+
+Pruebas de Acceso a Archivos sin Permisos
+
+1. Crear un Archivo con Permisos Restringidos
+Primero, crearemos un archivo con permisos restringidos para cualquier usuario que no 
+sea el propietario:
+
+    touch archivo_restringido.txt
+    chmod 700 archivo_restringido.txt  # Solo el propietario tiene permisos de lectura, escritura y ejecución
+    ls -l archivo_restringido.txt
+
+El resultado mostrará algo similar a:
+
+    -rwx------ 1 usuario usuario 0 fecha archivo_restringido.txt
+
+Esto indica que solo el propietario (usuario) tiene permisos completos (lectura, 
+escritura, ejecución).
+
+2. Intentar Acceso como Otro Usuario
+Cambie a otro usuario o cree uno nuevo para realizar pruebas:
+
+    sudo adduser usuario_prueba
+    su - usuario_prueba
+
+Como usuario_prueba, intente acceder al archivo:
+
+    cat /ruta/a/archivo_restringido.txt
+
+Esto debería devolver un "Permission denied".
+
+3. Acceso con sudo
+Intente acceder al archivo utilizando sudo para simular el acceso como superusuario:
+
+    sudo cat /ruta/a/archivo_restringido.txt
+
+Esto debería funcionar y mostrar el contenido del archivo porque el superusuario tiene 
+permisos para acceder a todos los archivos.
+
+e_ En sistemas operativos basados en UNIX, como GNU/Linux, los conceptos de "full path 
+name" (ruta absoluta) y "relative path name" (ruta relativa) se refieren a dos maneras 
+diferentes de especificar la ubicación de archivos y directorios en el sistema de 
+archivos.
+
+1. Full Path Name (Ruta Absoluta)
+Una ruta absoluta es una ruta que especifica la ubicación completa de un archivo o 
+directorio en el sistema de archivos, comenzando desde el directorio raíz (/). 
+Siempre comienza con una barra diagonal (/), que representa la raíz del sistema de 
+archivos. Este tipo de ruta es independiente del directorio actual; no importa en qué 
+directorio se encuentre el usuario, la ruta absoluta siempre apunta al mismo archivo 
+o directorio.
+
+Ejemplos de Ruta Absoluta:
+Archivo en el directorio /home:
+
+/home/usuario/documentos/archivo.txt
+
+Este es el camino completo desde el directorio raíz / hasta el archivo archivo.txt en 
+el directorio documentos del usuario usuario.
+Archivo en el directorio /etc:
+
+/etc/hostname
+
+Esta es la ruta absoluta al archivo hostname en el directorio /etc, que es un 
+directorio común para archivos de configuración del sistema.
+
+2. Relative Path Name (Ruta Relativa)
+Una ruta relativa especifica la ubicación de un archivo o directorio en relación con 
+el directorio de trabajo actual. No comienza con una barra diagonal (/); en su lugar, 
+puede comenzar con el nombre de un directorio, un punto (.) para representar el 
+directorio actual, o dos puntos (..) para representar el directorio padre (el directorio 
+un nivel más arriba).
+
+Las rutas relativas son útiles cuando estás trabajando en un directorio específico y 
+deseas acceder a archivos o subdirectorios dentro de ese directorio o en su estructura 
+jerárquica.
+
+Ejemplos de Ruta Relativa:
+Archivo en un subdirectorio del directorio actual:
+Si el directorio de trabajo actual es /home/usuario, la ruta relativa a un archivo 
+llamado archivo.txt en el subdirectorio documentos sería:
+documentos/archivo.txt
+
+Archivo en el directorio padre:
+Si el directorio de trabajo actual es /home/usuario/documentos y deseas acceder a un 
+archivo archivo.txt en el directorio padre (/home/usuario), usarías:
+../archivo.txt
+Aquí, .. representa el directorio padre.
+
+Archivo en el directorio actual:
+Si el directorio de trabajo actual contiene un archivo llamado archivo.txt, la ruta 
+relativa sería simplemente:
+./archivo.txt
+Aquí, . representa el directorio actual. Sin embargo, es común omitir ./ y simplemente 
+escribir archivo.txt.
