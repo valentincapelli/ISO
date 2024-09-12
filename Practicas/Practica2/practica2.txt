@@ -1541,3 +1541,205 @@ Explicación del Comando:
     .ejercicio_f: Nombre del archivo donde se guardará el resultado de la búsqueda.
     2>/dev/null: Redirige los mensajes de error (por ejemplo, "Permission denied") a 
     /dev/null para que no aparezcan en la salida.
+
+12) 
+1. mkdir iso
+Este comando crea un directorio llamado iso en el directorio de trabajo actual. Si 
+el directorio ya existe, el comando fallará indicando que el archivo ya existe.
+
+2. cd ./iso ; ps > f0
+    cd ./iso: Cambia al directorio iso que se acaba de crear.
+    ps > f0: Ejecuta el comando ps que muestra información sobre los procesos en ejecución y redirige la salida al archivo f0 en el directorio iso.
+
+3. ls > f1
+Este comando lista los archivos y directorios del directorio actual (que ahora es 
+iso) y redirige la salida al archivo f1. Si f1 no existe, se creará; si existe, 
+será sobrescrito.
+
+4. cd /
+Este comando cambia al directorio raíz del sistema de archivos (/).
+
+5. echo $HOME
+Este comando imprime el valor de la variable de entorno $HOME, que contiene la ruta 
+al directorio de inicio del usuario.
+
+6. ls -l $> $HOME/iso/ls
+Este comando está mal escrito debido a $> que no es válido en Bash. Debería haber 
+sido algo como ls -l > $HOME/iso/ls, que listaría los archivos en formato largo (-l) 
+y redirigiría la salida al archivo ls en el directorio iso en el directorio de inicio 
+del usuario.
+
+7. cd $HOME; mkdir f2
+    cd $HOME: Cambia al directorio de inicio del usuario.
+    mkdir f2: Crea un directorio llamado f2 en el directorio de inicio del usuario.
+
+8. ls -ld f2
+Este comando lista el directorio f2 en formato largo (-l) mostrando información 
+sobre los permisos, propietario, tamaño, y más. La opción -d indica que se debe 
+listar el directorio f2 en sí, no su contenido.
+
+9. chmod 341 f2
+Este comando cambia los permisos del directorio f2 a 341. Los permisos serán:
+    Propietario: -wx (escritura y ejecución)
+    Grupo: --- (sin permisos)
+    Otros: --x (solo ejecución)
+
+10. touch dir
+Este comando crea un archivo vacío llamado dir en el directorio actual. Si el archivo 
+ya existe, simplemente actualiza su timestamp de última modificación.
+
+11. cd f2
+Este comando intenta cambiar al directorio f2. Puede fallar si los permisos no están
+establecidos correctamente, es decir, si el usuario no tiene permisos de ejecución 
+(x) sobre f2.
+
+12. cd ~/iso
+Este comando cambia al directorio iso en el directorio de inicio del usuario 
+($HOME/iso).
+
+13. pwd >f3
+Este comando guarda la ruta actual del directorio (obtenida con pwd) en el archivo 
+f3 en el directorio actual (iso).
+
+14. ps | grep ' ps ' | wc -l >> ../f2/f3
+Este comando:
+    ps muestra los procesos en ejecución.
+    grep ' ps ' busca líneas que contengan la palabra "ps".
+    wc -l cuenta el número de líneas encontradas.
+    >> ../f2/f3 agrega el resultado al final del archivo f3 ubicado en ../f2.
+
+15. chmod 700 ../f2 ; cd ..
+    chmod 700 ../f2: Cambia los permisos de f2 para que solo el propietario tenga permisos completos (lectura, escritura, y ejecución).
+    cd ..: Retrocede un directorio (sube un nivel en la jerarquía de directorios).
+
+16. find . -name etc/passwd
+Este comando está mal escrito. El uso correcto sería find . -name "etc/passwd", pero 
+esto tampoco tendría mucho sentido porque find busca nombres de archivos, no rutas. 
+Debe buscar passwd o usar la opción -path.
+
+17. find / -name etc/passwd
+De nuevo, este comando no es válido. Debería ser algo como find / -name "passwd" o 
+find / -path "*/etc/passwd". Además, requiere permisos de superusuario para buscar 
+en todos los directorios.
+
+18. mkdir ejercicio5
+Este comando crea un directorio llamado ejercicio5 en el directorio actual.
+
+13) Comandos para realizar las acciones solicitadas:
+Mover el archivo f3 al directorio de trabajo /home/usuario:
+    mv /home/usuario/dir1/f3 /home/usuario/
+
+Copiar el archivo f4 en el directorio dir11:
+    cp /home/usuario/dir2/f4 /home/usuario/dir1/dir11/
+
+Copiar el archivo f4 en el directorio dir11 pero renombrarlo como f7:
+
+    cp /home/usuario/dir2/f4 /home/usuario/dir1/dir11/f7
+
+Crear el directorio copia dentro del directorio usuario y copiar en él el contenido de dir1:
+
+    mkdir /home/usuario/copia
+    cp -r /home/usuario/dir1/* /home/usuario/copia/
+
+Renombrar el archivo f1 por el nombre archivo y ver los permisos del mismo:
+
+    mv /home/usuario/f1 /home/usuario/archivo
+    ls -l /home/usuario/archivo
+
+Cambiar los permisos del archivo llamado archivo de la siguiente manera:
+
+Usuario: Permisos de lectura y escritura
+Grupo: Permisos de ejecución
+Otros: Todos los permisos
+
+    chmod 617 /home/usuario/archivo
+
+Renombrar los archivos f3 y f4 para que se llamen f3.exe y f4.exe respectivamente:
+
+    mv /home/usuario/f3 /home/usuario/f3.exe
+    mv /home/usuario/dir2/f4 /home/usuario/dir2/f4.exe
+
+Cambiar los permisos de los dos archivos renombrados (f3.exe y f4.exe) de la siguiente 
+manera, utilizando un único comando:
+
+Usuario: Ningún permiso
+Grupo: Permisos de escritura
+Otros: Permisos de escritura y ejecución
+
+    chmod 023 /home/usuario/f3.exe /home/usuario/dir2/f4.exe
+
+14)
+(a) Crear un directorio llamado logs en el directorio /tmp:
+
+mkdir /tmp/logs
+
+mkdir es el comando para crear directorios.
+/tmp/logs es la ruta del nuevo directorio a crear.
+
+(b) Copiar todo el contenido del directorio /var/log en el directorio creado en el 
+punto anterior:
+
+cp -r /var/log/* /tmp/logs/
+
+cp es el comando para copiar archivos.
+-r indica que se copie de manera recursiva, es decir, se incluyen subdirectorios.
+/var/log/* indica que se debe copiar todo el contenido de /var/log.
+/tmp/logs/ es el directorio de destino.
+
+(c) Empaquetar el directorio creado en 1, el archivo resultante se debe llamar 
+"misLogs.tar":
+
+tar -cvf misLogs.tar -C /tmp logs
+
+tar es el comando para empaquetar archivos y directorios.
+-c crea un nuevo archivo tar.
+-v muestra el progreso de la operación.
+-f misLogs.tar especifica el nombre del archivo tar.
+-C /tmp logs empaqueta el directorio logs desde el directorio /tmp.
+
+(d) Empaquetar y comprimir el directorio creado en 1, el archivo resultante se debe llamar "misLogs.tar.gz":
+
+tar -czvf misLogs.tar.gz -C /tmp logs
+
+tar empaqueta y comprime.
+-c crea un nuevo archivo tar.
+-z comprime con gzip.
+-v muestra el progreso de la operación.
+-f misLogs.tar.gz especifica el nombre del archivo tar comprimido.
+-C /tmp logs empaqueta el directorio logs desde el directorio /tmp.
+
+(e) Copiar los archivos creados en 3 y 4 al directorio de trabajo de su usuario:
+
+cp misLogs.tar misLogs.tar.gz ~/
+
+cp copia archivos.
+misLogs.tar misLogs.tar.gz son los archivos a copiar.
+~/ es el directorio de trabajo del usuario (HOME).
+
+(f) Eliminar el directorio creado en 1, logs:
+
+rm -r /tmp/logs
+
+rm es el comando para eliminar archivos y directorios.
+-r permite la eliminación recursiva.
+/tmp/logs es el directorio a eliminar.
+
+(g) Desempaquetar los archivos creados en 3 y 4 en 2 directorios diferentes:
+
+Para misLogs.tar:
+
+mkdir ~/misLogs_tar
+tar -xvf ~/misLogs.tar -C ~/misLogs_tar
+
+mkdir ~/misLogs_tar crea un directorio llamado misLogs_tar.
+tar -xvf ~/misLogs.tar -C ~/misLogs_tar desempaca misLogs.tar en el directorio 
+misLogs_tar.
+
+Para misLogs.tar.gz:
+
+mkdir ~/misLogs_tar_gz
+tar -xzvf ~/misLogs.tar.gz -C ~/misLogs_tar_gz
+
+mkdir ~/misLogs_tar_gz crea un directorio llamado misLogs_tar_gz.
+tar -xzvf ~/misLogs.tar.gz -C ~/misLogs_tar_gz desempaca y descomprime misLogs.tar.gz 
+en el directorio misLogs_tar_gz.
