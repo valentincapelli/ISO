@@ -623,3 +623,921 @@ relativa sería simplemente:
 ./archivo.txt
 Aquí, . representa el directorio actual. Sin embargo, es común omitir ./ y simplemente 
 escribir archivo.txt.
+
+f_ Con el comando "pwd" (print working directory) se puede determinar en que directorio
+se encuentra actualmente.
+Existe una forma de ingresar a tu directorio personal sin tener que escribir toda la 
+ruta. Puedes usar el carácter ~ (tilde) para representar tu directorio personal.
+Por ejemplo, si tu directorio personal es /home/usuario, simplemente puedes escribir:
+
+    cd ~
+
+Tambien puedes utilizar la misma idea para acceder a subdirectorios o rutas relativas. 
+El carácter ~ representa el directorio personal, por lo que si deseas acceder a un 
+subdirectorio dentro de tu directorio personal, puedes usar:
+
+Ejemplo: Para cambiar al subdirectorio Documentos dentro de tu directorio personal:
+
+    cd ~/Documentos
+
+g_ 
+1. cd (Change Directory)
+    Cambia el directorio de trabajo actual.
+    Uso básico: cd [directorio]
+    Parámetros comunes:
+    cd sin argumentos te lleva al directorio personal del usuario.
+    cd .. sube un nivel en la jerarquía de directorios.
+    cd - cambia al último directorio visitado.
+    Ejemplo: cd /home/usuario/Documentos
+
+2. umount (Unmount File System)
+    Desmonta un sistema de archivos.
+    Uso básico: umount [opciones] <dispositivo|punto de montaje>
+    Parámetros comunes:
+    -l o --lazy: Desmonta de forma "perezosa"; detiene nuevas referencias al sistema de archivos pero espera hasta que se liberen las referencias actuales.
+    -f o --force: Fuerza el desmontaje (útil para sistemas de archivos en red).
+    -v o --verbose: Modo detallado; muestra información adicional.
+    Ejemplo: umount /mnt/usb
+
+3. mkdir (Make Directory)
+    Crea uno o más directorios nuevos.
+    Uso básico: mkdir [opciones] <nombre_del_directorio>
+    Parámetros comunes:
+    -p o --parents: Crea directorios de forma recursiva; no genera error si ya existen.
+    -v o --verbose: Muestra un mensaje para cada directorio creado.
+    Ejemplo: mkdir -p /home/usuario/nuevo/directorio
+
+4. du (Disk Usage)
+    Muestra el uso del espacio en disco de archivos y directorios.
+    Uso básico: du [opciones] [archivo/directorio]
+    Parámetros comunes:
+    -h o --human-readable: Muestra tamaños en un formato legible (KB, MB, GB).
+    -s o --summarize: Muestra solo el tamaño total.
+    -a o --all: Incluye archivos además de directorios.
+    -d N o --max-depth=N: Muestra el uso de espacio en disco hasta un nivel de profundidad N.
+    Ejemplo: du -h /home/usuario
+
+5. rmdir (Remove Directory)
+    Elimina directorios vacíos.
+    Uso básico: rmdir [opciones] <nombre_del_directorio>
+    Parámetros comunes:
+    --ignore-fail-on-non-empty: No genera error si el directorio no está vacío.
+    -p o --parents: Elimina el directorio especificado y su cadena de directorios padres si están vacíos.
+    Ejemplo: rmdir /home/usuario/directorio_vacio
+
+6. df (Disk Free)
+    Muestra el espacio disponible y usado en los sistemas de archivos.
+    Uso básico: df [opciones] [sistema_de_archivos|directorio]
+    Parámetros comunes:
+    -h o --human-readable: Muestra tamaños en un formato legible (KB, MB, GB).
+    -T o --print-type: Muestra el tipo de sistema de archivos.
+    -i o --inodes: Muestra información sobre los inodos en lugar del uso en bloques.
+    Ejemplo: df -h /home
+
+7. mount (Mount File System)
+    Montaje de sistemas de archivos.
+    Uso básico: mount [opciones] <dispositivo> <punto_de_montaje>
+    Parámetros comunes:
+    -t o --type: Especifica el tipo de sistema de archivos.
+    -o o --options: Especifica opciones de montaje adicionales, como ro (solo lectura), rw (lectura/escritura), noexec (sin ejecutar archivos).
+    -v o --verbose: Modo detallado.
+    Ejemplo: mount -t ext4 /dev/sda1 /mnt/disco
+
+8. ln (Link)
+    Crea enlaces a archivos.
+    Uso básico: ln [opciones] <archivo_origen> <archivo_destino>
+    Parámetros comunes:
+    -s o --symbolic: Crea un enlace simbólico (soft link) en lugar de un enlace duro (hard link).
+    -f o --force: Sobrescribe archivos de destino existentes.
+    -v o --verbose: Modo detallado.
+    Ejemplo: ln -s /home/usuario/archivo.txt /home/usuario/enlace.txt
+
+9. ls (List Directory Contents)
+    Lista archivos y directorios.
+    Uso básico: ls [opciones] [archivo/directorio]
+    Parámetros comunes:
+    -l: Muestra detalles en formato largo (permisos, propietario, tamaño, etc.).
+    -a o --all: Incluye archivos ocultos (los que empiezan con .).
+    -h o --human-readable: Muestra tamaños en formato legible.
+    -R o --recursive: Lista subdirectorios de forma recursiva.
+    Ejemplo: ls -la /home/usuario
+
+10. pwd (Print Working Directory)
+    Muestra el directorio de trabajo actual.
+    Uso básico: pwd
+    Parámetros comunes:
+    -L o --logical: Muestra el directorio actual siguiendo enlaces simbólicos.
+    -P o --physical: Muestra el directorio actual evitando enlaces simbólicos.
+    Ejemplo: pwd
+
+11. cp (Copy)
+    Copia archivos y directorios.
+    Uso básico: cp [opciones] <archivo_origen> <archivo_destino>
+    Parámetros comunes:
+    -r o --recursive: Copia directorios de forma recursiva.
+    -i o --interactive: Pide confirmación antes de sobrescribir.
+    -v o --verbose: Modo detallado.
+    -u o --update: Copia solo cuando el archivo de origen es más nuevo que el archivo de destino o cuando el archivo de destino no existe.
+    Ejemplo: cp -r /home/usuario/Documentos /home/usuario/Respaldo
+
+12. mv (Move)
+    Mueve o renombra archivos y directorios.
+    Uso básico: mv [opciones] <archivo_origen> <archivo_destino>
+    Parámetros comunes:
+    -i o --interactive: Pide confirmación antes de sobrescribir.
+    -v o --verbose: Modo detallado.
+    -u o --update: Mueve solo cuando el archivo de origen es más nuevo que el archivo de destino o cuando el archivo de destino no existe.
+    Ejemplo: mv /home/usuario/archivo.txt /home/usuario/Documentos/archivo.txt
+
+6) a_ Un proceso es una instancia de un programa en ejecución. En sistemas operativos 
+como GNU/Linux, un proceso es una entidad que contiene la información necesaria para 
+ejecutar un programa, incluyendo su código, datos, variables, y recursos del sistema, 
+como memoria y tiempo de CPU. Cada proceso se ejecuta de manera aislada, lo que 
+garantiza que los problemas en un proceso no afecten directamente a otros.
+
+PID (Process ID): Es el "Identificador de Proceso" y es un número único que el sistema 
+operativo asigna a cada proceso cuando se crea. Este número se utiliza para identificar 
+y gestionar procesos en el sistema.
+
+PPID (Parent Process ID): Es el "Identificador de Proceso Padre" y hace referencia al 
+proceso que creó (o inició) el proceso actual. Cada proceso tiene un proceso padre, 
+excepto el proceso inicial (generalmente el proceso init o systemd en sistemas 
+GNU/Linux), que tiene un PPID de 0.
+
+Todos los procesos en GNU/Linux tienen un PID y un PPID. Esto es fundamental para el 
+modelo de procesos de Unix y Linux. Cuando un proceso es creado por otro proceso, 
+se le asigna automáticamente un PID único y se establece su PPID correspondiente.
+
+El PID es esencial para que el sistema operativo pueda rastrear y gestionar procesos. 
+De igual forma, el PPID permite mantener la jerarquía de procesos y relaciones de padre 
+e hijo, facilitando la terminación de procesos y otras operaciones relacionadas.
+
+Además del PID y el PPID, un proceso en GNU/Linux tiene muchos otros atributos, algunos 
+de los cuales incluyen:
+
+UID (User ID) y GID (Group ID): El identificador de usuario y grupo que posee el proceso. 
+Estos identificadores determinan los permisos de acceso que tiene el proceso sobre los 
+archivos y recursos del sistema.
+
+Estado del proceso: Puede ser:
+    Running (R): El proceso está en ejecución.
+    Sleeping (S): El proceso está en espera de un evento.
+    Stopped (T): El proceso ha sido detenido.
+    Zombie (Z): El proceso ha terminado, pero aún no ha sido limpiado del sistema.
+
+Prioridad (PRI) y valor de nice (NI): Determinan la prioridad del proceso para la 
+planificación del CPU. La prioridad es un número que determina la urgencia con la que 
+un proceso debe ser ejecutado.
+
+Tiempo de CPU (TIME): El tiempo de CPU que el proceso ha consumido desde que se inició.
+
+Contador de páginas y memoria: Información sobre el uso de memoria, incluyendo el 
+tamaño de la memoria virtual del proceso (VIRT), el tamaño de la memoria residente 
+(RES), y el tamaño de la memoria compartida (SHR).
+
+Puntero de instrucción (PC): Dirección de la siguiente instrucción que debe ejecutar 
+el proceso.
+
+Entorno del proceso: Variables de entorno que el proceso utiliza, como PATH, HOME, y 
+otras variables definidas por el usuario o el sistema.
+
+Descriptor de archivos: Cada proceso tiene una tabla de descriptores de archivos 
+abiertos, que son identificadores para los archivos abiertos, sockets, y otros recursos.
+
+Señales: Los procesos pueden recibir y enviar señales, que son formas de notificación 
+o interrupción del sistema, como SIGKILL, SIGSTOP, SIGTERM, etc.
+
+b_ Para ver los procesos que están en ejecución en un sistema GNU/Linux, se pueden 
+utilizar varios comandos que proporcionan información detallada sobre los procesos. 
+Algunos de los comandos más comunes son:
+
+1. ps (Process Status)
+El comando ps muestra información sobre los procesos en ejecución en el sistema. Es uno 
+de los comandos más utilizados para listar procesos y permite mostrar diferentes 
+niveles de detalles según las opciones proporcionadas.
+
+Uso básico: ps
+Parámetros comunes:
+    ps aux: Muestra todos los procesos en ejecución en el sistema (incluidos los de otros 
+    usuarios) en un formato detallado. La opción a muestra procesos de todos los usuarios, 
+    u muestra detalles de cada proceso, y x muestra procesos que no tienen un terminal 
+    asociado.
+    ps -ef: Muestra todos los procesos en un formato de estilo BSD, incluyendo información 
+    sobre el PPID y más detalles.
+
+2. top
+El comando top muestra un resumen en tiempo real de los procesos que están consumiendo 
+más recursos del sistema, como la CPU y la memoria. Proporciona una vista dinámica que 
+se actualiza automáticamente cada pocos segundos.
+    Uso básico: top
+    Características:
+    Muestra los procesos ordenados por uso de CPU de forma predeterminada.
+    Se puede interactuar con la vista en tiempo real, cambiando la ordenación, filtrando 
+    procesos, o matando procesos directamente desde la interfaz.
+    htop es una versión mejorada de top que proporciona una interfaz más amigable e 
+    interactiva.
+
+3. htop
+El comando htop es una versión interactiva y visualmente mejorada de top. Ofrece una 
+interfaz de usuario más amigable, permite utilizar el teclado para seleccionar y 
+gestionar procesos fácilmente, y muestra información en colores para distinguir entre 
+los diferentes tipos de procesos y recursos utilizados.
+    Uso básico: htop
+    Características:
+    Muestra una lista de procesos en ejecución con información detallada.
+    Permite navegar y filtrar procesos, buscar procesos específicos y realizar acciones 
+    sobre ellos, como enviar señales para terminarlos.
+    No está instalado por defecto en todas las distribuciones de GNU/Linux, pero se 
+    puede instalar fácilmente desde los repositorios.
+
+4. pstree
+El comando pstree muestra los procesos en ejecución en una estructura jerárquica o de 
+árbol. Es útil para ver la relación entre procesos padre e hijo.
+    Uso básico: pstree
+    Parámetros comunes:
+    pstree -p: Muestra el árbol de procesos con sus PIDs.
+    pstree -u: Muestra los procesos con los nombres de los usuarios que los poseen.
+
+5. pgrep
+El comando pgrep busca procesos que coinciden con un patrón determinado y devuelve sus 
+PIDs. Es útil para encontrar procesos específicos sin necesidad de usar comandos más 
+complejos.
+    Uso básico: pgrep <nombre_del_proceso>
+    Ejemplo: pgrep ssh para encontrar procesos relacionados con SSH.
+
+6. pidof
+El comando pidof devuelve el PID de un proceso en ejecución dado su nombre. Es similar 
+a pgrep pero se utiliza principalmente para buscar un solo proceso.
+    Uso básico: pidof <nombre_del_proceso>
+    Ejemplo: pidof apache2 para encontrar el PID del proceso de Apache.
+
+7. watch
+Aunque no es específicamente para listar procesos, el comando watch puede usarse junto 
+con ps o pgrep para monitorear procesos en tiempo real.
+    Uso básico: watch <comando>
+    Ejemplo: watch -n 1 'ps aux | grep nginx' para monitorear en tiempo real los procesos 
+    relacionados con Nginx.
+
+8. systemctl
+En sistemas basados en systemd, el comando systemctl puede mostrar información sobre 
+los servicios (que son procesos administrados por systemd).
+    Uso básico: systemctl status
+    Parámetros comunes:
+    systemctl status <nombre_del_servicio>: Muestra el estado de un servicio específico.
+    systemctl list-units --type=service: Lista todos los servicios activos.
+
+c_ 
+Background (Segundo Plano)
+Un proceso que se ejecuta en background es aquel que no tiene el control directo de la 
+terminal y se ejecuta en segundo plano, permitiendo al usuario seguir utilizando la 
+terminal para otros comandos.
+
+Foreground (Primer Plano)
+Un proceso que se ejecuta en foreground es aquel que tiene el control directo de la 
+terminal. Mientras un proceso está en primer plano, la terminal no puede aceptar otros 
+comandos hasta que el proceso termine o sea enviado al background.
+
+d_ Ejecutar un Proceso en Segundo Plano
+Para ejecutar un comando en segundo plano, añade un & al final del comando. Por ejemplo:
+
+    long_running_command &
+
+Esto ejecutará long_running_command en segundo plano, permitiéndote seguir usando la 
+terminal para otros comandos.
+
+Pasar un Proceso de Fondo a Primer Plano
+Para llevar un proceso que está en segundo plano al primer plano, usa el comando fg. 
+Primero, debes identificar el número de trabajo del proceso en segundo plano, que 
+puedes encontrar con el comando jobs:
+
+    jobs
+
+Esto mostrará una lista de trabajos en segundo plano con un número de trabajo 
+(por ejemplo, [1]).
+
+Luego, usa el comando fg seguido del número de trabajo para llevar el proceso al 
+primer plano:
+
+    fg %1
+
+Aquí, %1 es el número del trabajo que quieres traer al primer plano.
+
+Pasar un Proceso de Primer Plano a Fondo
+Si tienes un proceso en primer plano y deseas enviarlo a segundo plano, primero debes 
+suspenderlo usando Ctrl + Z. Esto detendrá el proceso y lo moverá a segundo plano, 
+pero lo dejará en estado de suspensión.
+
+Luego, usa el comando bg para reanudar el proceso en segundo plano:
+
+    bg %1
+
+Donde %1 es el número del trabajo.
+
+e_ El pipe (|) es un operador en sistemas Unix-like (como Linux y macOS) que se utiliza 
+para encadenar comandos, pasando la salida de un comando directamente como entrada al 
+siguiente comando. Esto permite crear flujos de trabajo complejos y realizar 
+procesamiento en varios pasos de manera eficiente.
+
+Finalidad del Pipe
+El propósito principal del pipe es redirigir la salida estándar (stdout) de un comando 
+a la entrada estándar (stdin) de otro comando. Esto facilita la combinación de 
+herramientas y comandos para realizar tareas más complejas.
+
+Ejemplos de Utilización
+Contar el Número de Archivos en un Directorio
+Para contar el número de archivos en un directorio, puedes usar ls para listar los 
+archivos y wc -l para contar el número de líneas:
+
+    ls | wc -l
+
+Aquí, ls lista los archivos y directorios en el directorio actual, y wc -l cuenta el 
+número de líneas en la salida de ls, que corresponde al número de archivos y directorios.
+
+Buscar Texto en Archivos
+Puedes usar grep para buscar texto específico dentro de archivos. Por ejemplo, para 
+buscar la palabra "error" en los archivos de un directorio:
+
+    cat * | grep "error"
+
+Aquí, cat * concatena y muestra el contenido de todos los archivos en el directorio, 
+y grep "error" filtra las líneas que contienen la palabra "error".
+
+Ordenar y Filtrar Datos
+Supongamos que tienes una lista de nombres en un archivo y quieres ordenar los nombres 
+alfabéticamente y luego eliminar los duplicados. Puedes usar sort para ordenar y uniq 
+para eliminar duplicados:
+
+    cat nombres.txt | sort | uniq
+
+Aquí, cat nombres.txt muestra el contenido del archivo, sort ordena las líneas, y uniq 
+elimina las líneas duplicadas.
+
+f_ La redirección en sistemas Unix-like permite enviar la entrada o salida de comandos 
+a diferentes lugares, como archivos o dispositivos, en lugar de la entrada/salida 
+estándar (stdin/stdout). La redirección facilita la captura y manipulación de datos 
+y resultados de comandos.
+
+Tipos de Redirección
+
+Redirección de Salida Estándar (stdout)
+Símbolo: >
+Finalidad: Redirige la salida estándar de un comando a un archivo, sobrescribiendo el 
+contenido del archivo si ya existe.
+Ejemplo:
+echo "Hola Mundo" > archivo.txt
+Aquí, echo "Hola Mundo" envía la cadena "Hola Mundo" a archivo.txt, sobrescribiendo 
+cualquier contenido previo.
+
+Símbolo: >>
+Finalidad: Redirige la salida estándar de un comando a un archivo, añadiendo el 
+contenido al final del archivo en lugar de sobrescribirlo.
+Ejemplo:
+    echo "Otra línea" >> archivo.txt
+Aquí, echo "Otra línea" añade la cadena "Otra línea" al final de archivo.txt sin 
+borrar el contenido existente.
+
+Redirección de Entrada Estándar (stdin)
+Símbolo: <
+Finalidad: Redirige la entrada estándar de un comando desde un archivo.
+Ejemplo:
+    sort < archivo.txt
+Aquí, sort toma su entrada desde archivo.txt en lugar de la entrada estándar del 
+teclado.
+
+Redirección de Error Estándar (stderr)
+Símbolo: 2>
+Finalidad: Redirige la salida de errores (stderr) de un comando a un archivo, 
+sobrescribiendo el contenido del archivo si ya existe.
+Ejemplo:
+    ls /no_existe 2> errores.txt
+Aquí, cualquier mensaje de error generado por ls se guarda en errores.txt.
+
+Símbolo: 2>>
+Finalidad: Redirige la salida de errores (stderr) de un comando a un archivo, 
+añadiendo el contenido al final del archivo en lugar de sobrescribirlo.
+Ejemplo:
+    ls /no_existe 2>> errores.txt
+Aquí, cualquier mensaje de error generado por ls se añade al final de errores.txt.
+
+Redirección Combinada de Salida y Error
+Símbolo: &>
+Finalidad: Redirige tanto la salida estándar (stdout) como los errores estándar 
+(stderr) a un archivo, sobrescribiendo el contenido del archivo si ya existe.
+Ejemplo:
+    comando > salida_y_errores.txt 2>&1
+Aquí, tanto la salida estándar como los errores estándar del comando se redirigen a 
+salida_y_errores.txt.
+
+Símbolo: &>>
+Finalidad: Redirige tanto la salida estándar como los errores estándar a un archivo, 
+añadiendo el contenido al final del archivo en lugar de sobrescribirlo.
+Ejemplo:
+    comando >> salida_y_errores.txt 2>&1
+Aquí, tanto la salida estándar como los errores estándar del comando se añaden al 
+final de salida_y_errores.txt.
+
+Redirección de Salida a un Comando (Tubería)
+Símbolo: |
+Finalidad: Redirige la salida estándar de un comando como entrada para otro comando.
+Ejemplo:
+    cat archivo.txt | grep "texto"
+Aquí, cat archivo.txt muestra el contenido de archivo.txt, y grep "texto" busca el 
+texto "texto" en la salida de cat.
+
+g_ El comando kill en sistemas Unix-like se utiliza para enviar señales a procesos en 
+ejecución. Su uso más común es para finalizar (matar) procesos, pero también se puede 
+utilizar para enviar otras señales que afectan el comportamiento del proceso.
+
+Ejemplos de Utilización
+Terminar un Proceso Específico
+Para enviar la señal de terminación (SIGTERM, por defecto) a un proceso con un ID 
+específico:
+    kill 1234
+Aquí, 1234 es el ID del proceso que deseas terminar.
+
+Forzar la Terminación de un Proceso
+Para enviar la señal SIGKILL a un proceso, forzando su terminación inmediata:
+    kill -9 1234
+Aquí, -9 especifica la señal SIGKILL.
+
+Suspender un Proceso
+Para enviar la señal SIGSTOP y suspender un proceso:
+    kill -19 1234
+Aquí, -19 especifica la señal SIGSTOP.
+
+Reanudar un Proceso Suspendido
+Para reanudar un proceso que ha sido suspendido:
+    kill -18 1234
+Aquí, -18 especifica la señal SIGCONT.
+
+Enviar una Señal a Todos los Procesos de un Usuario
+Para enviar una señal a todos los procesos de un usuario específico, puedes usar el 
+nombre de usuario junto con killall:
+    killall -u nombre_usuario
+Esto enviará la señal SIGTERM a todos los procesos del usuario nombre_usuario.
+
+Enviar una Señal a un Grupo de Procesos
+Para enviar una señal a todos los procesos en un grupo específico, usa kill con el 
+ID de grupo de procesos (PID precedido por -):
+    kill -TERM -1234
+Aquí, -1234 representa el ID de grupo de procesos.
+
+h_ 
+1. ps (Process Status)
+Funcionalidad: Muestra información sobre los procesos en ejecución en el sistema. 
+Puede mostrar una lista detallada de procesos actuales y sus estados.
+Parámetros Comunes:
+    -e o -A: Muestra todos los procesos.
+    -f: Muestra la información completa sobre los procesos.
+    -u <usuario>: Muestra procesos de un usuario específico.
+    -p <pid>: Muestra información sobre un proceso específico (por ID).
+    aux: Muestra una lista de procesos en formato extendido, incluyendo procesos de otros usuarios.
+Ejemplo:
+    ps aux
+Muestra una lista completa de todos los procesos en ejecución.
+
+2. kill
+Funcionalidad: Envía señales a procesos para controlar su comportamiento, como 
+terminar o suspender procesos.
+Parámetros Comunes:
+    <pid>: ID del proceso al que se le enviará la señal.
+    -9: Envía la señal SIGKILL, forzando la terminación inmediata.
+    -15: Envía la señal SIGTERM, solicitando la terminación ordenada (por defecto).
+Ejemplo:
+    kill -9 1234
+Termina el proceso con ID 1234 inmediatamente.
+
+3. pstree
+Funcionalidad: Muestra los procesos en ejecución en forma de un árbol, mostrando cómo 
+los procesos están relacionados entre sí (padre e hijo).
+Parámetros Comunes:
+    -p: Muestra los ID de proceso junto con los nombres.
+    -u: Muestra el usuario que ejecuta cada proceso.
+    -A: Usa un estilo de árbol ASCII (si no está especificado, usa un estilo de árbol más tradicional).
+
+Ejemplo:
+    pstree -p
+Muestra los procesos en forma de árbol con sus ID de proceso.
+
+4. killall
+Funcionalidad: Envía señales a todos los procesos que coinciden con un nombre dado.
+Parámetros Comunes:
+    <nombre_proceso>: Nombre del proceso al que se enviará la señal.
+    -9: Envía la señal SIGKILL.
+    -15: Envía la señal SIGTERM (por defecto).
+Ejemplo:
+    killall -9 nombre_proceso
+Termina todos los procesos con el nombre nombre_proceso inmediatamente.
+
+5. top
+Funcionalidad: Muestra una vista en tiempo real de los procesos en ejecución, 
+incluyendo el uso de CPU y memoria. Se actualiza periódicamente.
+Parámetros Comunes:
+    -d <segundos>: Establece el intervalo de actualización en segundos.
+    -b: Modo de lote, útil para redireccionar la salida a un archivo.
+Ejemplo:
+    top -d 2
+Muestra los procesos con una actualización cada 2 segundos.
+
+6. nice
+Funcionalidad: Establece la prioridad de un proceso. La prioridad se indica mediante 
+el "valor de niceness", que afecta cuánto tiempo de CPU recibe el proceso en 
+comparación con otros.
+Parámetros Comunes:
+    -n <valor>: Establece el valor de niceness (de -20 a 19, donde -20 es la mayor prioridad y 19 la menor).
+    <comando>: El comando a ejecutar con el valor de niceness especificado.
+Ejemplo:
+    nice -n 10 comando
+Ejecuta comando con una prioridad menor, dando preferencia a otros procesos.
+
+Comparación
+ps vs. top: ps muestra una instantánea de los procesos en el momento en que se ejecuta, 
+mientras que top proporciona una vista dinámica y en tiempo real de los procesos.
+
+kill vs. killall: kill se usa para enviar señales a procesos específicos mediante su 
+ID, mientras que killall envía señales a todos los procesos con un nombre dado.
+
+pstree vs. ps: pstree muestra la jerarquía de procesos en forma de árbol, lo que es 
+útil para ver la relación padre-hijo, mientras que ps muestra una lista plana de 
+procesos sin mostrar relaciones jerárquicas.
+
+top vs. nice: top es para monitoreo en tiempo real, mientras que nice es para ajustar 
+la prioridad de procesos. Se pueden usar juntos para gestionar el rendimiento del 
+sistema.
+
+7) a_ En GNU/Linux, el concepto de empaquetar archivos se refiere al proceso de 
+combinar varios archivos y directorios en un único archivo, generalmente con el fin 
+de facilitar su distribución, instalación o copia. El empaquetado es común cuando se 
+quiere compartir software o archivos de manera organizada. Este archivo empaquetado 
+no necesariamente está comprimido, pero se puede comprimir para reducir su tamaño.
+
+b_ El tamaño del archivo empaquetado (archivos_empaquetados.tar) es igual a la suma 
+de los tamaños individuales de los 4 archivos. Esto se debe a que el comando tar 
+simplemente empaqueta (combina) los archivos en un solo archivo, sin comprimirlos. 
+Por lo tanto, el tamaño total no se reduce; solo se organizan los archivos de manera 
+más conveniente en un solo contenedor.
+
+c y d_ Para comprimir y reducir el tamaño del archivo empaquetado, puedes usar compresión 
+gzip o bzip2. Por ejemplo:
+
+    tar cvzf archivos_empaquetados.tar.gz archivo1.txt archivo2.txt archivo3.txt archivo4.txt
+
+d_ 1. tar
+    Descripción: tar (abreviatura de tape archive) es una utilidad ampliamente 
+    utilizada para empaquetar varios archivos y directorios en un solo archivo. 
+    Este archivo empaquetado se conoce comúnmente como un tarball.
+    Uso principal: Empaquetar y desempaquetar archivos.
+    Opciones comunes:
+    -c : Crear un nuevo archivo tar.
+    -v : Modo detallado (muestra el progreso).
+    -f : Especifica el nombre del archivo tar.
+    -x : Extraer los archivos del archivo tar.
+    -z : Comprimir o descomprimir usando gzip.
+    -j : Comprimir o descomprimir usando bzip2.
+    Ejemplos:
+        Crear un archivo tar:
+        tar cvf archivos.tar archivo1.txt archivo2.txt
+
+        Extraer un archivo tar:
+        tar xvf archivos.tar
+
+        Crear un archivo tar comprimido con gzip:
+        tar cvzf archivos.tar.gz archivo1.txt archivo2.txt
+
+    2. grep
+    Descripción: grep (global regular expression print) es una utilidad para buscar 
+    patrones de texto dentro de archivos. Es extremadamente útil para filtrar 
+    información relevante de archivos de texto o salida de comandos.
+
+    Uso principal: Buscar texto en archivos o entradas estándar.
+
+    Opciones comunes:
+    -i : Ignorar mayúsculas y minúsculas.
+    -r o -R : Buscar de forma recursiva en directorios.
+    -l : Mostrar solo los nombres de archivos que contienen coincidencias.
+    -n : Mostrar números de línea junto con la salida.
+    -v : Invertir la coincidencia, mostrando líneas que no coincidan con el patrón.
+    Ejemplos:
+    Buscar una palabra en un archivo:
+    grep "palabra" archivo.txt
+
+    Buscar recursivamente en un directorio ignorando mayúsculas:
+    grep -ri "palabra" /ruta/al/directorio
+
+    3. gzip
+    Descripción: gzip es una utilidad de compresión que se utiliza para reducir el 
+    tamaño de los archivos mediante el algoritmo de compresión Lempel-Ziv (LZ77). 
+    Los archivos comprimidos tienen la extensión .gz.
+
+    Uso principal: Comprimir y descomprimir archivos.
+
+    Opciones comunes:
+    -d : Descomprimir un archivo .gz.
+    -k : Mantener el archivo original después de la compresión.
+    -v : Modo detallado (muestra el progreso de compresión).
+    Ejemplos:
+    Comprimir un archivo:
+    gzip archivo.txt
+
+    Descomprimir un archivo:
+    gzip -d archivo.txt.gz
+
+    Comprimir un archivo y mantener el original:
+    gzip -k archivo.txt
+
+    4. zgrep
+    Descripción: zgrep es una versión del comando grep que permite buscar patrones 
+    dentro de archivos comprimidos con gzip (.gz). Descomprime temporalmente los
+    archivos para realizar la búsqueda sin necesidad de descomprimirlos manualmente.
+
+    Uso principal: Buscar texto en archivos comprimidos con .gz.
+
+    Opciones comunes: Las mismas que grep, ya que zgrep pasa sus opciones a grep.
+
+    Ejemplos:
+    Buscar una palabra en un archivo comprimido:
+    zgrep "palabra" archivo.txt.gz
+
+    Buscar recursivamente en archivos .gz en un directorio:
+    zgrep -r "palabra" /ruta/al/directorio
+
+    5. wc
+    Descripción: wc (word count) es una utilidad que cuenta líneas, palabras y 
+    caracteres en archivos de texto o en la entrada estándar.
+
+    Uso principal: Contar líneas, palabras, caracteres o bytes en archivos.
+
+    Opciones comunes:
+    -l : Contar solo líneas.
+    -w : Contar solo palabras.
+    -c : Contar solo bytes.
+    -m : Contar solo caracteres.
+
+    Ejemplos:
+    Contar líneas, palabras y caracteres en un archivo:
+    wc archivo.txt
+
+    Contar solo palabras en un archivo:
+    wc -w archivo.txt
+
+    Contar solo líneas en un archivo:
+    wc -l archivo.txt
+
+8) 
+ls -l > prueba
+Acción: Lista los archivos y directorios del directorio actual en formato detallado 
+(-l) y redirige la salida a un archivo llamado prueba. Si prueba no existe, se creará; 
+si existe, se sobrescribirá.
+Ejecutabilidad: Sí, se puede ejecutar sin problemas por un usuario normal.
+
+ps > PRUEBA
+Acción: Muestra los procesos en ejecución para el usuario actual y redirige la salida 
+a un archivo llamado PRUEBA.
+Ejecutabilidad: Sí, se puede ejecutar sin problemas por un usuario normal.
+
+chmod 710 prueba
+Acción: Cambia los permisos del archivo prueba para que el propietario tenga permisos 
+de lectura, escritura y ejecución (7), los miembros del grupo tengan permiso de 
+ejecución (1), y otros no tengan permisos (0).
+Ejecutabilidad: Sí, se puede ejecutar si el usuario actual es el propietario del 
+archivo prueba.
+
+chown root:root PRUEBA
+Acción: Cambia el propietario y el grupo del archivo PRUEBA a root.
+Ejecutabilidad: No. Este comando requiere privilegios de superusuario (root). Un 
+usuario normal no puede cambiar la propiedad de archivos a root.
+
+chmod 777 PRUEBA
+Acción: Cambia los permisos del archivo PRUEBA para que todos (propietario, grupo, y 
+otros) tengan permisos de lectura, escritura y ejecución (777).
+Ejecutabilidad: Sí, se puede ejecutar si el usuario actual es el propietario del 
+archivo PRUEBA.
+
+chmod 700 /etc/passwd
+Acción: Intenta cambiar los permisos del archivo /etc/passwd para que solo el 
+propietario tenga permisos de lectura, escritura y ejecución (700).
+Ejecutabilidad: No. Este comando requiere privilegios de superusuario (root) porque 
+intenta cambiar los permisos de un archivo del sistema.
+
+passwd root
+Acción: Intenta cambiar la contraseña del usuario root.
+Ejecutabilidad: No. Este comando requiere privilegios de superusuario para cambiar la 
+contraseña de root.
+
+rm PRUEBA
+Acción: Elimina el archivo PRUEBA.
+Ejecutabilidad: Sí, se puede ejecutar si el usuario tiene permisos de escritura en el 
+directorio actual y es el propietario del archivo PRUEBA.
+
+man /etc/shadow
+Acción: Intenta mostrar la página de manual del archivo /etc/shadow.
+Ejecutabilidad: No. No hay una página de manual para un archivo específico como 
+/etc/shadow; man se utiliza para mostrar la documentación de comandos, no de archivos.
+
+find / -name *.conf
+Acción: Busca en todo el sistema (/) archivos cuyo nombre coincida con *.conf.
+Ejecutabilidad: Puede ejecutarse, pero el usuario encontrará permisos denegados en 
+muchos directorios que no tiene permiso para leer. Aun así, el comando en sí no 
+requiere privilegios de root para ejecutarse.
+
+usermod root -d /home/newroot -L
+Acción: Intenta cambiar el directorio de inicio de root a /home/newroot y bloquear la 
+cuenta de root.
+Ejecutabilidad: No. usermod requiere privilegios de superusuario (root) para modificar 
+cuentas de usuario del sistema.
+
+cd /root
+Acción: Cambia el directorio actual a /root, que es el directorio de inicio de root.
+Ejecutabilidad: No. El directorio /root está restringido solo para el usuario root.
+
+rm *
+Acción: Elimina todos los archivos en el directorio actual.
+Ejecutabilidad: Sí, se puede ejecutar si el usuario tiene permisos de escritura en el 
+directorio actual. Puede ser peligroso si se ejecuta en el directorio incorrecto.
+
+cd /etc
+Acción: Cambia el directorio actual a /etc.
+Ejecutabilidad: Sí, se puede ejecutar ya que cualquier usuario puede navegar a /etc.
+
+cp * /home -R
+Acción: Copia recursivamente todos los archivos y subdirectorios del directorio actual 
+(/etc en este caso) al directorio /home.
+Ejecutabilidad: No, ya que copiar algunos archivos de /etc a /home requerirá permisos 
+de root debido a restricciones de lectura y escritura en algunos archivos.
+
+shutdown
+Acción: Intenta apagar o reiniciar el sistema.
+Ejecutabilidad: No. Este comando requiere privilegios de superusuario (root).
+
+9) a_ sudo kill 23
+
+b_ sudo kill 1
+    Al ejectutar este comando la terminal no me devolvio nada, sin embargo el comando
+    no tuvo exito ya que Los procesos con PID 1 (init o systemd) están protegidos para 
+    evitar que sean terminados por comandos normales. El sistema no dará un mensaje 
+    de error porque el intento de terminar el proceso puede ser ignorado 
+    silenciosamente por el sistema para evitar daños.
+
+c_ Para buscar archivos cuyo nombre contiene la cadena .conf, puedes usar el comando 
+find, que es muy útil para localizar archivos y directorios en el sistema basándose 
+en diferentes criterios.
+
+Comando para Buscar Archivos con .conf
+El comando find te permite buscar archivos en un directorio y sus subdirectorios. Si 
+deseas buscar en todo el sistema, puedes utilizar / como el directorio raíz. Aquí te 
+muestro cómo hacerlo:
+
+    find / -type f -name "*.conf"
+
+Explicación de los Parámetros
+    / : Especifica el directorio raíz desde el que comienza la búsqueda. Puedes 
+    cambiar / por cualquier directorio específico si quieres limitar la búsqueda a 
+    una ubicación particular.
+
+    -type f : Busca solo archivos (no directorios).
+
+    -name "*.conf" : Busca archivos cuyos nombres terminen con .conf.
+
+Consideraciones
+Permisos: Si buscas en todo el sistema (/), es posible que necesites permisos de 
+superusuario para acceder a algunos directorios. Puedes usar sudo para ejecutar el 
+comando con privilegios elevados:
+
+    find / -type f -name "*.conf"
+
+Rendimiento: Buscar en todo el sistema puede llevar tiempo y generar una gran cantidad 
+de salida. Si solo estás interesado en ciertos directorios, cambia / por el directorio 
+deseado para limitar la búsqueda, por ejemplo:
+
+    find /etc -type f -name "*.conf"
+
+d_ Pasos Detallados
+Reemplaza <tu-nombre-de-usuario> con tu nombre de usuario. Por ejemplo, si tu nombre 
+de usuario es juan, el comando sería:
+
+    ps aux > /home/juan/procesos
+
+Verifica los Permisos:
+Asegúrate de que tienes permisos para escribir en el directorio /home/<tu-nombre-de-
+usuario>/. Generalmente, si estás trabajando en tu propio directorio de usuario, 
+deberías tener los permisos adecuados.
+
+Comprobar el Archivo:
+Después de ejecutar el comando, puedes verificar que el archivo se haya creado y 
+contiene la lista de procesos usando cat o less:
+
+    cat /home/<tu-nombre-de-usuario>/procesos
+
+e_ chmod 751 /home/<tu_nombre_de_usuario>/xxxx
+
+f_ chmod 650 /home/<tu_nombre_de_usuario>/yyyy
+
+g_  rm -rf /tmp/*
+    Explicación del Comando:
+    rm: Comando utilizado para eliminar archivos y directorios.
+
+    -r: Opción para eliminar de manera recursiva. Esto es necesario para eliminar 
+    directorios y su contenido.
+
+    -f: Opción para forzar la eliminación sin pedir confirmación. Este es 
+    especialmente útil para evitar mensajes de error si algunos archivos están 
+    bloqueados o protegidos contra escritura.
+
+    /tmp/*: Ruta al directorio /tmp y todos los archivos (*) dentro de él.
+
+h_ sudo chown iso2010 /opt/isodata
+
+i_ pwd >> /home/<tu_nombre_de_usuario>/donde
+
+10) a_ su
+    ingresar contraseña de usuario
+
+b_ sudo useradd vcapelli
+   sudo passwd "xxxx"
+
+c_ Después de crear un usuario, varios archivos y directorios en el sistema se 
+modifican o se crean:
+
+Archivos Modificados:
+
+/etc/passwd:
+Este archivo se actualiza con la nueva entrada para el usuario. Contiene la 
+información básica del usuario, como el nombre de usuario, el UID, el GID, y el 
+directorio de inicio.
+
+/etc/shadow:
+Este archivo se actualiza para almacenar la contraseña cifrada del usuario y otra 
+información relacionada con las contraseñas.
+
+/etc/group:
+Si se creó un grupo con el mismo nombre que el usuario (por defecto, vcapelli), este 
+archivo se actualizará con la nueva entrada del grupo.
+
+Directorio de Inicio del Usuario:
+Un nuevo directorio de inicio se crea en /home/vcapelli. Este directorio contiene los 
+archivos y configuraciones del usuario.
+
+d_ sudo mkdir /tmp/cursada2017
+
+e_ sudo cp -r /var/log/* /tmp/cursada2017/
+
+f_ sudo chown -R cgomez:users /tmp/cursada2017
+
+g_ sudo chmod -R 723 /tmp/cursada2017
+
+h_ Presiona Ctrl + Alt + F1 a F6 para abrir una terminal virtual.
+
+i_ Para saber cual es el nombre de la terminal
+    tty
+
+j_ Verificar la Cantidad de Procesos Activos en el Sistema
+    ps -e | wc -l
+
+k_ Verificar la Cantidad de Usuarios Conectados al Sistema
+    who | wc -l
+
+l_ Envía un Mensaje al Usuario vcapelli:
+    sudo write vcapelli
+
+m_ Apagar el Sistema
+    sudo shutdown now
+
+11) a_ 
+    mkdir 23103/3
+    cd 23103/3
+
+b_ vi LEAME
+
+c_ chmod 017 LEAME
+
+d_
+    cd /etc
+    ls -l /etc > leame
+
+Si ya existe un archivo llamado LEAME en el directorio personal, se puede crear un 
+archivo con el nombre leame porque los nombres de archivos en Linux son sensibles a 
+mayúsculas y minúsculas. Esto significa que LEAME y leame son considerados archivos 
+distintos debido a la diferencia en el caso de las letras.
+
+e_ Buscar un archivo específico por nombre:
+
+    find /ruta/del/directorio -name "nombre_archivo"
+
+Buscar archivos con una extensión específica:
+
+    find /ruta/del/directorio -name "*.ext"
+
+Buscar archivos con un patrón específico en el nombre:
+
+find /ruta/del/directorio -name "*patron*"
+
+f_ find / -type f -name "*.so" > .ejercicio_f 2>/dev/null
+
+Explicación del Comando:
+    find /: Inicia la búsqueda en la raíz del sistema de archivos (/).
+    -type f: Limita la búsqueda a archivos (no directorios).
+    -name "*.so": Busca archivos cuyo nombre termine con .so.
+    >: Redirige la salida estándar al archivo .ejercicio_f.
+    .ejercicio_f: Nombre del archivo donde se guardará el resultado de la búsqueda.
+    2>/dev/null: Redirige los mensajes de error (por ejemplo, "Permission denied") a 
+    /dev/null para que no aparezcan en la salida.
