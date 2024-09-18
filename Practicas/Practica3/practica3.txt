@@ -1,0 +1,708 @@
+1) El shell scripting es la escritura de scripts o secuencias de comandos que se 
+ejecutan en un shell (una interfaz que permite a los usuarios interactuar con el 
+sistema operativo a través de comandos). Un script de shell es un archivo de texto 
+que contiene una serie de comandos que el sistema operativo ejecuta en secuencia, 
+como si los estuvieras escribiendo manualmente en la línea de comandos.
+
+    • Practico para manejar archivos
+    • Extremadamente simple para crear procesos y manipular sus
+    salidas
+    • Independiente de la plataforma (a diferencia de C)
+    • Funciona en cualquier sistema operativo de tipo *nix
+    (distribuci ́on GNU/Linux, Mac OS X, etc.)
+    • Se puede probar en el int ́erprete interactivo (a diferencia de C
+    y Java)
+
+Tipos de tareas orientadas a los scripts de shell:
+Los scripts de shell son ideales para automatizar una variedad de tareas en el sistema 
+operativo. Algunas de estas tareas incluyen:
+
+Automatización de tareas del sistema: Copiar archivos, hacer respaldos, administrar 
+usuarios, etc.
+Programación de tareas: Ejecutar trabajos en momentos específicos utilizando 
+herramientas como cron.
+Administración de sistemas: Configurar redes, verificar el estado del sistema, 
+administrar permisos.
+Gestión de archivos: Buscar, mover, renombrar, o eliminar archivos masivamente.
+Despliegue de aplicaciones: Instalar o configurar aplicaciones en varios servidores.
+Compilación y construcción de software: Ejecutar comandos de compilación o creación de 
+entornos.
+Análisis y manipulación de datos: Procesar archivos de texto o datos, como registros 
+(logs).
+
+¿Los scripts deben compilarse?
+No, los scripts de shell no necesitan ser compilados. Se ejecutan de manera interpretada, 
+lo que significa que el shell lee y ejecuta los comandos línea por línea en tiempo de 
+ejecución.
+
+¿Por qué no se compilan?
+Los scripts de shell no requieren compilación porque están diseñados para ejecutarse
+de manera directa y rápida. El shell actúa como un intérprete que procesa cada línea 
+del script en el momento en que se ejecuta. Esto los hace flexibles y fáciles de 
+modificar, ya que no es necesario realizar un paso intermedio de compilación, como 
+ocurre con otros lenguajes como C o Java.
+
+2) El comando echo se utiliza para mostrar texto o el valor de variables en la terminal. Es una forma simple de imprimir mensajes o resultados en pantalla.
+Ejemplos:
+    echo "Hola, mundo!"
+También puede usarse para mostrar el valor de variables:
+    nombre="Carlos"
+    echo "Hola, $nombre"
+
+El comando read se utiliza para leer la entrada del usuario desde la terminal y 
+almacenar ese valor en una variable.
+Ejemplos:
+    echo "¿Cuál es tu nombre?"
+    read nombre
+    echo "Hola, $nombre"
+
+a_ Los comentarios en los scripts de shell se indican utilizando el símbolo #. Todo lo 
+que esté después de este símbolo en la misma línea será ignorado por el intérprete.
+
+b_ Declaración de variables:
+En un script de shell, las variables se declaran simplemente asignándoles un valor sin 
+usar ningún tipo de palabra clave especial. No se deben dejar espacios alrededor del 
+signo igual (=).
+
+Ejemplo:
+    nombre="Carlos"
+    edad=25
+
+Referencia a variables:
+Para hacer referencia a una variable, se antepone el símbolo $ al nombre de la variable.
+Ejemplo:
+    echo "Nombre: $nombre"
+    echo "Edad: $edad"
+
+4) Acceso a los parámetros pasados al script:
+Los parámetros enviados al script en el momento de su invocación se acceden usando 
+variables posicionales como $1, $2, $3, etc.
+    $1 es el primer parámetro enviado al script.
+    $2 es el segundo parámetro, y así sucesivamente.
+    $0 contiene el nombre del script que se está ejecutando.
+
+Variables especiales:
+$#:
+Representa el número de parámetros pasados al script.
+Ejemplo: Si invocas el script con ./mi_script.sh uno dos, entonces $# será 2 porque 
+se pasaron dos parámetros.
+
+$*:
+Contiene todos los parámetros pasados al script como una sola cadena, separada por 
+espacios.
+Ejemplo: Si invocas el script con ./mi_script.sh uno dos, entonces $* será "uno dos".
+
+$?:
+Devuelve el estado de salida del último comando ejecutado. Es 0 si el comando fue 
+exitoso, y un número distinto de 0 si hubo un error.
+Ejemplo: Si un comando se ejecutó correctamente, entonces $? será 0.
+
+$HOME:
+Es una variable de entorno que contiene el directorio personal del usuario que está 
+ejecutando el script.
+Ejemplo: Para el usuario juan, $HOME sería /home/juan.
+
+Ejemplo de script para demostrar el uso de estas variables:
+
+    #!/bin/bash
+    # Script que muestra el uso de parámetros y variables especiales en Bash
+
+    echo "El nombre del script es: $0"
+    echo "El primer parámetro es: $1"
+    echo "El segundo parámetro es: $2"
+    echo "Número total de parámetros: $#"
+    echo "Todos los parámetros como cadena: $*"
+
+    # Ejecutar un comando para probar el valor de $?
+    ls
+    echo "El estado de salida del comando 'ls' es: $?"
+
+    # Mostrar el directorio personal del usuario
+    echo "Tu directorio personal es: $HOME"
+
+5) El comando exit en Bash se utiliza para finalizar la ejecución de un script o 
+proceso, y opcionalmente devolver un valor de salida. Este valor indica si el 
+script finalizó de manera exitosa o si hubo un error, y puede ser utilizado por 
+otros programas o scripts para determinar el resultado de la ejecución.
+
+Funcionalidad del comando exit:
+
+Finalizar el script: Cuando el comando exit se ejecuta dentro de un script, detiene 
+inmediatamente la ejecución del script.
+Devolver un código de estado: exit puede recibir un valor numérico que representa 
+el estado de salida del script o proceso. Este valor puede ser usado por otros 
+procesos o scripts que invocan este script para saber si terminó con éxito o con 
+algún error.
+
+Parámetros de exit:
+0: Indica que el script finalizó correctamente. Este es el valor por defecto si no 
+se especifica ningún valor.
+Ejemplo: exit 0 significa que el script finalizó sin errores.
+
+Cualquier número distinto de 0: Indica que ocurrió un error durante la ejecución 
+del script. Se suelen usar valores específicos para representar distintos tipos de 
+errores.
+Ejemplo: exit 1 significa que ocurrió un error general.
+
+Los valores de error específicos dependen de la convención usada por el desarrollador 
+del script o del programa. Algunos valores comunes son:
+    1: Error genérico.
+    2: Error de uso incorrecto.
+    127: Comando no encontrado.
+    130: El proceso fue interrumpido por el usuario (Ctrl+C).
+
+Ejemplo de uso de exit en un script:
+
+#!/bin/bash
+# Un script que verifica si un archivo existe, de lo contrario, termina con error.
+
+    if [ -f "$1" ]; then
+    echo "El archivo $1 existe."
+    exit 0  # Salida exitosa
+    else
+    echo "Error: El archivo $1 no existe."
+    exit 1  # Error: El archivo no fue encontrado
+    fi
+
+Explicación del ejemplo:
+Si el archivo proporcionado como primer parámetro existe, el script imprime un 
+mensaje y finaliza con exit 0 (indica éxito).
+Si el archivo no existe, el script imprime un mensaje de error y finaliza con exit 1 
+(indica un error).
+Uso del valor de salida:
+El valor devuelto por exit puede ser consultado con la variable especial $? 
+inmediatamente después de ejecutar el script o comando:
+
+
+    ./mi_script.sh archivo.txt
+    echo "El script terminó con el código de salida: $?"
+Si el script terminó con éxito, el valor de $? será 0. Si hubo un error, devolverá 
+el valor proporcionado en exit.
+
+6) El comando expr en Bash permite la evaluación de expresiones aritméticas y de 
+comparación, así como la manipulación de cadenas. A continuación, te presento las 
+principales operaciones que se pueden realizar con expr:
+
+1. Operaciones aritméticas:
+Estas operaciones permiten realizar cálculos entre dos números enteros.
+
+Suma (+): Suma dos números.
+Ejemplo: expr 5 + 3 → Resultado: 8
+
+Resta (-): Resta un número de otro.
+Ejemplo: expr 5 - 3 → Resultado: 2
+
+Multiplicación (\*): Multiplica dos números. El asterisco debe estar escapado con 
+una barra invertida (\) para evitar que sea interpretado por el shell.
+Ejemplo: expr 5 \* 3 → Resultado: 15
+
+División (/): Divide el primer número por el segundo. Solo admite división entera 
+(sin decimales).
+Ejemplo: expr 10 / 2 → Resultado: 5
+
+Módulo (%): Devuelve el resto de la división entera del primer número por el segundo.
+Ejemplo: expr 10 % 3 → Resultado: 1
+
+2. Operaciones de comparación:
+Permiten comparar dos valores numéricos, devolviendo 1 si la condición es verdadera 
+y 0 si es falsa.
+
+Igualdad (= o ==): Compara si dos valores son iguales.
+Ejemplo: expr 5 = 5 → Resultado: 1
+Ejemplo: expr 5 = 3 → Resultado: 0
+
+Desigualdad (!=): Compara si dos valores son diferentes.
+Ejemplo: expr 5 != 3 → Resultado: 1
+
+Mayor que (>): Compara si el primer número es mayor que el segundo.
+Ejemplo: expr 5 \> 3 → Resultado: 1
+Ejemplo: expr 3 \> 5 → Resultado: 0
+
+Menor que (<): Compara si el primer número es menor que el segundo. El símbolo menor 
+que también debe estar escapado con una barra invertida.
+Ejemplo: expr 3 \< 5 → Resultado: 1
+Ejemplo: expr 5 \< 3 → Resultado: 0
+
+Mayor o igual que (>=): Compara si el primer número es mayor o igual que el segundo.
+Ejemplo: expr 5 \>= 5 → Resultado: 1
+
+Menor o igual que (<=): Compara si el primer número es menor o igual que el segundo.
+Ejemplo: expr 3 \<= 5 → Resultado: 1
+
+3. Operaciones con cadenas:
+expr también permite trabajar con cadenas para realizar ciertas operaciones.
+
+Longitud de una cadena:
+Ejemplo: expr length "hola" → Resultado: 4
+
+Extraer un substring:
+Sintaxis: expr substr cadena posición longitud
+Ejemplo: expr substr "hola mundo" 6 5 → Resultado: mundo
+
+Posición de un carácter en una cadena:
+Sintaxis: expr index cadena caracteres
+Ejemplo: expr index "hola" "a" → Resultado: 4
+
+4. Operadores lógicos:
+Permiten evaluar condiciones combinadas:
+
+AND (&): Devuelve 1 si ambas condiciones son verdaderas.
+Ejemplo: expr 1 \& 1 → Resultado: 1
+
+OR (|): Devuelve 1 si al menos una condición es verdadera.
+Ejemplo: expr 1 \| 0 → Resultado: 1
+
+Ejemplo práctico:
+#!/bin/bash
+
+# Sumar dos números
+    resultado=$(expr 10 + 5)
+    echo "La suma de 10 + 5 es: $resultado"
+
+    # Comprobar si un número es mayor que otro
+    if [ $(expr 10 \> 5) -eq 1 ]; then
+    echo "10 es mayor que 5"
+    fi
+
+    # Obtener la longitud de una cadena
+    cadena="Hola mundo"
+    longitud=$(expr length "$cadena")
+    echo "La longitud de la cadena '$cadena' es: $longitud"
+
+Notas:
+Escapar caracteres: Los operadores *, >, <, &, y | deben ser escapados con \ para 
+evitar que el shell los interprete.
+Comillas: Es recomendable usar comillas alrededor de cadenas para evitar problemas 
+si contienen espacios.
+
+7) El comando test en Bash permite evaluar expresiones para generar un valor de 
+retorno, siendo 0 (true) para verdadero y 1 (false) para falso. Este comando se 
+utiliza comúnmente para hacer comparaciones o verificar condiciones dentro de 
+scripts. También puede reemplazarse con corchetes [ expresión ], lo cual es más 
+común en los scripts de shell.
+
+Tipos de expresiones que pueden ser usadas con test:
+1. Evaluación de archivos:
+Estas expresiones permiten verificar las propiedades de archivos y directorios, 
+como su existencia, tipo y permisos.
+
+-e archivo: Verifica si el archivo o directorio existe.
+Ejemplo: test -e archivo.txt o [ -e archivo.txt ]
+
+-f archivo: Verifica si el archivo existe y es un archivo regular (no un directorio).
+Ejemplo: test -f archivo.txt o [ -f archivo.txt ]
+
+-d archivo: Verifica si el archivo es un directorio.
+Ejemplo: test -d /home o [ -d /home ]
+
+-r archivo: Verifica si el archivo tiene permisos de lectura para el usuario que 
+ejecuta el script.
+Ejemplo: test -r archivo.txt o [ -r archivo.txt ]
+
+-w archivo: Verifica si el archivo tiene permisos de escritura.
+Ejemplo: test -w archivo.txt o [ -w archivo.txt ]
+
+-x archivo: Verifica si el archivo tiene permisos de ejecución.
+Ejemplo: test -x script.sh o [ -x script.sh ]
+
+-s archivo: Verifica si el archivo no está vacío (tiene un tamaño mayor que 0 bytes).
+Ejemplo: test -s archivo.txt o [ -s archivo.txt ]
+
+archivo1 -nt archivo2: Verifica si archivo1 es más nuevo que archivo2.
+Ejemplo: test archivo1.txt -nt archivo2.txt o [ archivo1.txt -nt archivo2.txt ]
+
+archivo1 -ot archivo2: Verifica si archivo1 es más antiguo que archivo2.
+Ejemplo: test archivo1.txt -ot archivo2.txt o [ archivo1.txt -ot archivo2.txt ]
+
+2. Evaluación de cadenas de caracteres:
+Permiten comparar cadenas de texto o verificar si están vacías o no.
+
+-z cadena: Verifica si la cadena es vacía (longitud cero).
+Ejemplo: test -z "$cadena" o [ -z "$cadena" ]
+
+-n cadena: Verifica si la cadena no es vacía.
+Ejemplo: test -n "$cadena" o [ -n "$cadena" ]
+
+cadena1 = cadena2: Verifica si dos cadenas son iguales.
+Ejemplo: test "$cadena1" = "$cadena2" o [ "$cadena1" = "$cadena2" ]
+
+cadena1 != cadena2: Verifica si dos cadenas son diferentes.
+Ejemplo: test "$cadena1" != "$cadena2" o [ "$cadena1" != "$cadena2" ]
+
+3. Evaluación numérica:
+Permiten realizar comparaciones entre números enteros.
+
+num1 -eq num2: Verifica si los dos números son iguales.
+Ejemplo: test 5 -eq 5 o [ 5 -eq 5 ]
+
+num1 -ne num2: Verifica si los dos números son diferentes.
+Ejemplo: test 5 -ne 3 o [ 5 -ne 3 ]
+
+num1 -gt num2: Verifica si num1 es mayor que num2.
+Ejemplo: test 5 -gt 3 o [ 5 -gt 3 ]
+
+num1 -lt num2: Verifica si num1 es menor que num2.
+Ejemplo: test 3 -lt 5 o [ 3 -lt 5 ]
+
+num1 -ge num2: Verifica si num1 es mayor o igual que num2.
+Ejemplo: test 5 -ge 5 o [ 5 -ge 5 ]
+
+num1 -le num2: Verifica si num1 es menor o igual que num2.
+Ejemplo: test 3 -le 5 o [ 3 -le 5 ]
+
+4. Operadores lógicos:
+Permiten combinar múltiples condiciones.
+
+AND (-a): Ambas expresiones deben ser verdaderas para que el resultado sea verdadero.
+Ejemplo: [ -f archivo.txt -a -r archivo.txt ] (verifica si el archivo existe y tiene 
+permisos de lectura)
+
+OR (-o): Si cualquiera de las expresiones es verdadera, el resultado será verdadero.
+Ejemplo: [ -f archivo.txt -o -d archivo.txt ] (verifica si el archivo existe o si es
+ un directorio)
+
+8) 1. if:
+La estructura if permite ejecutar comandos condicionalmente, dependiendo de si una 
+expresión es verdadera o falsa.
+Sintaxis:
+    if [ condición ]; then
+    # comandos a ejecutar si la condición es verdadera
+    elif [ otra_condición ]; then
+    # comandos a ejecutar si la otra condición es verdadera
+    else
+    # comandos a ejecutar si ninguna condición es verdadera
+    fi
+Ejemplo:
+    #!/bin/bash
+    num=5
+
+    if [ $num -gt 10 ]; then
+    echo "El número es mayor que 10."
+    elif [ $num -eq 5 ]; then
+    echo "El número es igual a 5."
+    else
+    echo "El número es menor que 10."
+    fi
+
+2. case:
+La estructura case es útil para comparar una variable contra múltiples patrones y 
+ejecutar diferentes bloques de código en función del patrón que coincida.
+Sintaxis:
+    case $variable in
+    patrón1)
+        # comandos si $variable coincide con patrón1
+        ;;
+    patrón2)
+        # comandos si $variable coincide con patrón2
+        ;;
+    *)
+        # comandos por defecto si no coincide con ningún patrón
+        ;;
+    esac
+Ejemplo:
+    #!/bin/bash
+    dia="martes"
+
+    case $dia in
+    "lunes")
+        echo "Hoy es lunes."
+        ;;
+    "martes")
+        echo "Hoy es martes."
+        ;;
+    "miércoles")
+        echo "Hoy es miércoles."
+        ;;
+    *)
+        echo "No es un día laboral."
+        ;;
+    esac
+
+3. while:
+La estructura while ejecuta un bloque de comandos mientras una condición sea 
+verdadera.
+Sintaxis:
+    while [ condición ]; do
+        # comandos a ejecutar mientras la condición sea verdadera
+    done
+Ejemplo:
+    #!/bin/bash
+    contador=1
+
+    while [ $contador -le 5 ]; do
+        echo "Contador: $contador"
+        contador=$((contador + 1))
+    done
+4. for:
+La estructura for itera sobre una lista de elementos o un rango, ejecutando comandos 
+en cada iteración.
+Sintaxis:
+    for variable in lista; do
+        # comandos a ejecutar por cada elemento en la lista
+    done
+Ejemplo:
+    #!/bin/bash
+    for nombre in "Ana" "Juan" "Pedro"; do
+        echo "Hola, $nombre"
+    done
+Ejemplo (con un rango de números):
+    #!/bin/bash
+    for i in {1..5}; do
+        echo "Número: $i"
+    done
+
+5. select:
+La estructura select es útil para generar menús interactivos. Permite al usuario 
+seleccionar una opción de una lista y ejecutar comandos basados en su elección.
+Sintaxis:
+    select variable in lista; do
+    # comandos a ejecutar cuando el usuario selecciona una opción
+    done
+Ejemplo:
+    #!/bin/bash
+    echo "Seleccione una opción:"
+
+    select opcion in "Iniciar" "Detener" "Salir"; do
+    case $opcion in
+        "Iniciar")
+        echo "Iniciando..."
+        ;;
+        "Detener")
+        echo "Deteniendo..."
+        ;;
+        "Salir")
+        break
+        ;;
+        *)
+        echo "Opción inválida."
+        ;;
+    esac
+    done
+
+9) Las sentencias break y continue son utilizadas para alterar el flujo de un bucle 
+en Bash.
+
+1. break:
+La sentencia break se utiliza para terminar de manera inmediata la ejecución de un 
+bucle (for, while o until). Cuando se ejecuta, el bucle se detiene y el control del 
+script pasa a la siguiente línea de código después del bucle.
+Sintaxis:
+    break [n]
+
+n (opcional): Indica el número de niveles de bucles a interrumpir. Si no se 
+especifica, se interrumpe el bucle actual. Si hay bucles anidados, break puede 
+detener varios niveles especificando el número.
+
+Ejemplo:
+    for i in {1..10}; do
+        if [ $i -eq 5 ]; then
+            break
+        fi
+        echo "Número: $i"
+    done
+En este ejemplo, el bucle se detiene cuando i es igual a 5.
+
+2. continue:
+La sentencia continue hace que el bucle salte a la siguiente iteración, omitiendo 
+el resto de las instrucciones en esa iteración. El bucle no se interrumpe, 
+simplemente pasa a la próxima vuelta.
+Sintaxis:
+    continue [n]
+
+n (opcional): Especifica el número de niveles de bucles a los que aplicar el 
+continue. Si no se especifica, solo afecta al bucle actual.
+Ejemplo:
+    for i in {1..5}; do
+        if [ $i -eq 3 ]; then
+            continue
+        fi
+        echo "Número: $i"
+        done`
+En este caso, cuando i es igual a 3, el continue hace que se salte la impresión de 
+ese número y pase a la siguiente iteración.
+
+Resumen:
+break termina el bucle de forma inmediata.
+continue omite el resto de las instrucciones en la iteración actual y pasa a la 
+siguiente.
+Ambas sentencias son útiles para controlar de manera precisa el flujo dentro de los 
+bucles.
+
+10) Tipos de variables en Shell:
+Variables escalares: Son las más comunes y almacenan un solo valor, que puede ser 
+un número o una cadena de texto.
+Ejemplo:
+    nombre="Juan"
+    numero=10
+
+Variables de entorno: Son variables globales que afectan al entorno de todos los 
+procesos que se ejecutan en el shell. Algunas de ellas incluyen PATH, HOME, USER, 
+etc. Se pueden definir y exportar usando export.
+Ejemplo:
+    export MI_VARIABLE="valor"
+
+Variables especiales: Son variables predefinidas por el shell y tienen funciones 
+específicas.
+Ejemplo:
+    $0: Nombre del script actual.
+    $1, $2, ...: Parámetros pasados al script.
+    $#: Cantidad de parámetros.
+    $?: Código de retorno del último comando ejecutado.
+
+¿Es Shell Script fuertemente tipado?
+No, Shell scripting no es fuertemente tipado. Como se mencionó anteriormente, Bash 
+es un lenguaje de tipado débil, lo que significa que todas las variables son 
+tratadas como cadenas de texto, pero el shell puede interpretarlas como números si 
+es necesario, especialmente al realizar operaciones aritméticas.
+
+Por ejemplo, una variable puede almacenar un número, pero aún así se tratará como 
+una cadena hasta que se utilice en un contexto aritmético:
+    numero="10"
+    echo $((numero + 5))  # El shell lo trata como un número para esta operación
+
+En resumen, el shell no requiere que se declare el tipo de variable, ni hay un 
+sistema de tipado explícito como en lenguajes fuertemente tipados.
+
+Definición de arreglos en Shell Script
+En Bash, sí se pueden definir arreglos (arrays). Los arreglos en Bash pueden 
+almacenar múltiples valores bajo un solo nombre de variable, y los elementos se 
+indexan numéricamente, comenzando desde 0.
+
+Sintaxis para definir un arreglo:
+Declaración de un arreglo:
+
+    mi_arreglo=(valor1 valor2 valor3)
+
+O usando índices específicos:
+
+    mi_arreglo[0]="valor1"
+    mi_arreglo[1]="valor2"
+    mi_arreglo[2]="valor3"
+
+Acceder a los elementos: Para acceder a un elemento del arreglo, se usa la sintaxis 
+${mi_arreglo[indice]}:
+
+    echo ${mi_arreglo[1]}  # Imprime "valor2"
+
+Acceder a todos los elementos: Para imprimir todos los elementos del arreglo, se 
+puede usar ${mi_arreglo[@]} o ${mi_arreglo[*]}:
+
+echo ${mi_arreglo[@]}  # Imprime todos los elementos del arreglo
+
+Longitud de un arreglo: Para obtener la longitud de un arreglo, se puede usar la 
+sintaxis ${#mi_arreglo[@]}:
+
+    echo ${#mi_arreglo[@]}  # Imprime la cantidad de elementos en el arreglo
+
+Añadir elementos a un arreglo: Se pueden agregar más elementos especificando un 
+nuevo índice:
+
+    mi_arreglo[3]="nuevo_valor"
+
+11) Sí, en Shell scripting (como en Bash), se pueden definir funciones dentro de 
+un script. Las funciones permiten reutilizar código y estructurar mejor los scripts, 
+haciendo que sean más fáciles de leer y mantener. Además, las funciones pueden 
+recibir parámetros y devolver valores.
+
+Definición de una función
+En Bash, una función se define con la siguiente sintaxis:
+
+    nombre_de_funcion() {
+    # cuerpo de la función
+    }
+
+O también se puede usar la siguiente variante :
+
+    function nombre_de_funcion {
+    # cuerpo de la función
+    }
+
+Llamada a una función
+Para llamar a una función simplemente se utiliza su nombre:
+
+    nombre_de_funcio
+    n
+Pasaje de parámetros a una función
+Los parámetros que se le pasan a una función en Bash se acceden de manera similar 
+a los parámetros que se le pasan a un script. Los parámetros se representan con los 
+símbolos $1, $2, $3, etc., donde $1 es el primer parámetro, $2 es el segundo, y así 
+sucesivamente.
+
+Ejemplo:
+    #!/bin/bash
+
+    # Definición de la función
+    saludar() {
+    echo "Hola, $1 $2"
+    }
+
+# Llamada a la función con dos parámetros
+saludar "Juan" "Pérez"
+
+En este ejemplo, la función saludar toma dos parámetros ($1 y $2), que corresponden 
+a los argumentos que se pasan cuando se llama a la función ("Juan" y "Pérez").
+
+Devolución de valores desde una función
+En Bash, las funciones no devuelven valores directamente como en otros lenguajes de 
+programación. Sin embargo, hay varias formas de obtener resultados de una función:
+
+Usando el comando echo: El valor se imprime en la salida estándar, y se puede 
+capturar usando sustitución de comandos.
+Usando un código de retorno (exit status): Se puede devolver un número de estado 
+utilizando el comando return, que puede ser capturado como $?. Esto es útil para 
+indicar si una operación tuvo éxito o falló, pero solo se puede devolver un valor 
+numérico (típicamente entre 0 y 255).
+
+Ejemplo con echo:
+    #!/bin/bash
+
+    # Función que suma dos números
+    sumar() {
+    echo $(( $1 + $2 ))
+    }
+
+    # Capturar el resultado de la función usando sustitución de comandos
+    resultado=$(sumar 3 5)
+    echo "La suma es: $resultado"
+
+Ejemplo con return:
+    #!/bin/bash
+
+    # Función que devuelve un estado de éxito o fracaso
+    es_mayor_que_diez() {
+    if [ $1 -gt 10 ]; then
+        return 0  # éxito (true)
+    else
+        return 1  # fracaso (false)
+    fi
+    }
+
+    # Llamar a la función
+    es_mayor_que_diez 15
+
+    # Capturar el valor de retorno con $?
+    if [ $? -eq 0 ]; then
+    echo "El número es mayor que diez."
+    else
+    echo "El número no es mayor que diez."
+    fi
+
+Funciones dentro de funciones
+Bash también permite definir funciones dentro de otras funciones. Las funciones 
+internas solo estarán disponibles dentro de la función en la que se definen.
+
+Ejemplo de funciones anidadas:
+    #!/bin/bash
+
+    funcion_externa() {
+    echo "Dentro de la función externa."
+
+    funcion_interna() {
+        echo "Dentro de la función interna."
+    }
+
+    funcion_interna
+    }
+
+    funcion_externa
+
