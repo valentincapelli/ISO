@@ -1,0 +1,104 @@
+12) a_
+#!/bin/bash
+
+echo "Ingrese un numero"
+read num1
+echo "Ingrese un segundo numero"
+read num2
+
+echo "La multiplicacion es `expr $num1 \* $num2`"
+
+echo "La suma es `expr $num1 + $num2`"
+
+echo "La resta es `expr $num1 - $num2`"
+
+if [ $num1 -gt $num2 ]; then
+	echo "El mayor es $num1"
+elif [ $num1 -lt $num2 ]; then
+       echo "El mayor es $num2"
+else
+ echo "Son iguales"
+fi
+
+b_ 
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+    	echo "Error: la cantidad de parametros no es 2."
+	    exit 1
+fi
+
+echo "La multiplicacion es `expr $1 \* $2`"
+
+echo "La suma es `expr $1 + $2`"
+
+echo "La resta es `expr $1 - $2`"
+
+if [ $1 -gt $2 ]; then
+	echo "El mayor es $1"
+elif [ $1 -lt $2 ]; then
+   		echo "El mayor es $2"
+else
+	echo "Son iguales"
+fi
+
+c_ 
+
+
+13) a_ 
+#!/bin/bash
+
+for i in {1..100}; do
+
+	cuadrado=$(expr $i \* $i)
+
+	echo "Numero: $i Cuadrado: $cuadrado"
+done
+
+b_ 
+#!/bin/bash
+
+echo "Elija una opcion:
+	Listar,
+	DondeEstoy o
+	QuienEsta"
+read option
+case $option in
+	"Listar")
+		echo "Contenido del directorio actual:"
+		ls
+	;;
+	"DondeEstoy")
+		echo "Directorio actual:"
+		pwd
+	;;
+	"QuienEsta")
+		echo "Usuario conectados al sistemas:"
+		who
+	;;
+	*)
+		echo "Opciono no valida"
+	;;
+esac
+
+c_ 
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+	echo "Error: se requiere 1 parametro"
+	exit 1
+fi
+
+nombre=$1
+
+if [ -e "$nombre" ]; then
+	if [ -f "$nombre" ]; then
+		echo "'$nombre' es un archivo."
+	elif [ -d "$nombre" ]; then
+		echo "'$nombre' es un directorio."
+	fi
+else
+	echo "'$nombre' no existe. Se creara un directorio con ese nombre."
+	mkdir "$nombre"
+	echo "Directorio '$nombre' creado."
+fi
