@@ -706,3 +706,82 @@ Ejemplo de funciones anidadas:
 
     funcion_externa
 
+15) El comando cut en GNU/Linux es una herramienta muy útil para extraer 
+secciones específicas de cada línea de un archivo o de una entrada 
+estándar (como la salida de otro comando). Permite cortar tanto por 
+posición de caracteres, por campo delimitado o por bytes.
+
+Parámetros más comunes de cut:
+-b: Corta en base a bytes.
+Ejemplo: Para mostrar los primeros 5 bytes de cada línea de un archivo:
+cut -b 1-5 archivo.txt
+
+
+-c: Corta en base a caracteres.
+Ejemplo: Para mostrar los caracteres del 1 al 5 de cada línea:
+cut -c 1-5 archivo.txt
+
+-d: Especifica el delimitador a usar al cortar por campos (normalmente 
+es la ,, el ; o espacios/tabuladores).
+Ejemplo: Para cortar los campos de un archivo CSV usando , como delimitador:
+cut -d ',' -f 2 archivo.csv
+Este comando mostrará el segundo campo de cada línea.
+
+-f: Especifica el campo o conjunto de campos a extraer (junto con el 
+delimitador -d).
+Ejemplo: Para extraer los campos 1 y 3 de un archivo de texto delimitado 
+por :
+cut -d ':' -f 1,3 archivo.txt
+
+--complement: Muestra todos los campos excepto los especificados.
+Ejemplo: Para mostrar todos los campos excepto el 2:
+cut -d ',' -f 2 --complement archivo.csv
+
+--output-delimiter: Cambia el delimitador de salida cuando se muestran 
+varios campos.
+Ejemplo: Para mostrar los campos 1 y 3, separados por un espacio, en lugar del delimitador original:
+cut -d ',' -f 1,3 --output-delimiter=' ' archivo.csv
+
+
+Ejemplos de uso:
+Extrayendo caracteres específicos de un archivo:
+
+Si tienes un archivo archivo.txt con contenido como:
+Copiar código
+abcd1234
+efgh5678
+Para extraer los primeros 4 caracteres de cada línea:
+bash
+Copiar código
+cut -c 1-4 archivo.txt
+Resultado:
+Copiar código
+abcd
+efgh
+Extrayendo campos de un archivo CSV:
+
+Si tienes un archivo CSV archivo.csv con este contenido:
+mathematica
+Copiar código
+nombre,edad,ciudad
+Juan,30,Buenos Aires
+Maria,25,Córdoba
+Para extraer el nombre y la ciudad de cada persona:
+bash
+Copiar código
+cut -d ',' -f 1,3 archivo.csv
+Resultado:
+mathematica
+Copiar código
+nombre,ciudad
+Juan,Buenos Aires
+Maria,Córdoba
+Usando cut con la salida de otro comando:
+
+Si deseas extraer los permisos y los nombres de archivo de la salida del 
+comando ls -l:
+bash
+Copiar código
+ls -l | cut -c 1-10,44-
+Esto extraerá los permisos (primeros 10 caracteres) y los nombres de los 
+archivos.

@@ -43,6 +43,31 @@ else
 fi
 
 c_ 
+#!/bin/bash
+
+if [ $# -ne 3 ]; then
+    echo "Numero de parametros insuficientes"
+    exit 1
+fi
+
+num1=$1
+operacion=$2
+num2=$3
+
+case $operacion in
+	+)
+		echo "El resultado de la suma es expr $num1 + $num2"
+	;;
+    -)
+		echo "El resultado de la resta es expr $num1 - $num2"
+	;;
+	%)
+		echo "El resultado de la division es expr $num1 % $num2"
+	;;
+	*)
+		echo "El resultado de la multiplicacion es expr $num1 \* $num2"
+	;;
+esac
 
 
 13) a_ 
@@ -52,7 +77,7 @@ for i in {1..100}; do
 
 	cuadrado=$(expr $i \* $i)
 
-	echo "Numero: $i Cuadrado: $cuadrado"
+	echo "Numero: $i Cuadradopeno: $cuadrado"
 done
 
 b_ 
@@ -102,3 +127,76 @@ else
 	mkdir "$nombre"
 	echo "Directorio '$nombre' creado."
 fi
+
+14)
+#!/bin/bash
+
+# Verificamos la cantidad de parametros
+if [ $# -ne 3 ]; then
+	echo "La cantidad de parametros no es 3."
+	exit 1
+fi
+
+# Asignamos los parametros a variables
+directorio=$1
+opcion=$2
+cadena=$3
+
+# Verificamos que el directorio pasado como parametro exista
+if [ ! -d "$directorio" ]; then
+	echo "Error. El directorio no existe."
+	exit 1
+fi
+
+for archivo in "$directorio"/*
+do
+	if [ -f $archivo ]
+	then
+		nombreArchivo=$(basename "$archivo")
+
+		case $opcion in
+			"-a")
+				nuevoNombre="${nombreArchivo}${cadena}"
+				;;
+			"-b")
+				nuevoNombre="${cadena}${nombreArchivo}"
+				;;
+			*)
+				echo "Error. Opcion no valida. Usa -a o -b."
+				exit 1
+				;;
+		esac
+
+		# Renombra el archivo
+		mv -v "$archivo" "$directorio/$nuevoNombre"
+	fi
+done
+echo "Operacion completada."
+
+15)
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+	echo "La cantidad de parametros no es correcta."
+	exit 1
+fi
+
+extension=$1
+
+# Crea o limpia el archivo reporte.txt
+> reporte.txt
+
+# Recorre cada usuario en /home (asumimos que los usuarios tienen directorios en / home)
+for user in /home/*; do
+	if [ -d "$user" ]; then
+		# Extraemos el nombre de usuario (ultima parte del path)
+		usuario=$(basename "$user")
+
+		# Cuenta la cantidad de archivos con la extension pasada como parametro
+		cantidad=$(find "$user" -type f -name "*.$extension" 2>/dev/null | wc -l)
+
+		echo "$usuario $cantidad" >> reporte.txt
+	fi
+done
+
+echo "Reporte generado en 'reporte.txt'."
