@@ -173,7 +173,7 @@ do
 done
 echo "Operacion completada."
 
-15)
+16)
 #!/bin/bash
 
 if [ $# -ne 1 ]; then
@@ -200,3 +200,23 @@ for user in /home/*; do
 done
 
 echo "Reporte generado en 'reporte.txt'."
+
+17)
+#!/bin/bash
+
+echo "Ejercicio 17"
+
+# Recorremos cada archivo en el directorio actual
+for archivo in *; do
+	# Verificamos que sea un archivo
+	if [ -f "$archivo" ]; then
+		# Usa el comando tr para:
+   		# 1. Intercambiar mayúsculas por minúsculas.
+    		# 2. Eliminar la letra 'a' (mayúscula y minúscula).
+		nuevo_nombre=$(echo "$archivo" | tr 'a-zA-Z' 'A-Za-z' | tr -d 'aA')
+
+		echo "$nuevo_nombre"
+	fi
+done
+
+18)
