@@ -220,3 +220,91 @@ for archivo in *; do
 done
 
 18)
+#!/bin/bash 
+
+# Verificamos que se haya pasado 1 parametro.
+if [ $# -ne 1 ]; then
+	echo "Error. La cantidad de parametros no es correcta."
+	exit 1
+fi
+
+usuario=$1
+
+# Bucle infinito para verificar si el usuario se ha logueado.
+while true; do
+	# Comprobar si el usuario esta logueado
+	if who | grep -w "$usuario" > /dev/null; then
+		echo "Usuario $usuario logueado en el sistema."
+		break
+	fi
+
+	# Esperar 10 segundos antes de la siguiente verificacion.
+	sleep 10
+done
+
+La palabra grep proviene de una expresión utilizada en el editor de texto ed en Unix. 
+Su significado se deriva de los comandos:
+	g/re/p
+Donde:
+g: Significa "global", es decir, aplicar la acción a todo el texto.
+re: Significa "regular expression" (expresión regular), el patrón que estás buscando.
+p: Significa "print" (imprimir), para mostrar las líneas coincidentes.
+En conjunto, g/re/p significa "buscar globalmente las líneas que coincidan con una expresión regular y mostrarlas".
+
+El símbolo > en Bash se utiliza para redireccionar la salida de un comando a un 
+archivo o, en este caso, a /dev/null.
+
+19)
+#!/bin/bash
+
+function mostrar_menu() {
+	clear
+	echo "MENU DE COMANDOS"
+	echo "  
+	    03. Ejercicio3.
+		12. Evaluar expresiones.
+		13. Ejercicio 13.
+		14. Renombrando archivos.
+		16. Ejercicio 16.
+		17. Ejercicio 17.
+		18. Ejercicio 18.
+		00. Salir.
+		"
+}
+
+while true; do
+	mostrar_menu	
+	read -p "Ingrese la opcion a ejecutar: " option
+
+	case $option in
+		"03")
+			echo "Ejecutando ejercicio 3."
+			./ejercicio3.sh
+			;;
+		"12")
+			echo "Ejecutando ejercicio de evaluar expresiones."
+			./ejercicio12/ejercicio12a.sh
+			;;
+		"13")
+			echo "Ejecutando ejercicio 13a"
+			./ejercicio13/ejercicio13a.sh
+			;;
+		"14")
+			echo "Ejecutando ejercicio de renombrando archivos."
+			read -p "Ingrese la ruta del directorio a modificar." dir
+			read -p "Ingrese -a para agregar al final y -b para el principio." par
+			read -p "Ingrese la cadena." cadena
+			./ejercicio14.sh $dir $par $cadena
+			;;
+		00)
+			echo "Saliendo del menu."
+			exit 0
+			;;
+		*)
+			echo "Error. Opcion no valida."
+			;;
+	esac
+	read -p "Presione enter para continuar..."
+done
+
+Incompleto.
