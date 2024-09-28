@@ -220,6 +220,39 @@ for archivo in *; do
 done
 
 18)
+#!/bin/bash 
+
+# Verificamos que se haya pasado 1 parametro.
+if [ $# -ne 1 ]; then
+	echo "Error. La cantidad de parametros no es correcta."
+	exit 1
+fi
+
+usuario=$1
+
+# Bucle infinito para verificar si el usuario se ha logueado.
+while true; do
+	# Comprobar si el usuario esta logueado
+	if who | grep -w "$usuario" > /dev/null; then
+		echo "Usuario $usuario logueado en el sistema."
+		break
+	fi
+
+	# Esperar 10 segundos antes de la siguiente verificacion.
+	sleep 10
+done
+
+La palabra grep proviene de una expresión utilizada en el editor de texto ed en Unix. 
+Su significado se deriva de los comandos:
+	g/re/p
+Donde:
+g: Significa "global", es decir, aplicar la acción a todo el texto.
+re: Significa "regular expression" (expresión regular), el patrón que estás buscando.
+p: Significa "print" (imprimir), para mostrar las líneas coincidentes.
+En conjunto, g/re/p significa "buscar globalmente las líneas que coincidan con una expresión regular y mostrarlas".
+
+El símbolo > en Bash se utiliza para redireccionar la salida de un comando a un 
+archivo o, en este caso, a /dev/null.
 
 19)
 #!/bin/bash
@@ -359,37 +392,4 @@ function productoria() {
 productoria
 
 23)
-#!/bin/bash 
-
-# Verificamos que se haya pasado 1 parametro.
-if [ $# -ne 1 ]; then
-	echo "Error. La cantidad de parametros no es correcta."
-	exit 1
-fi
-
-usuario=$1
-
-# Bucle infinito para verificar si el usuario se ha logueado.
-while true; do
-	# Comprobar si el usuario esta logueado
-	if who | grep -w "$usuario" > /dev/null; then
-		echo "Usuario $usuario logueado en el sistema."
-		break
-	fi
-
-	# Esperar 10 segundos antes de la siguiente verificacion.
-	sleep 10
-done
-
-La palabra grep proviene de una expresión utilizada en el editor de texto ed en Unix. 
-Su significado se deriva de los comandos:
-	g/re/p
-Donde:
-g: Significa "global", es decir, aplicar la acción a todo el texto.
-re: Significa "regular expression" (expresión regular), el patrón que estás buscando.
-p: Significa "print" (imprimir), para mostrar las líneas coincidentes.
-En conjunto, g/re/p significa "buscar globalmente las líneas que coincidan con una expresión regular y mostrarlas".
-
-El símbolo > en Bash se utiliza para redireccionar la salida de un comando a un 
-archivo o, en este caso, a /dev/null.
 
