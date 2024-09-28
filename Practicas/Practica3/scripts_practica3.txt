@@ -392,4 +392,20 @@ function productoria() {
 productoria
 
 23)
+#!/bin/bash
 
+array=(1 2 3 4 5 6 7 8 9)
+
+impares=0
+
+for elem in "${array[@]}"; do
+	if [ $(( $elem % 2)) -eq 0 ]; then
+		echo "Numero par: $elem"
+	else
+	    impares=$(expr $impares + 1)
+	    # Esta manera no me anda
+		# (( $impares+=1 ))
+	fi
+done
+
+echo "La cantidad de numeros impares es: $impares"
