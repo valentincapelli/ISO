@@ -165,7 +165,7 @@ do
 				echo "Error. Opcion no valida. Usa -a o -b."
 				exit 1
 				;;
-		esac
+		esac]
 
 		# Renombra el archivo
 		mv -v "$archivo" "$directorio/$nuevoNombre"
@@ -220,3 +220,89 @@ for archivo in *; do
 done
 
 18)
+
+19)
+
+20) y 21)
+#!/bin/bash
+
+# Creamos el arreglo vacio
+array=()
+
+function push() {
+	if [ $# -ne 1 ]; then
+		echo "Error. La cantidad de parametros no es correcta."
+		return 1 # usamos return 1 en vez de exit 1
+	fi
+	
+	# Forma mas facil para agregar atras
+	array+=("$1")
+
+	# Otra forma
+	#indice=${#array[*]}
+	#array[$indice]=$1
+	
+	
+	# array=(${array[*]} $1) otra forma para agregar al final del vector
+}
+
+function pop() {
+    if [ ${#array[*]} -eq 0 ]; then
+        echo "La pila esta vacia"
+        return 1
+    fi
+
+    # Forma mas facil
+    echo "Sacando: ${array[-1]}"
+    unset array[-1]
+
+    # Otra forma
+    # indice=$(expr ${#array[*]} - 1) 
+	# echo ${array[$indice]}
+	# unset array[$indice]
+	
+	# Es buena practica hacer esto
+	array=(${array[*]}) # me reacomoda las posiciones del vector
+}
+
+function length() {
+    echo ${#array[*]}
+}
+
+function print() {
+    echo "Elementos de la pila ${array[*]}"
+}
+
+# Script principal
+
+# Agregar 10 elementos a la pila
+for i in {1..10}; do
+    read -p "Ingrese un valor para meter a la pila" valor
+    push "$valor"
+done
+
+22) 
+#!/bin/bash 
+
+num=(10 3 5 7 9 3 5 4)
+
+function productoria() {
+	cant=${#num[*]}
+	if [ $cant -eq 0 ]; then
+		echo "El arreglo esta vacio."
+		return 1
+	fi
+
+	echo "Multiplicando numeros..."
+	producto=1
+	for elemento in "${num[@]}"; do 
+		producto=$((producto * elemento))
+	done
+
+	echo "Resultado: $producto"
+
+}
+
+productoria
+
+23)
