@@ -409,3 +409,56 @@ for elem in "${array[@]}"; do
 done
 
 echo "La cantidad de numeros impares es: $impares"
+;
+
+24)
+#!/bin/bash
+
+vector1=( 1 80 65 35 2 )
+vector2=( 5 98 3 41 8)
+
+
+long=$(expr ${#vector1[*]} - 1)
+
+for i in $(seq 0 $long); do
+	num1=${vector1[$i]}
+	num2=${vector2[$i]}
+	echo "La suma de los elementos de la posicion $i de los vectores es $(expr $num1 + $num2)"
+done
+
+25)
+#!/bin/bash
+
+array=()
+
+if [ $# -eq 0 ]; then
+	echo "Error. No ingreso parametros. Usa -b n, -l o -i."
+	exit 1
+fi
+
+for user in $(cat /etc/group | grep users | cut -d ':' -f 4); do
+    array+=($user)
+done
+
+case $1 in
+	"-b")	
+		long=${#array[*]}
+		if [ $# -ne 2 ] || [ $2 -lt 0 ] || [ $2 -ge $long ]; then
+			echo "Error. Posicion del arreglo incorrecta."
+			exit 1
+		fi
+		echo "Elemento del arreglo en la posicion $2: ${array[$2]}"
+	;;
+	"-l")
+		echo "La longitud del arreglo es: ${#array[*]}"
+		;;
+	"-i")
+		echo "Los elementos del arreglo son: ${array[@]}"
+		;;
+	*)
+		echo "Error. Parametro invalido."
+		exit 1
+		;;
+esac
+
+26)
