@@ -462,3 +462,215 @@ case $1 in
 esac
 
 26)
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    echo "Error. Debe proporcionar al menos 1 parametro."
+    exit 1
+fi
+
+inexistentes=0
+
+for (( i=1; i<=$#; i+=2)); do
+    ruta=${!i}
+    
+    if [ -e $ruta ]; then
+        
+        if [ -f $ruta ]; then
+            echo "$ruta es un archivo."
+        elif [ -d $ruta ]; then
+            echo "$ruta es un directorio." 
+        else
+            echo "$ruta existe pero no es un directorio ni un archivo"
+        fi
+        
+    else
+        echo "$ruta no existe."
+        ((inexistentes++))
+    fi
+    
+done
+
+echo "La cantidad de inexistentes es: $inexistentes"
+
+27)
+#!/bin/bash
+function verificar_parametros1() {
+    if [ $# -eq 0 ]; then
+        echo "Error. La cantidad de parametros es incorrecta."
+        return 1
+    fi
+}
+
+function verificar_parametros2() {
+    if [ $# -ne 2 ]; then
+        echo "Error. La cantidad de parametros es incorrecta."
+        return 1
+    fi
+}
+
+function inicializar() {
+    array=()
+}
+
+function agregar_elem() {
+    verificar_parametros1 "$@" || return 1
+    array+=("$1")
+}
+
+function eliminar_elem() {
+    verificar_parametros1 "$@" || return 1
+    if [ $1 -lt 0 ] || [ $1 -ge ${#array[@]} ]; then
+        echo "Error. Posicion invalida"
+        return 1
+    fi
+    echo "Eliminando ${array[$1]}."
+    unset array[$1]
+    
+    array=(${array[*]}) # Reacomoda las posiciones del vector
+}
+
+function longitud() {
+    echo "La longitud del arreglo es: ${#array[*]}"
+}
+
+function imprimir() {
+    echo "Los elementos del arreglo son: ${array[@]}"
+}
+
+function inicializar_Con_Valores() {
+    local longitud=$1
+    local valor=$2
+    array=()
+    
+    for ((i=0; i<longitud; i++)); do
+        array[$i]="$valor"
+    done
+}
+
+function mostrar_menu() {
+    echo ""
+    echo "Seleccione una opción:"
+    echo "1) Inicializar arreglo"
+    echo "2) Agregar elemento"
+    echo "3) Eliminar elemento"
+    echo "4) Mostrar longitud del arreglo"
+    echo "5) Imprimir arreglo"
+    echo "6) Inicializar arreglo con valores"
+    echo "7) Salir"
+}
+
+while [ true ]; do
+    mostrar_menu
+    select opcion in "Inicializar" "Agregar" "Eliminar" "Longitud" "Imprimir" "Inicializar con valores" "Salir"; do
+        case $opcion in
+            "Inicializar")
+                inicializar
+                break
+                ;;
+            "Agregar")
+                read -p "Ingrese el elemento a agregar " elem
+                agregar_elem "$elem"
+                break
+                ;;
+            "Eliminar")
+                read -p "Ingrese la posicion a eliminar " pos
+                eliminar_elem $pos
+                break
+                ;;
+            "Longitud")
+                longitud
+                break
+                ;;
+            "Imprimir")
+                imprimir
+                break
+                ;;
+            "Inicializar con valores")
+                read -p "Ingrese la longitud del arreglo: " len
+                read -p "Ingrese el valor para todas las posiciones: " val
+                inicializar_Con_Valores "$len" "$val"
+                break
+                ;;
+            "Salir")
+                echo "Saliendo del menú."
+                exit 0
+                ;;
+            *)
+                echo "Opción inválida. Intente de nuevo."
+                break
+                ;;
+        esac
+    done
+done
+
+28)
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+    echo "No se ingreso los parametros correctos."
+    exit 1
+fi
+
+directorio=$1
+
+if [ ! -d $directorio ]; then
+    echo "Error. El $directorio no existe."
+    exit 4
+fi
+
+archivos_lectura=0
+archivos_escritura=0
+
+for elem in "$directorio"/*; do
+    if [ -f "$elem" ]; then
+        
+        if [ -r "$elem" ]; then
+            ((archivos_lectura++))
+        fi
+        
+        if [ -w "$elem" ]; then
+            ((archivos_escritura++))
+        fi
+    fi
+done
+echo "En el directorio $directorio"
+echo "La cantidad de archivos con permisos de lectura es : $archivos_lectura"
+echo "La cantidad de archivos con permisos de escritura es : $archivos_escritura"
+
+29)
+INCOMPLETO
+#!/bin/bash
+
+array=()
+
+for elem in $(find "$HOME" -name "*.sh"); do
+    if [ -f "$elem" ]; then
+        echo "Agregando al arreglo: $elem"
+        array+=("$elem")
+    fi
+done
+
+function verArchivo() {
+    if [ $# -ne 1 ]; then
+        echo "Cantidad de parametros invalida."
+        return 1
+    fi
+    
+    for archivo in "${array[@]}"; do
+        if [ "$archivo" == "$1" ]; then
+            echo "El archivo $1 se encuentra en el arreglo. Su contenido es: "
+            cat "$1"
+            return 0
+        fi
+    done
+    echo "Archivo no encontrado."
+    return 5
+}
+
+function cantidadArchivos() {
+    
+}
+# Uso .sh para probar el programa
+# verArchivo "/home/cape/Desktop/practica3/ejercicio28.sh"
+
