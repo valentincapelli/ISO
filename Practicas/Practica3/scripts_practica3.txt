@@ -639,7 +639,6 @@ echo "La cantidad de archivos con permisos de lectura es : $archivos_lectura"
 echo "La cantidad de archivos con permisos de escritura es : $archivos_escritura"
 
 29)
-INCOMPLETO
 #!/bin/bash
 
 array=()
@@ -669,8 +668,44 @@ function verArchivo() {
 }
 
 function cantidadArchivos() {
+    echo "La cantidad de archivos es: $(find $HOME -name "*.sh" | wc -l)"
+    
+    echo "$( ls -Rl $HOME | grep ".*\.sh$" | wc -l )"
+}
+
+function borrarArchivo() {
+    if [ $# -ne 1 ]; then
+        echo "Cantidad de parametros invalida."
+        return 1
+    fi
+    
+    for i in "${!array[@]}"; do
+        if [ ${array[i]} == $1 ]; then
+            read -p "Desea eliminar el archivo logicamente? (y/n)" respuesta
+            if [ "$respuesta" == "y" ]; then
+                echo "${array[i]} se esta borrando del arreglo."
+                unset array[i]
+                return 0
+            elif [ "$respuesta" == "n" ]; then
+                unset array[i]
+                rm "$1"
+                echo "$1 se esta borrando del arreglo y del FileSystem."
+                return 0
+            else
+                echo "Respuesta invalida. No se ha eliminado el archivo."
+                return 1
+            fi
+        fi
+    done
+    
+    echo "Error. Archivo no encontrado."
+    return 10
     
 }
+
 # Uso .sh para probar el programa
 # verArchivo "/home/cape/Desktop/practica3/ejercicio28.sh"
+# cantidadArchivos
+# borrarArchivo "/home/cape/Desktop/mierda.sh"
 
+30)
