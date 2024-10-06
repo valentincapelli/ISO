@@ -708,4 +708,26 @@ function borrarArchivo() {
 # cantidadArchivos
 # borrarArchivo "/home/cape/Desktop/mierda.sh"
 
-30)
+30) * Para iterar sobre archivos del directorio actual usamos *
+Ejemplo: 	for elem in *; do
+			done
+
+#!/bin/bash
+
+cantArchivos=0
+
+if [ ! -d "$HOME/bin" ]; then
+    echo "EL directorio $HOME/bin no existe. Se creara."
+    mkdir "$HOME/bin"
+fi
+
+for elem in *; do
+    if [ -f "$elem" ] && [ -x "$elem" ]; then
+        ((cantArchivos++))
+        echo "Moviendo $elem"
+        # mover a bin de $HOME
+        mv "$elem" "$HOME/bin"
+    fi
+done
+
+echo "La cantidad de archivos movidos fue: $cantArchivos"
