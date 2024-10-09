@@ -1,3 +1,62 @@
+10.
+(a) Crear la carpeta ISO2017:
+    mkdir ISO2017
+    mkdir: Crea un directorio nuevo.
+    Opciones importantes:
+    -p: Crea también directorios intermedios si no existen.
+
+(b) Acceder a la carpeta:
+    cd ISO2017
+    cd: Cambia al directorio especificado.
+    Opciones:
+    cd ..: Regresa al directorio anterior (nivel superior).
+
+(c) Crear dos archivos con los nombres iso2017-1 e iso2017-2:
+    touch iso2017-1 iso2017-2
+    touch: Crea archivos vacíos si no existen, o actualiza su fecha de modificación si
+    ya existen.
+
+(d) Listar el contenido del directorio actual:
+    ls
+    ls: Muestra el contenido del directorio actual.
+    Opciones importantes:
+    -l: Muestra los archivos en formato largo (detallado).
+    -a: Muestra archivos ocultos (los que comienzan con .).
+
+(e) Visualizar la ruta donde estoy situado:
+    pwd
+    pwd: Muestra la ruta completa del directorio actual.
+
+(f) Buscar todos los archivos cuyo nombre contiene la cadena “iso*”:
+    find . -name "iso*"
+    find: Busca archivos en un directorio.
+    Opciones importantes:
+    -name: Busca archivos con el nombre que coincida con un patrón.
+    .: Indica buscar en el directorio actual y subdirectorios.
+
+(g) Informar la cantidad de espacio libre en disco:
+    df -h
+    df: Muestra información sobre el espacio en disco.
+    Opciones importantes:
+    -h: Muestra la información en un formato legible para humanos (en GB, MB, etc.).
+    -T: Muestra el tipo de sistema de archivos.
+
+(h) Verificar los usuarios conectados al sistema:
+    who
+    who: Muestra una lista de usuarios actualmente conectados al sistema.
+
+(i) Acceder al archivo iso2017-1 e ingresar Nombre y Apellido:
+    echo "Nombre Apellido" > iso2017-1
+    echo: Imprime una cadena de texto en la terminal o la guarda en un archivo.
+    >: Redirige la salida al archivo, sobrescribiendo su contenido.
+
+(j) Mostrar en pantalla las últimas líneas de un archivo:
+    tail iso2017-1
+    tail: Muestra las últimas líneas de un archivo.
+    Opciones importantes:
+    -n: Especifica el número de líneas a mostrar (por defecto son 10).
+    -f: Muestra nuevas líneas a medida que se agregan al archivo (útil para logs en tiempo real).
+
 11. Investigue su funcionamiento y parámetros más importantes:
 Comandos:
 (a) shutdown:

@@ -34,14 +34,14 @@ amigable, puedes usar vim, que es una versión mejorada de vi con más caracter�
     3. El BIOS lee el sector de arranque (MBR)
     4. Se carga el gestor de arranque (MBC)
     5. El bootloader carga el kernel y el initrd
-    6. Se monta el initrd como sistema de archivos ra ́ız y se
+    6. Se monta el initrd como sistema de archivos raız y se
     inicializan componentes esenciales (ej.: scheduler)
     7. El Kernel ejecuta el proceso init y se desmonta el initrd
     8. Se lee el /etc/inittab
     9. Se ejecutan los scripts apuntados por el runlevel 1
     10. El final del runlevel 1 le indica que vaya al runlevel por defecto
     11. Se ejecutan los scripts apuntados por el runlevel por defecto
-    12. El sistema est ́a listo para usarse
+    12. El sistema esta listo para usarse
 
 b_ init: el Kernel ejecuta el proceso init.
 Su funcion es cargar todos los subprocesos necesarios para el
@@ -67,7 +67,7 @@ arranque o apagado del sistema
     • 3: full multiuser mode console (modo multiusuario completo
     por consola)
     • 4: no se utiliza
-    • 5: X11 (modo multiusuario completo con login gr ́afico basado
+    • 5: X11 (modo multiusuario completo con login grafico basado
     en X)
     • 6: reboot
 
@@ -207,7 +207,7 @@ librerias del sistema
 • Mejora el paralelismo de booteo
 • Puede ser controlado por systemctl
 • Compatible con SysV → si es llamado como init
-• El demonio systemd reemplaza al proceso init → este pasa a terner PID 1
+• El demonio systemd reemplaza al proceso init → este pasa a tener PID 1
 • Los runlevels son reemplazados por targets
 • Al igual que con Upstart el archivo /etc/inittab no existe mas
 
@@ -215,10 +215,10 @@ b_ Las unidades de trabajo son denominadas Units de tipo:
 • Service: controla un servicio particular (.service)
 • Socket: encapsula IPC, un socket del sistema o file system
 FIFO (.socket) → sockect-based activation
-• Target: agrupa units o establece puntos de sincronizaci ́on
+• Target: agrupa units o establece puntos de sincronizacion
 durante el booteo (.target) → dependencia de unidades
 • Snapshot: almacena el estado de un conjunto de unidades que
-puede ser restablecido m ́as tarde (.snapshot)
+puede ser restablecido mas tarde (.snapshot)
 • etc.
 • Las units pueden tener dos estados → active o inactive
 
