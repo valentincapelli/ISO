@@ -1,0 +1,176 @@
+Finalidad del Pipe
+El propósito principal del pipe es redirigir la salida estándar (stdout) de un comando 
+a la entrada estándar (stdin) de otro comando. Esto facilita la combinación de 
+herramientas y comandos para realizar tareas más complejas.
+
+Ejemplos de Utilización
+Contar el Número de Archivos en un Directorio
+Para contar el número de archivos en un directorio, puedes usar ls para listar los 
+archivos y wc -l para contar el número de líneas:
+
+    ls | wc -l
+
+Aquí, ls lista los archivos y directorios en el directorio actual, y wc -l cuenta el 
+número de líneas en la salida de ls, que corresponde al número de archivos y directorios.
+
+Buscar Texto en Archivos
+Puedes usar grep para buscar texto específico dentro de archivos. Por ejemplo, para 
+buscar la palabra "error" en los archivos de un directorio:
+
+    cat * | grep "error"
+
+Aquí, cat * concatena y muestra el contenido de todos los archivos en el directorio, 
+y grep "error" filtra las líneas que contienen la palabra "error".
+
+Ordenar y Filtrar Datos
+Supongamos que tienes una lista de nombres en un archivo y quieres ordenar los nombres 
+alfabéticamente y luego eliminar los duplicados. Puedes usar sort para ordenar y uniq 
+para eliminar duplicados:
+
+    cat nombres.txt | sort | uniq
+
+Aquí, cat nombres.txt muestra el contenido del archivo, sort ordena las líneas, y uniq 
+elimina las líneas duplicadas.
+
+La redirección en sistemas Unix-like permite enviar la entrada o salida de comandos 
+a diferentes lugares, como archivos o dispositivos, en lugar de la entrada/salida 
+estándar (stdin/stdout). La redirección facilita la captura y manipulación de datos 
+y resultados de comandos.
+
+Tipos de Redirección
+
+Redirección de Salida Estándar (stdout)
+Símbolo: >
+Finalidad: Redirige la salida estándar de un comando a un archivo, sobrescribiendo el 
+contenido del archivo si ya existe.
+Ejemplo:
+echo "Hola Mundo" > archivo.txt
+Aquí, echo "Hola Mundo" envía la cadena "Hola Mundo" a archivo.txt, sobrescribiendo 
+cualquier contenido previo.
+
+Símbolo: >>
+Finalidad: Redirige la salida estándar de un comando a un archivo, añadiendo el 
+contenido al final del archivo en lugar de sobrescribirlo.
+Ejemplo:
+    echo "Otra línea" >> archivo.txt
+Aquí, echo "Otra línea" añade la cadena "Otra línea" al final de archivo.txt sin 
+borrar el contenido existente.
+
+Redirección de Entrada Estándar (stdin)
+Símbolo: <
+Finalidad: Redirige la entrada estándar de un comando desde un archivo.
+Ejemplo:
+    sort < archivo.txt
+Aquí, sort toma su entrada desde archivo.txt en lugar de la entrada estándar del 
+teclado.
+
+Redirección de Error Estándar (stderr)
+Símbolo: 2>
+Finalidad: Redirige la salida de errores (stderr) de un comando a un archivo, 
+sobrescribiendo el contenido del archivo si ya existe.
+Ejemplo:
+    ls /no_existe 2> errores.txt
+Aquí, cualquier mensaje de error generado por ls se guarda en errores.txt.
+
+Símbolo: 2>>
+Finalidad: Redirige la salida de errores (stderr) de un comando a un archivo, 
+añadiendo el contenido al final del archivo en lugar de sobrescribirlo.
+Ejemplo:
+    ls /no_existe 2>> errores.txt
+Aquí, cualquier mensaje de error generado por ls se añade al final de errores.txt.
+
+_ El tamaño del archivo empaquetado (archivos_empaquetados.tar) es igual a la suma 
+de los tamaños individuales de los 4 archivos. Esto se debe a que el comando tar 
+simplemente empaqueta (combina) los archivos en un solo archivo, sin comprimirlos. 
+Por lo tanto, el tamaño total no se reduce; solo se organizan los archivos de manera 
+más conveniente en un solo contenedor.
+
+c y d_ Para comprimir y reducir el tamaño del archivo empaquetado, puedes usar compresión 
+gzip o bzip2. Por ejemplo:
+
+    tar cvzf archivos_empaquetados.tar.gz archivo1.txt archivo2.txt archivo3.txt archivo4.txt
+
+d_ 1. tar
+    Descripción: tar (abreviatura de tape archive) es una utilidad ampliamente 
+    utilizada para empaquetar varios archivos y directorios en un solo archivo. 
+    Este archivo empaquetado se conoce comúnmente como un tarball.
+    Uso principal: Empaquetar y desempaquetar archivos.
+    Opciones comunes:
+    -c : Crear un nuevo archivo tar.
+    -v : Modo detallado (muestra el progreso).
+    -f : Especifica el nombre del archivo tar.
+    -x : Extraer los archivos del archivo tar.
+    -z : Comprimir o descomprimir usando gzip.
+    -j : Comprimir o descomprimir usando bzip2.
+    Ejemplos:
+        Crear un archivo tar:
+        tar cvf archivos.tar archivo1.txt archivo2.txt
+
+        Extraer un archivo tar:
+        tar xvf archivos.tar
+
+        Crear un archivo tar comprimido con gzip:
+        tar cvzf archivos.tar.gz archivo1.txt archivo2.txt
+
+2. grep
+    Descripción: grep (global regular expression print) es una utilidad para buscar 
+    patrones de texto dentro de archivos. Es extremadamente útil para filtrar 
+    información relevante de archivos de texto o salida de comandos.
+
+    Uso principal: Buscar texto en archivos o entradas estándar.
+
+    Opciones comunes:
+    -i : Ignorar mayúsculas y minúsculas.
+    -r o -R : Buscar de forma recursiva en directorios.
+    -l : Mostrar solo los nombres de archivos que contienen coincidencias.
+    -n : Mostrar números de línea junto con la salida.
+    -v : Invertir la coincidencia, mostrando líneas que no coincidan con el patrón.
+    Ejemplos:
+    Buscar una palabra en un archivo:
+    grep "palabra" archivo.txt
+
+    Buscar recursivamente en un directorio ignorando mayúsculas:
+    grep -ri "palabra" /ruta/al/directorio
+
+    3. gzip
+    Descripción: gzip es una utilidad de compresión que se utiliza para reducir el 
+    tamaño de los archivos mediante el algoritmo de compresión Lempel-Ziv (LZ77). 
+    Los archivos comprimidos tienen la extensión .gz.
+
+    Uso principal: Comprimir y descomprimir archivos.
+
+    Opciones comunes:
+    -d : Descomprimir un archivo .gz.
+    -k : Mantener el archivo original después de la compresión.
+    -v : Modo detallado (muestra el progreso de compresión).
+    Ejemplos:
+    Comprimir un archivo:
+    gzip archivo.txt
+
+    Descomprimir un archivo:
+    gzip -d archivo.txt.gz
+
+    Comprimir un archivo y mantener el original:
+    gzip -k archivo.txt
+
+5. wc
+    Descripción: wc (word count) es una utilidad que cuenta líneas, palabras y 
+    caracteres en archivos de texto o en la entrada estándar.
+
+    Uso principal: Contar líneas, palabras, caracteres o bytes en archivos.
+
+    Opciones comunes:
+    -l : Contar solo líneas.
+    -w : Contar solo palabras.
+    -c : Contar solo bytes.
+    -m : Contar solo caracteres.
+
+    Ejemplos:
+    Contar líneas, palabras y caracteres en un archivo:
+    wc archivo.txt
+
+    Contar solo palabras en un archivo:
+    wc -w archivo.txt
+
+    Contar solo líneas en un archivo:
+    wc -l archivo.txt
