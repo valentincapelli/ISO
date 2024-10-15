@@ -1,3 +1,12 @@
+Agregar a un vector todos los archivos de un directorio con cierta terminacion
+array=()
+for elem in $(find "$HOME" -name "*.sh"); do
+    if [ -f "$elem" ]; then #probar con otra forma, usando &&
+        array+=("$elem")
+    fi
+done
+
+
 Finalidad del Pipe
 El propósito principal del pipe es redirigir la salida estándar (stdout) de un comando 
 a la entrada estándar (stdin) de otro comando. Esto facilita la combinación de 
