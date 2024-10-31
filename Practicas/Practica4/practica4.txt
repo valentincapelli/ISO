@@ -1,0 +1,217 @@
+1)
+a_ Proceso:
+• Programa en ejecucion
+• Los conceptos de tarea, job y proceso hacen referencia a lo
+mismo
+• Segun su historial de ejecucion, los podemos clasificar en:
+• CPU Bound (ligados a la CPU)
+• I/O Bound (ligados a entrada/salida)
+• Es dinamico
+• Tiene program counter
+• Su ciclo de vida comprende desde que se lo ejecuta hasta que
+termina
+
+Programa:
+• Es estatico
+• No tiene program counter
+• Existe desde que se edita hasta que se borra
+
+b_ Tiempos de los procesos
+• Retorno: tiempo que transcurre entre que el proceso llega al
+sistema hasta que completa su ejecucion.
+• Espera: tiempo que el proceso se encuentra en el sistema
+esperando.
+
+c_ Promedios: tiempos promedio de los anteriores.
+
+d_ Quantum (Q): medida que determina cuanto tiempo
+podra usar el procesador cada proceso.
+
+e_ Nonpreemptive: una vez que un proceso esta en estado de
+ejecucion, continua hasta que termina o se bloquea por algun
+evento (e.j. I/O)
+
+Preemptive: el proceso en ejecucion puede ser interrumpido y
+llevado a la cola de listos:
+    • Mayor overhead pero mejor servicio
+    • Un proceso no monopoliza el procesador
+
+f_ Short term scheduler: determina que proceso pasara a
+ejecutarse.
+Medium term scheduler: realiza el swapping (intercambio)
+entre el disco y la memoria cuando el SO lo determina (puede
+disminuir el grado de multiprogramacion).
+Long term scheduler: admite nuevos procesos a memoria
+(controla el grado de multirpogramacion).
+
+g_ El dispatcher se encarga de asignar el tiempo de CPU a los procesos y de cambiar
+entre procesos (lo que llamamos context switching). En otras palabras, decide qué 
+proceso debe ejecutarse en cada momento para asegurar un uso eficiente del procesador.
+
+2)
+i. top
+Descripción: Muestra en tiempo real una lista de los procesos que se están ejecutando en el sistema, 
+ordenados por el uso de CPU.
+Comando:
+top
+
+ii. htop
+Descripción: Una versión mejorada de top con una interfaz más amigable y funcionalidad ampliada.
+Comando:
+htop
+
+iii. ps
+Descripción: Muestra una instantánea de los procesos en ejecución en el sistema.
+Comando:
+ps aux     # Lista todos los procesos en detalle
+ps -ef     # Otra opción para mostrar todos los procesos
+
+iv. pstree
+Descripción: Muestra los procesos en ejecución en una estructura jerárquica o de árbol.
+Comando:
+pstree
+
+v. kill
+Descripción: Envía una señal a un proceso específico, generalmente para terminarlo.
+Comando:
+kill 1234        # Envía la señal de terminación al proceso con PID 1234
+kill -9 1234     # Envía la señal forzada (KILL) al proceso con PID 1234
+
+vi. pgrep
+Descripción: Busca procesos en ejecución por nombre y devuelve sus PIDs.
+Comando:
+pgrep nombre_proceso
+
+vii. killall
+Descripción: Termina todos los procesos que coincidan con un nombre específico.
+Comando:
+killall nombre_proceso
+
+viii. renice
+Descripción: Cambia la prioridad de ejecución de un proceso en ejecución.
+Comando:
+renice -n 10 -p 1234   # Cambia la prioridad del proceso con PID 1234 a 10
+
+ix. xkill
+Descripción: Permite seleccionar una ventana gráfica para matar el proceso que la controla.
+Comando:
+xkill
+
+x. atop
+Descripción: Una herramienta avanzada de monitoreo que muestra información detallada de procesos 
+y de los recursos de hardware (CPU, memoria, disco, red).
+Comando:
+atop
+
+b_ 
+i. Al final de la ejecucion del programa habran 8 lineas con la palabra Proceso.
+ii. El número de líneas es el número de procesos que han estado en ejecución
+
+c_
+proceso 7
+proceso 6
+proceso 5
+proceso 4 
+proceso 3
+proceso 2   
+proceso 1
+proceso 0
+ii. Tendran valores distintos. Cambia el numero.
+
+Se ejecuta proceso N 2 elevado a la c veces.
+
+d_ i. 
+Comunicación entre procesos a través de pipes
+Los pipes permiten la comunicación entre procesos en sistemas operativos como Unix/Linux, 
+funcionando como un canal unidireccional por el cual un proceso puede enviar datos a otro. 
+Existen dos tipos de pipes:
+
+Pipes anónimos: Son temporales y sirven para la comunicación entre procesos relacionados (por ejemplo, procesos padre-hijo).
+Named pipes o FIFOs: Persisten en el sistema de archivos y permiten la comunicación entre procesos no relacionados.
+Los pipes permiten que un proceso escriba datos en un extremo y otro proceso los lea desde el otro extremo, 
+actuando como un archivo temporal de lectura/escritura.
+
+ii. ¿Cómo se crea un pipe en C?
+Para crear un pipe en C se utiliza la función pipe(), que pertenece a la biblioteca estándar <unistd.h>. 
+Esta función crea un pipe anónimo y devuelve dos descriptores de archivo (file descriptors): uno para lectura y 
+otro para escritura.
+
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+    int fd[2];  // Array para almacenar los descriptores de archivo
+
+    // Crea el pipe
+    if (pipe(fd) == -1) {
+        perror("Error al crear el pipe");
+        return 1;
+    }
+
+    // Ahora `fd[0]` es el extremo de lectura y `fd[1]` es el extremo de escritura.
+    // Para usarlo, un proceso puede escribir en `fd[1]` y otro puede leer de `fd[0]`.
+
+    return 0;
+}
+iii. ¿Qué parámetro es necesario para la creación de un pipe?
+La función pipe() recibe un solo parámetro:
+
+int pipe(int pipefd[2]);
+Parámetro pipefd[2]
+pipefd es un array de dos enteros que se utilizará para almacenar los descriptores de archivo:
+pipefd[0] es el descriptor de lectura del pipe.
+pipefd[1] es el descriptor de escritura del pipe.
+Al crear el pipe, se establece esta pareja de descriptores, permitiendo que un proceso escriba datos en pipefd[1] y 
+otro los lea desde pipefd[0].
+Uso
+Estos descriptores son utilizados en llamadas a funciones de lectura y escritura, como read() y write(), permitiendo 
+que los datos fluyan del proceso que escribe al proceso que lee. Si el proceso intenta leer cuando no hay datos 
+disponibles, se bloqueará hasta que haya datos en el pipe. Igualmente, si el pipe está lleno, el proceso escritor 
+se bloqueará hasta que el proceso lector lea y deje espacio.
+
+iv. ¿Qué tipo de comunicación es posible con pipes?
+Los pipes permiten comunicación unidireccional entre procesos. Esto significa que los datos fluyen en una sola dirección:
+
+Comunicación unidireccional: En los pipes anónimos, un proceso escribe datos en un extremo, y otro proceso 
+los lee en el otro extremo. Si se necesita comunicación bidireccional (en ambas direcciones), es necesario 
+crear dos pipes: uno para enviar datos en una dirección y otro para la dirección opuesta.
+
+Comunicación entre procesos relacionados: Los pipes anónimos solo pueden usarse entre procesos relacionados 
+(por ejemplo, entre un proceso padre y su proceso hijo) porque ambos deben compartir el mismo pipe creado 
+antes de la bifurcación (uso de fork()).
+
+Comunicación entre procesos no relacionados: Esto es posible con named pipes o FIFOs, que permiten la 
+comunicación entre procesos que no tienen una relación directa. Named pipes se crean con mkfifo y son 
+visibles en el sistema de archivos.
+
+Ejemplo práctico de comunicación entre procesos en C
+Aquí tienes un ejemplo simple de uso de pipe() y fork() para que el proceso padre envíe datos al proceso hijo:
+
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+
+int main() {
+    int fd[2];
+    char mensaje[] = "Hola desde el padre";
+    char buffer[100];
+
+    // Crear el pipe
+    if (pipe(fd) == -1) {
+        perror("Error al crear el pipe");
+        return 1;
+    }
+
+    if (fork() == 0) {  // Proceso hijo
+        close(fd[1]);    // Cerrar el extremo de escritura
+        read(fd[0], buffer, sizeof(buffer));  // Leer el mensaje del padre
+        printf("Hijo recibió: %s\n", buffer);
+        close(fd[0]);
+    } else {             // Proceso padre
+        close(fd[0]);    // Cerrar el extremo de lectura
+        write(fd[1], mensaje, strlen(mensaje) + 1);  // Enviar mensaje al hijo
+        close(fd[1]);
+    }
+
+    return 0;
+}
