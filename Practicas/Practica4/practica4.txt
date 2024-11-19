@@ -215,3 +215,112 @@ int main() {
 
     return 0;
 }
+
+e_
+El sistema operativo debe mantener cierta información mínima sobre cada 
+proceso para administrarlo de manera adecuada. Esta información se almacena 
+en una estructura de datos conocida como PCB (Process Control Block) o 
+Bloque de Control de Proceso.
+
+Información mínima que el SO debe tener sobre un proceso:
+
+Identificación del proceso:
+PID (Process Identifier): Un identificador único que distingue al proceso 
+de los demás.
+
+Estado del proceso:
+Estado actual del proceso (ej. en ejecución, listo, bloqueado, terminado).
+
+Contexto de CPU:
+Valores de los registros de la CPU (contador de programa, registros 
+generales, etc.) necesarios para retomar la ejecución del proceso.
+
+Información de planificación:
+Prioridad del proceso, colas de planificación, y otros datos relevantes 
+para la asignación de CPU.
+
+Información de memoria:
+Detalles de la memoria asignada al proceso, como:
+Dirección base y límite.
+
+Información de las tablas de páginas o segmentos (si utiliza paginación o 
+segmentación).
+
+Información de E/S:
+Archivos abiertos, dispositivos asignados, y buffers de entrada/salida.
+
+Información de estado:
+Señales recibidas.
+Contadores de eventos.
+Indicadores de errores.
+
+Estructura de datos asociada: PCB
+El PCB (Process Control Block) es la estructura de datos donde el SO 
+almacena toda esta información. Cada proceso tiene su propio PCB y, en 
+general, el PCB incluye:
+
+Identificador del proceso (PID).
+Estado del proceso.
+Contador de programa (PC).
+Registros de CPU.
+Información de memoria (segmentos, tablas de página).
+Lista de archivos abiertos.
+Información de permisos y credenciales del proceso.
+
+Ubicación del PCB
+El PCB suele almacenarse en una región reservada de la memoria principal 
+o en una tabla de procesos mantenida por el kernel. Esto garantiza un 
+acceso rápido y eficiente al contexto de cada proceso.
+
+El sistema operativo utiliza el PCB para:
+Cambiar el contexto entre procesos (context switch).
+Supervisar y controlar la ejecución de procesos.
+Manejar la comunicación y sincronización entre procesos.
+
+f_
+• CPU Bound (ligados a la CPU)
+• I/O Bound (ligados a entrada/salida)
+
+Un proceso es CPU Bound si pasa la mayor parte de su tiempo utilizando la 
+CPU para realizar cálculos intensivos, con pocas operaciones de 
+entrada/salida.
+
+Un proceso es I/O Bound si pasa la mayor parte de su tiempo esperando 
+operaciones de entrada/salida, como leer o escribir en discos, recibir 
+datos de redes, o interactuar con dispositivos externos.
+
+g_
+1. Nuevo (New)
+Descripción:
+El proceso está siendo creado.
+
+2. Listo (Ready)
+Descripción:
+El proceso está preparado para ejecutarse, pero está esperando a que la 
+CPU esté disponible.
+
+3. Ejecutando (Running)
+Descripción:
+El proceso está utilizando la CPU y se encuentra en ejecución.
+
+4. Bloqueado o Esperando (Blocked/Waiting)
+Descripción:
+El proceso está esperando que se complete una operación específica, como 
+una entrada/salida o un evento externo.
+
+5. Terminado (Terminated)
+Descripción:
+El proceso ha finalizado su ejecución (normalmente porque completó su 
+tarea o fue finalizado por el sistema o el usuario).
+
+h_ Imagen explicacion practica 4, pagina 5.
+
+i_ 
+Transición	                        Scheduler Responsable
+Nuevo → Listo	                    Long-Term Scheduler
+Listo → Ejecutando	                Short-Term Scheduler
+Ejecutando → Listo	                Short-Term Scheduler
+Ejecutando → Bloqueado	            Short-Term Scheduler
+Bloqueado → Listo	                Short-Term Scheduler
+Listo ↔ Suspendido	                Medium-Term Scheduler
+Bloqueado ↔ Suspendido Bloqueado	Medium-Term Scheduler
