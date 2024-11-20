@@ -1,0 +1,1 @@
+Consultar ejercicio 6 SJF, proceso 5, puede arrancar en el mismo instante que se encola?s

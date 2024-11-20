@@ -401,3 +401,59 @@ Ejecutando → Bloqueado	            Short-Term Scheduler
 Bloqueado → Listo	                Short-Term Scheduler
 Listo ↔ Suspendido	                Medium-Term Scheduler
 Bloqueado ↔ Suspendido Bloqueado	Medium-Term Scheduler
+
+6_ d) y e)
+El valor del quantum debe ser cuidadosamente seleccionado según las características y objetivos del sistema:
+Sistemas interactivos → Quantum pequeño.
+Sistemas de alto rendimiento o cálculo intensivo → Quantum más grande.
+Un valor extremadamente pequeño o extremadamente grande puede llevar a una pérdida significativa de eficiencia o de usabilidad, respectivamente.
+
+7_ El algoritmo SRTF beneficia a los procesos interactivos o de entrada salida.
+
+8_ 
+Ventajas del algoritmo por prioridades:
+Atiende procesos críticos primero, útil en sistemas en tiempo real.
+Flexible, se adapta a diferentes entornos según la importancia de las tareas.
+Mejora el rendimiento para procesos con deadlines estrictos.
+Ideal para sistemas heterogéneos donde no todas las tareas tienen la misma relevancia.
+
+Cuándo usarlo:
+Sistemas en tiempo real.
+Entornos multitarea con procesos de distinta criticidad.
+Colas con prioridades naturales, como en impresoras o routers.
+
+Cuándo no es relevante:
+Cargas homogéneas donde todas las tareas son iguales en importancia.
+Sistemas interactivos donde se necesita responder rápido a todos los procesos.
+Cuando asignar prioridades es complejo o costoso.
+Riesgo de starvation, dejando procesos de baja prioridad sin ejecutar.
+
+ 9_ 
+(a) ¿Qué significa?
+La inanición (o starvation) ocurre en sistemas de planificación de procesos cuando un proceso espera indefinidamente para ser ejecutado porque otros procesos, 
+con mayor prioridad o preferencia, siempre son seleccionados antes. Esto sucede especialmente en sistemas donde los recursos no se asignan equitativamente o 
+donde hay una alta competencia entre procesos.
+
+En términos simples, un proceso "hambriento" nunca llega a ejecutarse debido a políticas de planificación injustas o ineficaces.
+
+(b) ¿Cuál/es de los algoritmos vistos puede provocarla?
+SJF (Shortest Job First):
+Puede causar inanición si hay una secuencia continua de procesos cortos que llegan al sistema, bloqueando procesos más largos.
+
+SRTF (Shortest Remaining Time First):
+Similar al SJF, pero más propenso a inanición porque los procesos largos pueden ser constantemente interrumpidos por procesos nuevos más cortos.
+
+Algoritmo de Prioridades:
+La inanición ocurre si los procesos de baja prioridad nunca son seleccionados debido a la llegada constante de procesos con mayor prioridad.
+
+(c) ¿Existe alguna técnica que evite la inanición para el/los algoritmos mencionados en (b)?
+Sí, existen técnicas para evitar la inanición:
+
+SJF/SRTF:
+Utilizar una variante con un límite de espera máxima: Los procesos que han esperado demasiado tiempo reciben una "penalización inversa" y su prioridad aumenta 
+con el tiempo, dándoles finalmente la oportunidad de ejecutarse.
+
+Algoritmo de Prioridades:
+Implementar prioridad envejecida (aging): La prioridad de un proceso aumenta progresivamente a medida que espera en la cola. Esto asegura que incluso los procesos 
+de baja prioridad eventualmente serán seleccionados.
+

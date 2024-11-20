@@ -1,0 +1,238 @@
+1_
+• Direccion Logica:
+• Es una direccion que enmascara o abstrae una direccion fısica
+• Referencia a una localidad en memoria
+• Se la debe traducir a una direccion fısica
+
+• Direccion Fısica:
+• Es la direccion real. Es con la que se accede efectivamente a
+memoria
+• Representa la direccion absoluta en memoria principal
+
+La CPU trabaja con direcciones logicas. Para acceder a la
+memoria se deben transformar en direcciones fısicas
+El mapeo entre direcciones virtuales y fısicas se realiza
+mediante hardware → MMU (Memory Management Unit)
+
+2_ a)
+• Particiones Fijas:• La memoria se divide en particiones o regiones de tama ̃no fijo
+→ tama ̃nos iguales o diferentes
+• Alojan un  ́unico proceso• Cada proceso se coloca en alguna partici ́on de acuerdo a alg ́un
+criterio:• First Fit
+• Best Fit
+• Worst Fit
+• Next Fit
+• Particiones Din ́amicas:• Las particiones var ́ıan en tama ̃no y n ́umero
+• Alojan un proceso cada una
+• Cada partici ́on se genera en forma din ́amica del tama ̃no justo
+que necesita el proceso
+
+Particiones Fijas
+Descripción:
+La memoria principal se divide en un número fijo de particiones de tamaño predeterminado al iniciar el sistema.
+Cada partición puede contener un proceso único.
+Si el proceso necesita menos memoria que el tamaño de la partición, se desperdicia el espacio sobrante (fragmentación interna).
+
+Ventajas:
+Simple de implementar: Los tamaños de las particiones se establecen previamente.
+Bajo overhead: La administración de la memoria es directa, ya que no se requieren cálculos complejos para ajustar las particiones.
+
+Desventajas:
+Fragmentación interna: Los procesos pequeños dejan partes de la memoria inutilizadas dentro de las particiones asignadas.
+Falta de flexibilidad: Si un proceso es más grande que cualquier partición, no puede ser cargado, incluso si hay suficiente memoria disponible en total.
+
+Particiones Dinámicas
+Descripción:
+La memoria principal se divide en particiones del tamaño exacto requerido por cada proceso en el momento de su asignación.
+Se utiliza una técnica como First Fit, Best Fit, Next Fit o Worst Fit para encontrar un bloque de memoria adecuado.
+A medida que los procesos terminan, se crean espacios vacíos que causan fragmentación externa.
+
+Ventajas:
+Mayor flexibilidad: Los procesos pueden ocupar exactamente la cantidad de memoria que necesitan, reduciendo la fragmentación interna.
+Mejor uso de la memoria: Permite cargar procesos de diferentes tamaños siempre que haya espacio disponible.
+
+Desventajas:
+Fragmentación externa: Los bloques pequeños no utilizados entre particiones pueden volverse inutilizables con el tiempo.
+Overhead más alto: Requiere más procesamiento para localizar bloques de memoria adecuados y manejar la liberación de memoria.
+
+b)
+Información necesaria para administrar memoria
+El sistema operativo debe disponer de:
+
+Tabla de particiones:
+Indica qué particiones están libres y cuáles están asignadas.
+
+Tamaño de particiones (fijas o dinámicas):
+En el caso de particiones dinámicas, el tamaño puede variar según los procesos.
+
+Ubicación de cada partición:
+Para asociar direcciones físicas con procesos.
+
+Estado de las particiones:
+Libre u ocupado, con el proceso asignado.
+
+Algoritmo de asignación:
+Estrategias como first fit, best fit, o worst fit para ubicar procesos en la memoria.
+
+3) 
+1. Particiones de Igual Tamaño
+Ventajas:
+
+Simplicidad en la gestión:
+Fácil de implementar, ya que no se necesita considerar el tamaño de los procesos para 
+decidir en qué partición ubicarlos.
+
+Bajo overhead:
+Menor procesamiento para la asignación, ya que todas las particiones son iguales y no 
+se requiere buscar un tamaño adecuado.
+
+Balance de carga uniforme:
+Ideal para sistemas donde los procesos tienen tamaños similares, garantizando un uso 
+equitativo de las particiones.
+
+Desventajas:
+Fragmentación interna:
+Si el proceso es más pequeño que la partición, el espacio sobrante dentro de la partición se desperdicia.
+
+Falta de flexibilidad:
+Procesos más grandes que el tamaño de la partición no pueden ejecutarse, incluso si hay suficiente memoria disponible en total.
+
+Ineficiencia con procesos de tamaños variados:
+Procesos muy pequeños desperdician memoria, y procesos muy grandes no pueden ser admitidos.
+
+2. Particiones de Diferente Tamaño
+Ventajas:
+Mayor flexibilidad:
+Permite asignar procesos de diferentes tamaños a particiones que se ajusten mejor a sus necesidades, reduciendo la fragmentación interna.
+
+Mejor uso de la memoria:
+Los procesos pequeños pueden utilizar particiones más pequeñas, dejando las particiones grandes disponibles para procesos que realmente las necesiten.
+
+Adecuación para sistemas con procesos variados:
+Ideal para entornos donde los tamaños de los procesos son heterogéneos.
+
+Desventajas:
+Complejidad en la gestión:
+Requiere más lógica para decidir qué proceso se asigna a cada partición según su tamaño.
+
+Fragmentación externa:
+Puede haber particiones grandes libres pero inutilizables si no hay procesos que las llenen completamente.
+
+Carga desigual:
+Las particiones grandes pueden estar subutilizadas si hay pocos procesos grandes, mientras que las particiones pequeñas pueden estar sobrecargadas.
+
+4)
+Fragmentación Interna (Particiones Fijas):
+Definición:
+Ocurre cuando el tamaño del proceso es menor que el tamaño de la partición asignada.
+El espacio no utilizado dentro de la partición asignada queda desperdiciado, ya que no puede ser utilizado por otros procesos.
+Causa:
+Las particiones tienen un tamaño fijo que no siempre coincide con el tamaño real de los procesos.
+
+Fragmentación Externa (Particiones Dinámicas):
+Definición:
+Ocurre cuando la memoria tiene suficientes bloques libres para asignar a un proceso, pero estos bloques están dispersos y no forman un espacio contiguo.
+Causa:
+La asignación y liberación dinámica de memoria genera bloques libres pequeños dispersos, que no pueden ser utilizados para procesos que requieren más memoria.
+
+El problema de la fragmentación externa puede ser subsanado utilizando una técnica conocida como compactación.
+Solucion → compactacion → muy costosa
+Compactacion
+Definición:
+Es un proceso que reorganiza la memoria para combinar los bloques libres dispersos en un único bloque contiguo grande.
+
+Funcionamiento:
+Los procesos que están en ejecución son trasladados a ubicaciones contiguas dentro de la memoria.
+Se libera un gran bloque contiguo de memoria al final, eliminando los pequeños fragmentos dispersos.
+
+Ventajas:
+Permite asignar grandes bloques de memoria a procesos que lo requieren.
+Maximiza el uso de la memoria disponible.
+
+Desventajas:
+Implica un overhead significativo, ya que mover procesos en memoria consume tiempo y recursos del sistema.
+No elimina la fragmentación para siempre, ya que esta puede reaparecer con nuevas asignaciones y liberaciones.
+
+Alternativas a la compactación:
+Mejoras en los algoritmos de asignación:
+Utilizar estrategias como Best Fit o Worst Fit para minimizar el desperdicio de memoria desde el inicio.
+
+Segmentación y paginación:
+Estas técnicas avanzadas reorganizan cómo se gestiona la memoria para reducir o eliminar el problema de fragmentación externa.
+
+5)
+Paginacion
+• La memoria se divide en porciones de igual tamãno llamadas
+marco
+• El espacio de direcciones de los procesos se divide en
+porciones de igual tamano denominadas paginas
+• Tamano pagina = tamano marco = 512 bytes (generalmente)
+• El SO mantiene una tabla de paginas para cada proceso, la
+cual contiene el marco donde se encuentra cada p ́agina
+• La paginaci ́on bajo demanda es una t ́ecnica eficiente de
+manejar esta estrategia → Thrashing
+
+ Paginación
+La paginación es una técnica de asignación de memoria que divide tanto la memoria principal como los procesos en bloques de tamaño fijo llamados páginas 
+(en la memoria lógica) y marcos de página (en la memoria física). A continuación, se detalla cómo funciona este método y lo que implica su implementación.
+
+(a) ¿Cómo trabaja este método de asignación de memoria?
+División en bloques:
+La memoria lógica de cada proceso se divide en bloques llamados páginas de un tamaño fijo.
+La memoria física (RAM) se divide en bloques de tamaño igual llamados marcos de página.
+
+Asignación de páginas a marcos:
+Las páginas de los procesos se cargan en los marcos disponibles en la memoria física. No es necesario que las páginas estén contiguas, ya que el sistema operativo 
+mantiene un registro de qué marco contiene cada página.
+
+Traducción de direcciones:
+Cuando un programa accede a una dirección de memoria lógica, el sistema operativo la traduce en una dirección física mediante una tabla de páginas.
+
+Ventajas:
+Elimina la fragmentación externa, ya que cualquier página puede ser cargada en cualquier marco disponible.
+Permite usar la memoria de manera más eficiente al dividir los procesos en bloques manejables.
+
+Desventajas:
+Introduce un overhead adicional para mantener y acceder a las tablas de páginas.
+Puede generar fragmentación interna si el último bloque de un proceso no utiliza completamente una página.
+
+(b) Estructuras adicionales necesarias en el sistema operativo
+Tabla de Páginas (Page Table):
+Asocia cada página lógica del proceso con un marco físico en la memoria.
+Contiene información como:
+Número del marco asociado a cada página.
+Bits de control (por ejemplo, si la página está presente en memoria o ha sido modificada).
+
+Registro Base de la Tabla de Páginas (Page Table Base Register, PTBR):
+Almacena la dirección inicial de la tabla de páginas del proceso actual.
+
+TLB (Translation Lookaside Buffer):
+Una memoria caché que almacena las traducciones recientes de páginas lógicas a marcos físicos para acelerar el acceso.
+
+Control de memoria virtual (si se usa):
+Cuando la memoria física es insuficiente, las páginas no usadas recientemente se almacenan en el disco, y se necesita una estructura 
+adicional para administrar estas páginas (por ejemplo, swap file).
+
+d_ 
+Fragmentación Interna
+¿Es posible?
+Sí, puede ocurrir.
+¿Por qué ocurre?
+El tamaño de una página es fijo, y no todos los procesos o bloques de datos ocupan exactamente un múltiplo de ese tamaño.
+Esto deja espacio sin usar al final de la última página de un proceso.
+
+Fragmentación Externa
+¿Es posible?
+No, la paginación elimina este tipo de fragmentación.
+¿Por qué no ocurre?
+En la paginación, los bloques de memoria física (marcos) son todos del mismo tamaño. Esto significa que cualquier página de 
+un proceso puede colocarse en cualquier marco libre, sin necesidad de contigüidad.
+Como resultado, no hay espacios libres inutilizables dispersos en la memoria.
+
+6_
+
+Similitudes: Ambos métodos trabajan con bloques de tamaño fijo, lo que simplifica la asignación de memoria, 
+aunque pueden generar fragmentación interna.
+Diferencias: La paginación es más flexible al permitir la asignación no contigua y eliminar la fragmentación externa, a 
+costa de una mayor complejidad debido al uso de tablas de páginas. En cambio, las particiones fijas son más simples pero 
+menos eficientes para manejar procesos de tamaños variados.
