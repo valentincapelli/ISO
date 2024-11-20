@@ -215,3 +215,81 @@ int main() {
 
     return 0;
 }
+
+3_ Los tiempos de retorno van a convenir que sean bajos para aquellos lotes de procesos
+que necesitamos tener una respuesta rapida de lo que se este ejecutando en si mismo. Lo que son
+CPU bound vamos a necesitar que el TR se lo mas bajo posible para que el termine calculo lo mas
+rapido posible. En los I/O bound vamos a necesitar que el tiempo de espera sea lo mas bajo
+posible, es el tiempo que el proceso que va a estar esperando cumplir su rafaga siguiente.
+
+FCFS
+• First come first served
+• Cuando hay que elegir un proceso para ejecutar, se selecciona
+el mas viejo
+• No favorece a ning ́un tipo de procesos, pero en principio
+prod ́ıamos decir que los CPU Bound terminan al comenzar su
+primer r ́afaga, mientras que los I/O Bound no
+
+SJF
+• Shortest Job First
+• Pol ́ıtica nonpreemptive que selecciona el proceso con la r ́afaga
+m ́as corto
+• Calculo basado en la ejecuci ́on previa
+• Procesos cortos se colocan delante de procesos largos
+• Los procesos largos pueden sufrir starvation (inanicion)
+
+Algoritmo RR
+• Round Robin
+• Politica basada en un reloj
+• Quantum (Q): medida que determina cuanto tiempo
+podr ́a usar el procesador cada proceso:
+• Pequenio: overhead de context switch
+• Cuando un proceso es expulsado de la CPU es colocado al
+final de la Ready Queue y se selecciona otro (FIFO circular )
+
+• Existe un “contador” que indica las unidades de CPU en las
+que el proceso se ejecuto. Cuando el mismo llega a 0 el
+proceso es expulsado
+• El “contador” puede ser:
+• Global
+• Local → PCB
+• Existen dos variantes con respecto al valor inicial del
+“contador” cuando un proceso es asignado a la CPU:
+• Timer Variable
+• Timer Fijo
+
+Algoritmo RR - Timer Variable
+• El “contador” se inicializa en Q (contador := Q) cada vez que
+un proceso es asignado a la CPU
+• Es el mas utilizado
+
+Algoritmo RR - Timer Fijo
+• El “contador” se inicializa en Q cuando su valor es cero
+• if (contador == 0) contador = Q;
+• Se puede ver como un valor de Q compartido entre los
+procesos
+
+Timer Fijo
+En esta variante, el quantum es el mismo para todos los procesos.
+¿Dónde debería residir el quantum?
+El quantum puede residir en una estructura global del sistema operativo que gestione 
+la planificación de procesos.
+Razones:
+Todos los procesos utilizan el mismo quantum.
+Mantenerlo centralizado asegura que cualquier cambio sea uniforme y consistente para 
+todos los procesos.
+
+2. Timer Variable
+En esta variante, el quantum puede variar entre procesos (por ejemplo, según su 
+prioridad o tipo).
+¿Dónde debería residir el quantum?
+En este caso, el quantum debe ser una propiedad de cada proceso.
+Se puede almacenar como un campo en la estructura de datos que representa a un proceso 
+(como un PCB, Process Control Block).
+Razones:
+Cada proceso puede tener un quantum distinto.
+Al almacenarlo en el PCB, el planificador puede acceder rápidamente al quantum del 
+proceso actual.
+Permite flexibilidad para adaptarse a las necesidades específicas de los procesos o 
+políticas del sistema.
+
