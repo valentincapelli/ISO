@@ -236,3 +236,9 @@ aunque pueden generar fragmentación interna.
 Diferencias: La paginación es más flexible al permitir la asignación no contigua y eliminar la fragmentación externa, a 
 costa de una mayor complejidad debido al uso de tablas de páginas. En cambio, las particiones fijas son más simples pero 
 menos eficientes para manejar procesos de tamaños variados.
+
+8) 
+a_ Se necesitan 13 bits si fuera una direccion por byte. 3 bits para las 8 paginas y 10 bits para los 1024 bytes.
+b_ Se necesitan 15 bits si fuera una direccion por byte. 5 bits para los 32 marcos y 10 bits para los 1024 bytes.
+
+9)
