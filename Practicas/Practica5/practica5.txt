@@ -241,4 +241,150 @@ menos eficientes para manejar procesos de tamaños variados.
 a_ Se necesitan 13 bits si fuera una direccion por byte. 3 bits para las 8 paginas y 10 bits para los 1024 bytes.
 b_ Se necesitan 15 bits si fuera una direccion por byte. 5 bits para los 32 marcos y 10 bits para los 1024 bytes.
 
-9)
+9) Segmentación
+a) ¿Cómo trabaja este método de asignación de memoria?
+La segmentación es un método de asignación de memoria que divide el espacio de direcciones de un proceso en segmentos lógicos de 
+diferentes tamaños, cada uno representando una unidad funcional (como código, pila, datos, etc.).
+En lugar de considerar la memoria como un bloque continuo, cada segmento se asigna de forma independiente en la memoria física.
+
+Características:
+Cada segmento tiene un tamaño variable.
+Cada segmento se identifica mediante un número (número de segmento).
+Las direcciones lógicas constan de dos componentes:
+Número de segmento: Identifica el segmento.
+Desplazamiento: Especifica la ubicación dentro del segmento.
+
+b) ¿Qué estructuras adicionales debe poseer el SO para implementarlo?
+Tabla de segmentos:
+Cada proceso tiene una tabla de segmentos asociada. Contiene:
+    La base del segmento (dirección física inicial del segmento).
+    El límite del segmento (tamaño del segmento).
+Permite convertir direcciones lógicas en físicas.
+
+Manejador de excepciones:
+Controla violaciones de acceso, como intentar acceder a un segmento inexistente o superar el límite de un segmento.
+
+Unidad de gestión de memoria (MMU):
+Traduce automáticamente las direcciones lógicas en físicas basándose en la tabla de segmentos.
+
+c) Transformación de direcciones lógicas en físicas
+La conversión de direcciones se realiza de la siguiente manera:
+
+Dirección lógica: (Número de segmento, Desplazamiento)
+Verificación del desplazamiento:
+El desplazamiento debe ser menor que el límite del segmento (tamaño del segmento).
+Traducción a dirección física:
+Dirección física = Base del segmento + Desplazamiento.
+
+Ejemplo gráfico:
+Supongamos que un proceso tiene 3 segmentos:
+Segmento 0 (Código): Base = 1000, Límite = 400.
+Segmento 1 (Datos): Base = 2000, Límite = 300.
+Segmento 2 (Pila): Base = 3000, Límite = 200.
+
+Una dirección lógica (1, 150):
+
+Se refiere al Segmento 1 (Datos).
+Se verifica que 150 < 300 (límite del segmento).
+Dirección física = 2000 (base) + 150 (desplazamiento) = 2150.
+
+d) ¿Se puede producir fragmentación (interna y/o externa)?
+Fragmentación interna:
+No ocurre. Los segmentos se ajustan exactamente al tamaño necesario del proceso, sin desperdiciar memoria dentro del segmento.
+
+Fragmentación externa:
+Sí ocurre. Debido a que los segmentos son de tamaño variable, pueden quedar huecos entre ellos en la memoria física tras 
+asignaciones y liberaciones.
+
+10)
+Similitudes entre segmentación y particiones dinámicas
+Asignación de memoria variable:
+Ambos métodos asignan bloques de memoria de tamaños variables según las necesidades del proceso.
+
+Uso eficiente de la memoria:
+Ambos intentan reducir el desperdicio al ajustar los bloques asignados al tamaño requerido por los procesos.
+
+Fragmentación externa:
+Ambos sufren de fragmentación externa porque los bloques liberados pueden no ser reutilizables debido a su tamaño o ubicación.
+
+Ubicación de bloques:
+En ambos métodos, los bloques de memoria asignados a un proceso pueden estar en diferentes ubicaciones físicas en la memoria.
+
+Necesidad de estructura de control:
+Ambos requieren una estructura de datos para rastrear los bloques asignados y los espacios libres.
+
+La segmentación es más adecuada para sistemas que necesitan organizar la memoria según las necesidades lógicas del programa 
+(como separar código, datos y pila).
+Las particiones dinámicas son más simples, pero sufren más de fragmentación interna en comparación con la segmentación.
+
+11)
+Paginación: Divide la memoria de manera uniforme (tamaño fijo). Es más simple y eficiente, pero puede generar desperdicio 
+dentro de las páginas.
+Segmentación: Divide la memoria de manera lógica (tamaño variable). Es más adecuada para sistemas complejos, pero enfrenta 
+problemas de fragmentación externa.
+Ver imagen (ejercicio11.png).
+
+13)
+Beneficios del esquema de memoria virtual
+
+Ejecución de programas más grandes que la memoria física:
+La memoria virtual permite que los procesos usen más espacio de memoria que el disponible físicamente al utilizar 
+almacenamiento secundario (disco) como extensión de la memoria principal.
+
+Mejor utilización de la memoria física:
+Los procesos cargan solo las partes necesarias en memoria, dejando espacio para otros procesos y reduciendo el desperdicio.
+
+Aislamiento de procesos:
+Cada proceso tiene su propio espacio de direcciones virtual, evitando que interfieran entre sí.
+
+Flexibilidad en la asignación:
+No se requiere que los procesos estén en bloques contiguos de memoria física, lo que simplifica la gestión y evita problemas de fragmentación externa.
+
+Facilidad para compartir memoria:
+Diferentes procesos pueden compartir secciones específicas de memoria virtual, como bibliotecas.
+
+b) ¿En qué se debe apoyar el SO para su implementación?
+
+Unidad de gestión de memoria (MMU):
+Hardware que traduce direcciones virtuales a físicas y gestiona las tablas de páginas.
+
+Tablas de páginas:
+Estructuras que contienen la correspondencia entre páginas virtuales y marcos de memoria física.
+
+Almacenamiento secundario:
+Un espacio en el disco (habitualmente llamado archivo de paginación o swap) para almacenar las páginas que no están en 
+memoria física.
+
+Algoritmos de reemplazo de páginas:
+Deciden qué páginas deben trasladarse al disco cuando la memoria física está llena. Ejemplo: FIFO, LRU (Least Recently Used).
+
+Interrupciones:
+El sistema operativo maneja interrupciones de falta de página (page faults) cuando un proceso accede a una página que no 
+está en memoria.
+
+c) Información adicional en tablas de páginas (Paginación por demanda)
+Además del marco físico donde se encuentra la página, las tablas de páginas deben incluir:
+
+Bit de presencia/ausencia:
+Indica si la página está actualmente en la memoria física o en el almacenamiento secundario.
+Razón: Permite saber si un acceso genera un page fault.
+
+Bit de modificación (dirty bit):
+Indica si la página ha sido modificada desde que fue cargada en memoria.
+Razón: Optimiza la escritura en disco, escribiendo solo las páginas que han sido modificadas.
+
+Bit de acceso:
+Indica si la página ha sido accedida recientemente.
+Razón: Es útil para implementar algoritmos de reemplazo de páginas como LRU.
+
+Información de protección:
+Define los permisos de acceso (lectura, escritura, ejecución).
+Razón: Garantiza la seguridad y evita accesos no autorizados.
+
+Dirección del disco:
+Ubicación en el almacenamiento secundario donde está almacenada la página.
+Razón: Permite al SO recuperar la página cuando es necesario cargarla a memoria.
+
+La memoria virtual permite una gestión eficiente y flexible de los recursos de memoria, pero su implementación requiere 
+un soporte robusto del hardware y del sistema operativo, especialmente cuando se usa paginación por demanda para 
+minimizar la carga inicial de los procesos en memoria física.
