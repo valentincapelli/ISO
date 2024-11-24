@@ -388,3 +388,166 @@ Razón: Permite al SO recuperar la página cuando es necesario cargarla a memori
 La memoria virtual permite una gestión eficiente y flexible de los recursos de memoria, pero su implementación requiere 
 un soporte robusto del hardware y del sistema operativo, especialmente cuando se usa paginación por demanda para 
 minimizar la carga inicial de los procesos en memoria física.
+
+
+14. Fallos de Página (Page Faults)
+a) ¿Cuándo se producen?
+Un fallo de página ocurre cuando un proceso intenta acceder a una página que no está cargada en la memoria física. Esto puede 
+suceder porque:
+La página está en el almacenamiento secundario (swap o archivo de paginación) y necesita ser cargada en memoria.
+El proceso solicita por primera vez una página que forma parte de su espacio virtual pero que aún no ha sido referenciada.
+
+b) ¿Quién es responsable de detectar un fallo de página?
+El hardware del sistema (específicamente la Unidad de Gestión de Memoria, MMU) es responsable de detectar el fallo de página.
+La MMU, al intentar traducir una dirección virtual a física, verifica si la página está presente en la memoria física usando 
+el bit de presencia/ausencia en la tabla de páginas.
+Si la página no está presente, genera una interrupción que es manejada por el sistema operativo (SO).
+
+c) Acciones que emprende el SO cuando se produce un fallo de página
+Cuando ocurre un fallo de página, el SO ejecuta los siguientes pasos:
+
+Pausar el proceso:
+Detiene la ejecución del proceso que generó el fallo de página.
+
+Determinar la ubicación de la página faltante:
+Usa la información de la tabla de páginas para identificar si la página está en el almacenamiento secundario o si se trata de una 
+referencia no válida (error de segmentación).
+
+Asignar un marco en la memoria física:
+Si no hay marcos disponibles, el SO ejecuta un algoritmo de reemplazo de páginas (como LRU o FIFO) para liberar espacio 
+seleccionando una página existente.
+
+Guardar la página reemplazada (si aplica):
+Si la página seleccionada para ser reemplazada ha sido modificada (dirty bit activado), se escribe en el disco antes de liberarla.
+
+Cargar la página faltante:
+El SO copia la página requerida desde el almacenamiento secundario al marco de memoria recién asignado.
+
+Actualizar la tabla de páginas:
+Modifica la entrada correspondiente en la tabla de páginas para reflejar la nueva ubicación de la página en la memoria física y 
+activa el bit de presencia.
+
+Reanudar el proceso:
+Una vez completada la carga, el proceso continúa su ejecución desde donde se interrumpió.
+ 
+15)
+
+16)
+
+17)
+
+18)
+
+19)
+
+20)
+
+a) Clasificación de los algoritmos según la tasa de fallos de página
+De peor a mejor, considerando un escenario típico:
+
+FIFO (First-In, First-Out): Este algoritmo simplemente reemplaza la página que llegó primero sin considerar su uso reciente. 
+Puede sufrir del anomalía de Belady, lo que significa que aumentar los marcos de memoria puede incrementar los fallos de página.
+
+Segunda Oportunidad (Second-Chance): Mejora a FIFO al verificar si la página fue utilizada recientemente. Reduce fallos comparado
+con FIFO, pero aún no es tan eficiente como los otros.
+
+LRU (Least Recently Used): Selecciona la página que no ha sido usada durante más tiempo, lo que generalmente se acerca al 
+comportamiento óptimo.
+
+OPT (Óptimo): Es el mejor algoritmo teórico, ya que selecciona la página que no será utilizada por más tiempo en el futuro. Sin 
+embargo, no es práctico porque requiere conocimiento perfecto del futuro.
+
+b) Análisis y funcionamiento
+1. FIFO (First-In, First-Out):
+Funcionamiento: Mantiene una cola con las páginas en orden de llegada. Cuando se requiere reemplazo, elimina la página en el frente 
+de la cola.
+Implementación:
+Utilizar una cola circular para administrar las páginas.
+Insertar nuevas páginas en la parte trasera y eliminar desde el frente.
+Desventaja: No considera si las páginas se usan frecuentemente.
+
+2. Segunda Oportunidad (Second-Chance):
+Funcionamiento: Igual a FIFO, pero verifica un bit de referencia (R). Si R = 1, la página tiene una "segunda oportunidad" y se mueve al final de la cola.
+Implementación:
+Mantener un bit de referencia para cada página.
+Cuando se debe reemplazar:
+Si R = 0: reemplazar la página.
+Si R = 1: poner la página al final de la cola y resetear R a 0.
+Ventaja: Mejora a FIFO al evitar reemplazar páginas usadas recientemente.
+
+3. LRU (Least Recently Used):
+Funcionamiento: Reemplaza la página que no ha sido usada durante más tiempo.
+Implementación:
+Usar una lista ordenada o una pila para rastrear el acceso a las páginas.
+Alternativamente, usar una matriz o hardware especializado para medir intervalos de tiempo desde el último uso.
+Ventaja: Es más eficiente que FIFO y Segunda Oportunidad al basarse en el uso reciente.
+
+4. OPT (Óptimo):
+Funcionamiento: Reemplaza la página que no será usada durante más tiempo en el futuro.
+Implementación:
+Simular el acceso futuro con base en el patrón de referencia.
+Identificar cuál página tiene el mayor tiempo antes de ser usada nuevamente.
+Desventaja: Imposible de implementar en sistemas reales porque requiere conocimiento perfecto del futuro.
+
+c) Acciones del sistema operativo ante páginas modificadas
+Cuando una página a ser reemplazada está modificada (bit de modificación o dirty bit está activo):
+
+Escribir la página en disco:
+El contenido de la página debe escribirse en su ubicación de respaldo en disco (por ejemplo, un archivo de respaldo o espacio 
+de intercambio).
+Esto garantiza que los cambios realizados en memoria no se pierdan.
+
+Actualizar estructuras de datos:
+Marcar el marco de la página como disponible en la tabla de marcos.
+Actualizar las tablas de páginas correspondientes para reflejar que la página ya no está en memoria.
+
+Carga de la nueva página:
+Leer la nueva página del disco al marco liberado.
+Actualizar las estructuras de datos, incluyendo las tablas de páginas y bits de control.
+
+Optimización:
+Algunas estrategias, como escribir páginas modificadas en disco de manera anticipada (write-back cache), pueden reducir 
+la latencia del reemplazo.
+
+21)
+a) Políticas de reemplazo
+1. Reemplazo Local
+Descripción:
+El sistema operativo solo considera las páginas que pertenecen al proceso que causó el fallo de página.
+Cada proceso tiene asignados un conjunto fijo de marcos, y las páginas víctimas se seleccionan exclusivamente de ese conjunto.
+Ventajas:
+Aislamiento: Evita que un proceso afecte el desempeño de otros.
+Controlado: Permite al administrador asignar marcos según prioridades.
+Desventajas:
+Ineficiencia: Si un proceso tiene marcos sin usar, no puede compartirlos con otros procesos que los necesiten.
+
+2. Reemplazo Global
+Descripción:
+El sistema operativo considera todas las páginas en la memoria principal, independientemente de a qué proceso pertenecen.
+La página víctima puede pertenecer a cualquier proceso activo.
+Ventajas:
+Flexibilidad: Mejora la utilización de la memoria al permitir que los procesos compartan marcos según la demanda.
+Mejor rendimiento: Puede reducir fallos de página globales.
+Desventajas:
+Interferencia: Un proceso puede afectar negativamente a otros si consume demasiados marcos.
+
+b) ¿Es posible utilizar “Asignación Fija” junto con “Reemplazo Global”?
+
+No es coherente combinar asignación fija de marcos con reemplazo global, debido a sus principios opuestos:
+Asignación Fija:
+Cada proceso tiene un número predeterminado de marcos que no varía, sin importar las necesidades actuales de memoria.
+Incompatible con reemplazo global, ya que este permite que un proceso utilice marcos asignados a otros procesos.
+
+Reemplazo Global:
+Permite que los procesos compartan marcos dinámicamente según la demanda.
+Contradice el principio de asignación fija, que restringe los marcos a cada proceso.
+
+Justificación:
+El problema fundamental es que la asignación fija asegura que cada proceso tiene un número reservado de marcos, mientras que el 
+reemplazo global busca optimizar el uso de marcos disponibles en todo el sistema.
+Por lo tanto, para utilizar reemplazo global, generalmente se requiere una política de asignación dinámica, donde los marcos 
+pueden redistribuirse entre los procesos según las necesidades.
+
+
+
+
