@@ -473,3 +473,81 @@ Por ejemplo: con un q = 5 y un proceso cuyo CPU = 5, el proceso se ejecutaria un
 14_ Consultar.
 
 15_ 
+
+16_
+
+17_
+
+18_
+
+19_
+
+20_
+
+21_ 
+El comportamiento del algoritmo Round-Robin se asemeja al de FIFO (First In, First Out) cuando el quantum 
+𝑞 se incrementa sin límite debido a cómo se manejan las tareas en ambas estrategias:
+
+Round-Robin con quantum limitado
+En Round-Robin, las tareas se dividen en pequeños bloques de tiempo definidos por el quantum (q).
+Cada tarea se ejecuta por q unidades de tiempo o hasta que finaliza, lo que ocurra primero.
+Si una tarea no termina en su quantum asignado, se coloca al final de la cola y espera su turno de nuevo.
+Este enfoque da la apariencia de "turnos" cortos para las tareas, logrando una ejecución equitativa.
+
+Round-Robin con quantum grande
+Si el valor del quantum aumenta significativamente (hasta llegar a ser mayor que el tiempo necesario para completar la mayoría de las tareas), 
+cada tarea prácticamente se ejecutará en su totalidad antes de ceder el CPU.
+Esto elimina el efecto de "interrupciones frecuentes" de Round-Robin, y las tareas se ejecutan en el orden en que llegaron a la cola, como en FIFO.
+
+FIFO
+FIFO simplemente ejecuta las tareas en el orden de llegada, permitiendo que cada tarea termine completamente antes de pasar a la siguiente.
+No hay interrupciones ni cambios de contexto, lo que es similar al comportamiento de Round-Robin con 
+𝑞 extremadamente grande.
+
+Conclusión
+Cuando q tiende a infinito en Round-Robin:
+Cada tarea recibe suficiente tiempo para completarse sin ser interrumpida.
+La CPU sigue atendiendo las tareas en el orden en que llegaron, lo cual es el principio básico de FIFO.
+Por eso, al aumentar q sin límite, Round-Robin se degrada a FIFO, perdiendo las ventajas de equidad y tiempos de respuesta predecibles que caracterizan 
+a Round-Robin con un quantum razonable.
+
+22_ 
+(a) ¿Con cuál/es de estas clasificaciones se asocian las PCs de escritorio habituales?
+Las PCs de escritorio habituales suelen asociarse con las siguientes clasificaciones:
+
+Homogéneos:
+Los procesadores en una PC típica (como en sistemas multi-core) suelen ser idénticos y tienen las mismas capacidades físicas y de procesamiento.
+Esto significa que no hay un procesador con ventajas físicas sobre los demás.
+
+Multiprocesador fuertemente acoplado:
+En una PC moderna, los núcleos del procesador comparten una memoria principal y operan bajo el control de un único sistema operativo.
+Esto es típico en arquitecturas multi-core o CPU con múltiples hilos (threads).
+
+Procesadores especializados (en algunos casos):
+Muchas PCs incluyen coprocesadores o unidades especializadas, como una GPU (procesador gráfico), procesadores de IA, o procesadores criptográficos, que 
+trabajan bajo el control de la CPU principal.
+
+(b) ¿Qué significa que la asignación de procesos se realice de manera simétrica?
+La asignación simétrica de procesos se refiere al modelo de Simmetric Multiprocessing (SMP), donde todos los procesadores tienen acceso equitativo a la 
+memoria y recursos del sistema, y cada uno puede ejecutar cualquier proceso o tarea sin restricciones específicas.
+No hay distinción entre procesadores; todos tienen el mismo rol y responsabilidades.
+El sistema operativo distribuye las tareas de forma balanceada entre los procesadores para optimizar el rendimiento.
+Ejemplo: Si una tarea está en espera y hay un procesador libre, cualquier procesador puede tomarla.
+Ventajas:
+Mejora la eficiencia del sistema.
+Proporciona tolerancia a fallos, ya que si un procesador falla, otro puede asumir su trabajo.
+
+(c) ¿Qué significa que se trabaje bajo un esquema Maestro/Esclavo?
+En un esquema Maestro/Esclavo, uno de los procesadores (el Maestro) asume un rol central de control, mientras que los demás (los Esclavos) realizan tareas 
+específicas asignadas por el Maestro.
+El Maestro: Gestiona la planificación, distribución de tareas, y supervisión del sistema.
+Los Esclavos: Se limitan a ejecutar las tareas que les asigna el Maestro.
+Características:
+Los esclavos no toman decisiones sobre qué procesos ejecutar ni cómo gestionar recursos.
+El maestro puede representar un cuello de botella si no se gestiona eficientemente.
+Ventajas:
+Simplifica la coordinación y gestión de recursos.
+Ideal para sistemas especializados con tareas bien definidas (por ejemplo, procesadores de E/S o coprocesadores).
+Desventajas:
+Menor flexibilidad y escalabilidad en comparación con modelos simétricos.
+Dependencia del Maestro: si este falla, todo el sistema puede colapsar.
