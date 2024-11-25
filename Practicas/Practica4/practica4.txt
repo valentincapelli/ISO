@@ -473,16 +473,110 @@ Por ejemplo: con un q = 5 y un proceso cuyo CPU = 5, el proceso se ejecutaria un
 14_ Consultar.
 
 15_ 
+Para implementar un esquema de Colas Multinivel para los tipos de procesos descritos (Interactivos y Batch), el diseño del algoritmo 
+de planificación requiere la selección de algoritmos apropiados para:
+Administrar los procesos dentro de cada cola.
+Seleccionar qué cola ejecutar cuando ambas tienen procesos listos. 
 
-16_
+(a) Administración de cada cola:
+Cola de procesos interactivos:
+Los procesos interactivos suelen ser sensibles al tiempo de respuesta, por lo que es ideal utilizar un algoritmo que minimice los tiempos
+de espera y respuesta.
+Sugerencia: Round-Robin (RR) con un quantum pequeño, ya que proporciona tiempos de respuesta rápidos y permite que los procesos interactivos 
+alternen rápidamente en la CPU.
 
-17_
+Cola de procesos Batch:
+Los procesos batch no suelen ser sensibles al tiempo de respuesta y buscan maximizar el uso eficiente de la CPU.
+Sugerencia: First-Come, First-Served (FCFS), ya que es simple y asegura que los procesos se ejecuten en el orden en que llegaron. 
+Alternativamente, Shortest Job Next (SJN) podría ser utilizado si se puede estimar la duración de los procesos.
+
+(b) Planificación entre las dos colas:
+Para determinar cuál cola debe ejecutarse en cada momento, se puede usar un algoritmo de planificación basado en prioridades. Por ejemplo:
+
+Planificación con Prioridad Estática:
+La cola de procesos interactivos tendría mayor prioridad que la de procesos batch.
+La CPU atendería siempre a los procesos interactivos cuando estén listos.
+La cola de procesos batch solo se ejecutaría cuando no haya procesos interactivos.
+
+Planificación con Prioridad Dinámica (Ajustable):
+Se asignan prioridades que se ajustan dinámicamente según ciertos criterios, como la espera acumulada en la cola batch. Esto 
+puede evitar inanición en la cola de menor prioridad.
+
+Planificación por Tiempo Compartido:
+Se asigna un porcentaje del tiempo de CPU a cada cola. Por ejemplo:
+70% para la cola interactiva.
+30% para la cola batch.
 
 18_
+En este caso, se busca penalizar a los procesos que consumen mucho tiempo de CPU, basándonos en un esquema que favorezca 
+procesos con menor tiempo de ejecución restante. Esto se asemeja al comportamiento del SJF (Shortest Job First), pero 
+adaptado a colas multilevel con realimentación.
+
+Diseño propuesto:
+
+Estructura de colas:
+Implementar varias colas donde los procesos se asignen según el tiempo de ejecución acumulado o restante:
+Cola 1: Procesos que han consumido poco tiempo de CPU (alta prioridad).
+Cola 2: Procesos con tiempo de ejecución moderado.
+Cola 3: Procesos que han consumido mucho tiempo de CPU (baja prioridad).
+
+Algoritmo para cada cola:
+Cola 1: Round-Robin con un quantum pequeño para minimizar el tiempo de respuesta de procesos cortos.
+Cola 2: Round-Robin con un quantum más grande, equilibrando tiempo de espera y uso de CPU.
+Cola 3: FCFS (First-Come, First-Served) para simplificar la planificación de procesos largos.
+
+Realimentación entre colas:
+Los procesos migran dinámicamente entre colas basándose en el tiempo de CPU consumido:
+Cuando un proceso en Cola 1 consume más tiempo que un umbral definido, pasa a Cola 2.
+Lo mismo ocurre para el paso de Cola 2 a Cola 3.
+Para evitar inanición, se aplica envejecimiento:
+Los procesos en Cola 3 que esperan demasiado tiempo pueden ascender temporalmente a Cola 2 y luego a Cola 1, 
+si continúan esperando sin ser ejecutados.
+
+Algoritmo para administrar las colas:
+Utilizar prioridad estática:
+Cola 1 tiene mayor prioridad que Cola 2.
+Cola 2 tiene mayor prioridad que Cola 3.
+Aplicar envejecimiento dinámico para permitir que procesos de colas inferiores obtengan CPU si han esperado demasiado.
 
 19_
 
 20_
+Estrategias de administración:
+
+(a) Prioridad determinada estáticamente con el método del más corto primero (SJF):
+Cómo funciona:
+Asigna mayor prioridad a los trabajos que tienen menor tiempo de ejecución estimado, de manera estática (no cambia durante la ejecución del proceso).
+Beneficia a:
+
+Cortos acotados por CPU:
+Estos trabajos tienen prioridad máxima, ya que requieren poco tiempo de CPU.
+Se ejecutan rápidamente, reduciendo el tiempo promedio de espera y respuesta.
+
+Cortos acotados por E/S:
+Estos trabajos también pueden beneficiarse, ya que suelen tener tiempos de CPU pequeños y son atendidos rápidamente.
+Sin embargo, el beneficio es limitado si las operaciones de E/S introducen tiempos de espera.
+Desventajas:
+Los procesos largos (CPU o E/S) tienden a sufrir starvation si siempre hay procesos cortos disponibles.
+
+(b) Prioridad dinámica inversamente proporcional al tiempo transcurrido desde la última operación de E/S:
+Cómo funciona:
+Aumenta dinámicamente la prioridad de los procesos en función de cuánto tiempo ha pasado desde su última operación de E/S.
+Procesos que dependen mucho de E/S tienen mayor prioridad para aprovechar su disponibilidad de CPU y evitar bloqueos por espera de dispositivos.
+
+Beneficia a:
+Cortos acotados por E/S:
+Estos procesos obtienen una alta prioridad rápidamente debido a la frecuencia de sus operaciones de E/S.
+Maximiza el uso eficiente de la CPU mientras minimiza los tiempos de espera para E/S.
+
+Largos acotados por E/S:
+También se benefician al mantener alta prioridad por sus frecuentes operaciones de E/S.
+Sin embargo, los beneficios pueden ser limitados si la duración total del proceso sigue siendo larga.
+
+Desventajas:
+Cortos acotados por CPU y largos acotados por CPU pueden ser relegados, ya que no realizan operaciones de E/S con frecuencia, 
+perdiendo prioridad.
+
 
 21_ 
 El comportamiento del algoritmo Round-Robin se asemeja al de FIFO (First In, First Out) cuando el quantum 
@@ -551,3 +645,88 @@ Ideal para sistemas especializados con tareas bien definidas (por ejemplo, proce
 Desventajas:
 Menor flexibilidad y escalabilidad en comparación con modelos simétricos.
 Dependencia del Maestro: si este falla, todo el sistema puede colapsar.
+
+23_
+(a) Método de planificación más sencillo para procesadores homogéneos:
+El método de planificación más sencillo es el First-Come, First-Served (FCFS) aplicado en un esquema multiprocesador. En este caso, 
+los procesos son asignados a los procesadores en el orden en que llegan a la cola de procesos listos. Cada CPU selecciona el próximo 
+proceso disponible.
+
+(b) Ventajas y desventajas de FCFS en procesadores homogéneos:
+Ventajas:
+Simplicidad:
+Es fácil de implementar y no requiere cálculos complejos ni estructuras adicionales.
+No necesita conocer las características del proceso, como tiempo de ejecución o requerimientos específicos.
+Baja sobrecarga:
+No hay necesidad de realizar migraciones o ajustes dinámicos, reduciendo el overhead.
+Equidad en el orden de llegada:
+Los procesos se ejecutan en el orden en que llegaron, lo cual puede ser percibido como justo en algunos contextos.
+
+Desventajas:
+Ineficiencia en sistemas multiprocesador:
+No considera las características del proceso, como si es intensivo en CPU o E/S, lo que puede llevar a un uso subóptimo de los procesadores.
+Problemas con procesos largos:
+Los procesos largos pueden retrasar la ejecución de los procesos más cortos (problema de convoy).
+Ausencia de balanceo de carga:
+Si los procesos asignados a un procesador tienen tiempos largos, otros procesadores pueden quedar subutilizados, causando desequilibrios en la carga.
+No adapta prioridades:
+Todos los procesos tienen el mismo trato, sin considerar escenarios donde algunos procesos puedan tener mayor urgencia o importancia.
+
+Alternativa para mejorar FCFS en procesadores homogéneos:
+Un método más eficiente podría ser Round-Robin (RR), ya que introduce tiempos compartidos y asegura que todos los procesos tengan oportunidad de 
+usar la CPU, mitigando el problema de convoy y mejorando la equidad en entornos con múltiples procesadores. Sin embargo, RR implica una mayor 
+complejidad que FCFS.
+
+24_
+(a) Huella de un proceso en un procesador:
+La huella de un proceso hace referencia a los datos que el proceso deja en la memoria caché del procesador (como instrucciones, datos 
+frecuentes o contextos). Si el proceso vuelve a ejecutarse en el mismo procesador, puede beneficiarse de los datos ya cargados en la 
+caché, mejorando el rendimiento.
+
+(b) Afinidad con un procesador:
+La afinidad con un procesador se refiere a la relación preferencial entre un proceso y un procesador específico. En sistemas multiprocesador, 
+se puede establecer que un proceso se ejecute siempre en un mismo procesador, lo que reduce el overhead de mover el proceso entre diferentes 
+núcleos y aprovecha la huella en la caché.
+
+(c) ¿Por qué podría ser mejor en algunos casos que un proceso se ejecute en el mismo procesador?
+Ejecutar un proceso en el mismo procesador puede ser beneficioso porque:
+Reducción del overhead de migración: Cambiar un proceso entre procesadores implica guardar y restaurar el estado del proceso, lo que introduce 
+latencia.
+Mejor uso de la memoria caché: Mantener un proceso en el mismo procesador permite aprovechar los datos almacenados en la caché, reduciendo 
+accesos a memoria principal y mejorando el rendimiento.
+
+(d) ¿Puede el usuario cambiar la afinidad de un proceso en Windows y GNU/Linux?
+En Windows:
+Sí, el usuario puede cambiar la afinidad de un proceso desde el Administrador de Tareas:
+Abrir el Administrador de Tareas.
+Ir a la pestaña "Detalles".
+Hacer clic derecho en el proceso deseado, seleccionar "Establecer afinidad" y elegir los núcleos.
+
+En GNU/Linux:
+Sí, se puede cambiar la afinidad usando el comando taskset. Ejemplo:
+taskset -cp <lista_de_cpu> <pid>
+Donde <lista_de_cpu> indica los núcleos permitidos (por ejemplo, 0,1) y <pid> es el ID del proceso.
+
+(e) Concepto de balanceo de carga (load balancing):
+El balanceo de carga es una técnica para distribuir el trabajo entre varios procesadores (o nodos) en un sistema multiprocesador o 
+distribuido, con el objetivo de:
+Maximizar el uso de los recursos disponibles.
+Evitar la sobrecarga de un procesador mientras otros están inactivos.
+Mejorar el tiempo de respuesta y el rendimiento general del sistema.
+En sistemas operativos, el balanceo puede ser centralizado (un planificador decide la distribución) o descentralizado (cada procesador 
+toma decisiones localmente).
+
+(f) Comparación entre afinidad y balanceo de carga:
+Afinidad:
+Se centra en mantener un proceso en un procesador específico para mejorar el rendimiento aprovechando la caché y reduciendo el overhead de migración.
+
+Balanceo de carga:
+Busca distribuir la carga equitativamente entre todos los procesadores para evitar que unos estén sobrecargados mientras otros están subutilizados.
+
+Relación entre ambos conceptos:
+La afinidad mejora el rendimiento individual de un proceso, pero puede generar desequilibrios en la carga si muchos procesos se asignan 
+al mismo procesador.
+El balanceo de carga prioriza la distribución equitativa, pero puede sacrificar las ventajas de la afinidad si se decide migrar procesos 
+para lograr equilibrio.
+La implementación de ambos conceptos debe equilibrar las ventajas de aprovechar la afinidad con la necesidad de mantener una carga uniforme 
+en todos los procesadores.
