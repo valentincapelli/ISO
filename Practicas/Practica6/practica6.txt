@@ -1,1 +1,47 @@
-1_
+12. Suponga un disco con las siguientes características:
+7 platos con 2 caras utilizables cada uno.
+1100 cilindros
+300 sectores por pista, donde cada sector de es 512 bytes.
+Seek Time de 10 ms
+9000 RPM .
+Velocidad de Transferencia de 10 MiB/s (Mebibytes por segundos).
+(a) Calcule la capacidad total del disco.
+(b) ¿Cuantos sectores ocuparía un archivo de tamaño de 3 MiB(Mebibytes)?
+(c) Calcule el tiempo de transferencia real de un archivo de 15 MiB(Mebibytes). grabado en
+el disco de manera secuencial (todos sus bloques almacenados de manera consecutiva)
+(d) Calcule el tiempo de transferencia real de un archivo de 16 MiB(Mebibytes). grabado
+en el disco de manera aleatoria.
+
+c_ Calculamos los datos que faltan:
+Latencia:
+9000 vueltas → 1’ = 60 s = 60000 ms
+0,5 vueltas → x = 3,33 ms
+
+Transferencia:
+10 Mibits → 1 s = 1000 ms
+512 bytes → x
+
+Unificamos unidades:
+10.485.760 bytes → 1000 ms
+512 bytes → x = 0,04882 ms
+
+Bloques:
+tamaño del archivo = 15MiB * 2^20
+tamaño del archivo = 15.728.640bytes
+
+Bloques = tamaño del archivo / tamaño de cada bloques
+Bloques = 15.728.640bytes / 512bytes = 30720 bloques
+
+Almacenamiento secuencial:
+10ms + 3,33ms + (0,04882ms * 30720bloques) = 1.499,7504ms
+
+d_ 
+Bloques:
+tamaño del archivo = 16MiB * 2^20
+tamaño del archivo = 16.777.216bytes
+
+Bloques = tamaño del archivo / tamaño de cada bloques
+Bloques = 16.777.216bytes / 512bytes = 32.768 bloques
+
+Almacenamiento aleatorio:
+(10ms + 3,33ms + 0,04882ms) * 32.768 = 438397,17376ms

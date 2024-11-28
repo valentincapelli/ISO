@@ -433,15 +433,114 @@ Una vez completada la carga, el proceso continúa su ejecución desde donde se i
 15)
 
 16)
+La administración de tablas de páginas en sistemas operativos utiliza distintos enfoques para manejar la conversión de direcciones virtuales 
+a físicas, optimizando el uso de la memoria y mejorando la eficiencia. Aquí se explican brevemente los enfoques mencionados:
 
-17)
+1. Tablas de páginas de 1 nivel
+En este esquema, cada proceso tiene una única tabla de páginas que contiene las direcciones físicas correspondientes a todas sus páginas virtuales.
+Funcionamiento:
+La dirección virtual se divide en dos partes:
+Número de página virtual (VPN): Indica la entrada en la tabla de páginas.
+Desplazamiento: Especifica la posición dentro de la página.
+El sistema busca la entrada correspondiente en la tabla de páginas usando el VPN.
+La dirección física se obtiene combinando la dirección base de la página física con el desplazamiento.
+Ventajas:
+Fácil de implementar.
+Rápida para espacios de direcciones pequeñas.
+Desventajas:
+Consume mucha memoria si el espacio de direcciones es grande, ya que requiere una tabla grande que debe estar en memoria.
 
-18)
+2. Tablas de páginas de 2 niveles
+Este enfoque divide la tabla de páginas en dos niveles jerárquicos para reducir su tamaño en memoria.
+Funcionamiento:
+La dirección virtual se divide en tres partes:
+Índice de la tabla de nivel superior: Apunta a una tabla secundaria.
+Índice de la tabla de nivel inferior: Identifica la entrada específica en la tabla secundaria.
+Desplazamiento: Especifica la posición dentro de la página.
+El sistema accede primero a la tabla de nivel superior para localizar la tabla secundaria correspondiente.
+Luego, busca en la tabla secundaria la dirección base de la página física.
+Finalmente, combina la dirección base con el desplazamiento para obtener la dirección física.
+Ventajas:
+Reduce el tamaño de las tablas al cargar solo las necesarias.
+Útil para direcciones virtuales grandes.
+Desventajas:
+Incrementa la complejidad y el número de accesos a memoria (dos niveles).
+
+3. Tablas de páginas invertidas
+Este enfoque almacena una sola tabla global para todo el sistema, en lugar de tener una tabla por proceso. Cada entrada mapea una página 
+física a una página virtual
+Funcionamiento:
+La dirección virtual se divide en:
+Número de página virtual (VPN): Identifica la página dentro del espacio virtual.
+Desplazamiento: Especifica la posición dentro de la página.
+Para encontrar una página, el sistema busca en la tabla de páginas invertida usando una combinación del VPN y el ID del proceso.
+Si se encuentra una coincidencia, se obtiene la dirección base de la página física.
+Combina la dirección base con el desplazamiento para obtener la dirección física.
+Ventajas:
+Menor uso de memoria, ya que la tabla es proporcional al número de páginas físicas.
+Escalabilidad en sistemas con múltiples procesos.
+Desventajas:
+Las búsquedas en la tabla pueden ser lentas si no se utiliza un mecanismo eficiente, como un hash table.
+Transformación de dirección virtual a física
+
+En los tres esquemas, la dirección virtual se divide en componentes (índices y desplazamientos).
+La tabla de páginas mapea las páginas virtuales a las físicas.
+Se combinan los resultados para obtener la dirección física.
+Cada enfoque busca equilibrar eficiencia, velocidad y uso de memoria según los requisitos del sistema.
+
+18) LEER!!
+Un tamanio de pagina pequenio tiene como:
+    - Ventajas:
+        - Menor fragmentacion interna. 
+        - Mayor granuladidad -> permite un mejor uso de la memoria fisica or que se cargan partes mas pequenias de los programas, solo lo necesario.
+        - Reduccion de desechos en programas pequenios -> Los programas pequenios ocupan menos paginas, minimizando el desperdicio de espacio.
+    - Desventajas
+        - Mayor tamanio de la tablas de paginas.
+        - Mayor sobrecarga en el manejo del sistema -> mas cambios de contexto y mas E/S.
+        - Mayor numero de fallos de pagina debido a que se necesitan cargar paginas con mas frecuencia por el menor tamanio de las paginas. 
+
+Un tamanio de pagina grande tiene como: 
+    - Ventajas:
+        - Menor tamanio de la tabla de paginas.
+        - Menor sobrecarga administrativa. 
+        - Menor numero de fallo de paginas.
+    - Desventajas:
+        - Mayor fragmentacion interna.
+        - Carga innecesaria de datos. 
+        - Uso ineficiente de la memoria fisica -> si las paginas son demasiado grandes puede haber menos espacio disponible para otros programas o 
+            procesos activos. 
 
 19)
+a_Asignacion Fija: a cada proceso se le asigna una cantidad
+arbitraria de marco. A su vez para el reparto se puede usar:
+• Reparto equitativo: se asigna la misma cantidad de marcos a
+cada proceso → m div p
+• Reparto proporcional: se asignan marco en base a la
+necesidad que tiene cada proceso → Vp. m / Vt
+
+• Asignacion dinamica: los procesos se van cargando en forma
+dinamica de acuerdo a la cantidad de marcos que necesiten
+
+b_ 
+i) 40 marcos DIV 4 procesos = 10 10 marcos para cada proceso.
+
+ii) 
+Proceso 1:
+Marcos=(15 / 63) × 40 = 9.52 → 10 (redondeo)
+
+Proceso 2:
+Marcos = (20 / 63) × 40 = 12.7 → 13 (redondeo)
+
+Proceso 3:
+Marcos = (20 / 63) × 40 = 12.7 → 13 (redondeo)
+​
+Proceso 4:
+Marcos = (8 / 63 ) × 40 = 5.08 → 4 (redondeo ajustado)
+
+c_ El reparto equitativo resulta mas eficiente, porque se ajusta a lo que
+necesita cada proceso.
 
 20)
-
 a) Clasificación de los algoritmos según la tasa de fallos de página
 De peor a mejor, considerando un escenario típico:
 
@@ -548,6 +647,134 @@ reemplazo global busca optimizar el uso de marcos disponibles en todo el sistema
 Por lo tanto, para utilizar reemplazo global, generalmente se requiere una política de asignación dinámica, donde los marcos 
 pueden redistribuirse entre los procesos según las necesidades.
 
+25)
+a) ¿Qué es?
+La hiperpaginación (o trashing) ocurre cuando un sistema operativo dedica una cantidad desproporcionada de tiempo a gestionar el intercambio de 
+páginas entre la memoria principal y la secundaria (swap), en lugar de ejecutar procesos útiles. Esto degrada severamente el rendimiento del 
+sistema, ya que el procesador pasa más tiempo esperando que las páginas sean cargadas que ejecutando instrucciones.
 
+b) ¿Cuáles pueden ser los motivos que la causan?
+Falta de memoria física suficiente:
+Los procesos requieren más páginas de las que la memoria principal puede acomodar.
+Tamaño inadecuado del conjunto de trabajo:
+Si el sistema no asigna suficientes marcos de página a los procesos, estos necesitarán acceder frecuentemente al disco para cargar las páginas 
+necesarias.
 
+Alta concurrencia:
+Demasiados procesos activos compitiendo por una cantidad limitada de memoria, lo que resulta en un aumento excesivo de fallos de página.
 
+Mala configuración de los parámetros de paginación:
+Una política de reemplazo de páginas ineficiente puede expulsar páginas que serán necesarias en el futuro inmediato.
+
+Comportamiento no lineal de los procesos:
+Procesos que acceden a grandes conjuntos de datos de forma irregular pueden causar una alta tasa de fallos de página.
+
+c) ¿Cómo la detecta el SO?
+El sistema operativo puede detectar la hiperpaginación monitoreando indicadores clave como:
+Tasa de fallos de página:
+Una tasa anormalmente alta de fallos de página indica que los procesos no encuentran sus páginas en memoria y están accediendo constantemente 
+al disco.
+Uso del procesador:
+Si el uso del CPU es bajo y el tiempo de espera por E/S es alto, puede ser un síntoma de trashing.
+Actividad del disco:
+Un aumento en la actividad de lectura/escritura del disco (swap in y swap out) indica que el sistema está gastando más tiempo gestionando la 
+memoria que ejecutando instrucciones.
+
+d) Una vez que lo detecta, ¿qué acciones puede tomar el SO para eliminar este problema?
+Reducir la carga de procesos:
+Suspender o sacar procesos no esenciales de la memoria para liberar recursos.
+Aumentar los marcos asignados a los procesos:
+Incrementar la cantidad de marcos asignados al conjunto de trabajo de los procesos más demandantes.
+Optimizar las políticas de reemplazo de páginas:
+Utilizar algoritmos más eficientes como LRU (Least Recently Used) o Clock Algorithm para evitar reemplazar páginas que serán utilizadas pronto.
+Aumentar la memoria física:
+Si es posible, agregar más memoria al sistema para manejar mejor la carga.
+Disminuir la concurrencia:
+Limitar el número de procesos activos que compiten por memoria en un momento dado.
+Ajustar la configuración del sistema:
+Modificar los parámetros del administrador de memoria, como el tamaño del archivo de intercambio (swap), para adaptarse mejor a las necesidades 
+de los procesos.
+Asignar prioridad a procesos críticos:
+Asignar más recursos a procesos de alta prioridad y relegar procesos secundarios al almacenamiento secundario.
+La hiperpaginación es un problema crítico que refleja la incapacidad del sistema para gestionar adecuadamente los recursos de memoria, y las 
+soluciones requieren equilibrar la carga de trabajo y optimizar las políticas de memoria del sistema operativo
+
+26)
+Análisis de las mediciones en un sistema con paginación por demanda
+a) Uso de CPU del 13%, uso del dispositivo de paginación del 97%
+¿Qué sucede?
+El sistema está experimentando hiperpaginación (trashing). La mayoría del tiempo se dedica al manejo de páginas en lugar de ejecutar procesos útiles.
+La alta actividad del dispositivo de paginación (97%) indica que los procesos no tienen suficientes marcos de memoria asignados y están 
+constantemente accediendo al disco para cargar y descargar páginas.
+¿Puede incrementarse el nivel de multiprogramación?
+No. Incrementar el nivel de multiprogramación solo aumentaría la carga de memoria y empeoraría el problema de trashing, ya que habría aún más 
+procesos compitiendo por los escasos marcos disponibles.
+¿La paginación está siendo útil?
+No, la paginación no está mejorando el rendimiento en este caso. Al contrario, está causando un cuello de botella debido a la falta de memoria física 
+para manejar los requerimientos de los procesos.
+
+b) Uso de CPU del 87%, uso del dispositivo de paginación del 3%
+¿Qué sucede?
+El sistema está funcionando de manera eficiente. La CPU está ocupada ejecutando procesos, y la baja actividad del dispositivo de paginación (3%) 
+indica que los procesos encuentran la mayoría de sus páginas en memoria, reduciendo los fallos de página.
+¿Puede incrementarse el nivel de multiprogramación?
+Potencialmente sí. Como la carga de memoria no es alta (uso del dispositivo de paginación bajo), se podrían agregar más procesos sin impactar 
+negativamente el rendimiento. Sin embargo, esto debe hacerse con precaución para no sobrecargar la memoria.
+¿La paginación está siendo útil?
+Sí, la paginación está funcionando correctamente, permitiendo a los procesos acceder eficientemente a la memoria sin generar problemas de trashing.
+
+c) Uso de CPU del 13%, uso del dispositivo de paginación del 3%
+¿Qué sucede?
+El sistema está infrautilizado. El bajo uso de CPU (13%) sugiere que no hay suficientes procesos listos para ejecutarse.
+El bajo uso del dispositivo de paginación (3%) indica que no hay problemas relacionados con la memoria.
+¿Puede incrementarse el nivel de multiprogramación?
+Sí. El sistema tiene recursos disponibles (tanto memoria como capacidad de CPU) que no están siendo utilizados. Incrementar el número de procesos 
+podría mejorar el uso de la CPU.
+¿La paginación está siendo útil?
+Sí, aunque el bajo uso de memoria implica que la paginación no está siendo un factor crítico en este escenario. Aumentar el nivel de 
+multiprogramación podría demostrar su utilidad.
+
+27)
+En este escenario, el bajo uso del procesador (20%) combinado con el alto uso del dispositivo de paginación (97.7%) sugiere que el sistema está 
+experimentando hiperpaginación (trashing). La mayoría de los ciclos de CPU se desperdician esperando que las páginas necesarias sean cargadas 
+desde el dispositivo de paginación.
+
+A continuación, se analiza cada acción propuesta y su impacto en la utilización del procesador:
+
+a) Instalar un procesador más rápido
+Impacto:
+No mejorará significativamente la utilización del procesador. El problema no es la velocidad del CPU, sino el tiempo que pasa esperando por 
+operaciones de paginación. Un procesador más rápido solo estaría inactivo por más tiempo, esperando las mismas páginas.
+Conclusión:
+No es una solución adecuada.
+
+b) Instalar un dispositivo de paginación mayor
+Impacto:
+Un dispositivo de paginación mayor podría tener un impacto positivo si también es más rápido (por ejemplo, un SSD en lugar de un HDD), 
+reduciendo el tiempo de acceso a las páginas. Sin embargo, no elimina la causa raíz del problema: la falta de memoria física.
+Conclusión:
+Podría ser útil, pero no es la solución ideal, ya que no aborda directamente el problema subyacente.
+
+c) Incrementar el grado de multiprogramación
+Impacto:
+Incrementar el grado de multiprogramación agregará más procesos que competirán por los marcos de memoria. Esto aumentará la tasa de fallos 
+de página y empeorará la hiperpaginación.
+Conclusión:
+No es recomendable. De hecho, esta acción agravará el problema.
+
+d) Instalar más memoria principal
+Impacto:
+Instalar más memoria principal permite al sistema asignar más marcos a los procesos activos, reduciendo la tasa de fallos de página y, por ende, 
+el uso del dispositivo de paginación. Esto mejorará directamente la utilización del procesador al disminuir el tiempo que pasa esperando por las 
+páginas necesarias.
+Conclusión:
+Es la mejor solución para este caso, ya que aborda la causa raíz del problema.
+
+e) Decrementar el quantum para cada proceso
+Impacto:
+Reducir el quantum puede aumentar la frecuencia de cambio de contexto entre procesos, lo que incrementará las demandas de memoria y podría 
+aumentar aún más los fallos de página.
+Conclusión:
+No es recomendable en este escenario, ya que podría empeorar el problema de paginación.
+
+28)
